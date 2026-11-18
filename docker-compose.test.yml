@@ -1,0 +1,30 @@
+# Test-only services. Start with: docker compose -f docker-compose.test.yml up -d
+services:
+  postgres-test:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: memorial_test
+      POSTGRES_PASSWORD: memorial_test
+      POSTGRES_DB: memorial_test
+    ports:
+      - "127.0.0.1:55432:5432"
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U memorial_test -d memorial_test"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+
+  # S3-compatible store for photo tests. MinIO no longer publishes images on public
+  # registries, so the test stack uses SeaweedFS's S3 gateway; the app only speaks the S3 API.
+  s3-test:
+    image: chrislusf/seaweedfs:4.50
+    command: server -dir=/data -filer -s3 -s3.port=8333 -ip=127.0.0.1 -ip.bind=0.0.0.0 -master.volumeSizeLimitMB=64
+    environment:
+      AWS_ACCESS_KEY_ID: memorial_test
+      AWS_SECRET_ACCESS_KEY: memorial_test_secret
+    ports:
+      - "127.0.0.1:59000:8333"
+    tmpfs:
+      - /data
