@@ -220,11 +220,14 @@ export function OptionA() {
   const measure = useCallback(() => {
     const el = track.current;
     if (!el) return;
-    const mid = el.scrollLeft + el.clientWidth / 2;
+    // measured on screen, so it does not depend on which ancestor is the offset parent
+    const box = el.getBoundingClientRect();
+    const mid = box.left + box.width / 2;
     let best = 0;
     let bestD = Infinity;
     slides().forEach((li, i) => {
-      const d = Math.abs(li.offsetLeft + li.offsetWidth / 2 - mid);
+      const r = li.getBoundingClientRect();
+      const d = Math.abs(r.left + r.width / 2 - mid);
       if (d < bestD) {
         bestD = d;
         best = i;
@@ -236,7 +239,9 @@ export function OptionA() {
     const el = track.current;
     const li = slides()[i];
     if (!el || !li) return;
-    const left = li.offsetLeft - (el.clientWidth - li.offsetWidth) / 2;
+    const box = el.getBoundingClientRect();
+    const r = li.getBoundingClientRect();
+    const left = el.scrollLeft + (r.left + r.width / 2) - (box.left + box.width / 2);
     el.scrollTo({ left, behavior: smooth && moving() ? "smooth" : "auto" });
   }, []);
   useEffect(() => {

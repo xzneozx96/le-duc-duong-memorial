@@ -832,3 +832,6 @@
     bottom: 11%;
   }
 }
+.lba-track {
+  position: relative;
+}
