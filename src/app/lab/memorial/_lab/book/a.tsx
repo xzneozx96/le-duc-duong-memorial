@@ -57,7 +57,6 @@ function Envelope({
                 {n} ảnh
               </span>
             )}
-            <span className={s.envOpen}>Mở thư</span>
           </span>
         </span>
         <span className={s.stamp} aria-hidden>
@@ -430,9 +429,21 @@ export function OptionA() {
           <button type="button" className={s.arrow} onClick={() => go(Math.max(0, centre - 1))} disabled={centre === 0} aria-label="Lá thư trước">
             <ChevronLeft aria-hidden size={28} strokeWidth={1.75} />
           </button>
-          <p className={s.count} aria-live="polite">
-            Thư {centre + 1} / {all.length}
-          </p>
+          <div className={s.countBox}>
+            <p className={s.count} aria-live="polite">
+              Thư {centre + 1} / {all.length}
+            </p>
+            {all[centre] && (
+              <button
+                type="button"
+                className={s.openCentre}
+                aria-haspopup="dialog"
+                onClick={(e) => openLetter(all[centre].id, e.currentTarget)}
+              >
+                Mở thư
+              </button>
+            )}
+          </div>
           <button
             type="button"
             className={s.arrow}

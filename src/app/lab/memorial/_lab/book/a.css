@@ -459,17 +459,6 @@
     0 2px 4px rgb(41 38 34 / 0.08),
     0 30px 50px -26px rgb(41 38 34 / 0.5);
 }
-.lba-envOpen {
-  display: none;
-  align-items: center;
-  font-weight: 600;
-  color: var(--ink);
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
-.lba-slide[data-centred] .lba-envOpen {
-  display: inline-flex;
-}
 @media (hover: hover) and (pointer: fine) {
   .lba-slide:not([data-centred]) .lba-envelope:hover {
     translate: none;
@@ -512,6 +501,32 @@
 .lba-arrow:focus-visible {
   outline: 3px solid var(--forest);
   outline-offset: 3px;
+}
+.lba-countBox {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+}
+/* opens the letter in the middle of the row; sits under the count */
+.lba-openCentre {
+  min-height: 44px;
+  padding: 0 12px;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 5px;
+  cursor: pointer;
+}
+.lba-openCentre:hover {
+  color: var(--bronze);
+}
+.lba-openCentre:focus-visible {
+  outline: 3px solid var(--bronze);
+  outline-offset: 2px;
+  border-radius: 6px;
 }
 .lba-count {
   min-width: 6.5em;
