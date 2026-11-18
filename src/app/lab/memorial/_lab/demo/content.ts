@@ -168,7 +168,7 @@ export const ui = {
         `“${file}” nặng ${size(bytes)} MB, quá mức 5 MB nên chưa được thêm. Các ảnh khác vẫn giữ nguyên. Cách làm nhỏ ảnh: bạn gửi ảnh qua Zalo hoặc WhatsApp cho chính mình rồi lưu bản nhận được, bản này thường nhỏ hơn 5 MB.`,
     },
     footerHeading: "Tư liệu & nguồn",
-    family: (email: string) => `Trang tưởng niệm Nhà giáo Lê Đức Dương, do gia đình thực hiện năm 2026. Liên hệ: ${email}`,
+    family: (_email: string) => "Trang tưởng niệm Nhà giáo Lê Đức Dương, do gia đình thực hiện năm 2026.",
     toTop: "Lên đầu trang",
     newTab: "(mở trong thẻ mới)",
     sources: [
