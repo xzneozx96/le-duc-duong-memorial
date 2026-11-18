@@ -1,0 +1,376 @@
+/* Option E: Mặt sau tấm ảnh. The tribute in full on paper, then a sand wall of prints hung
+   salon-style; a print turns over to show the letter on its back. Prefix lbe-. */
+
+.lbe-section {
+  background: var(--paper);
+}
+.lbe-head {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 72px var(--gutter) 0;
+  display: grid;
+  justify-items: start;
+  gap: 22px;
+}
+.lbe-title {
+  font-weight: 300;
+  font-size: clamp(64px, 11vw, 150px);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+}
+.lbe-invite {
+  max-width: 30em;
+  font-size: 22px;
+  line-height: 1.6;
+}
+
+.lbe-tribute {
+  max-width: 760px;
+  margin: 80px auto 0;
+  padding: 0 var(--gutter) 96px;
+}
+.lbe-tributeHead {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 36px;
+  padding-top: 56px;
+  border-top: 1px solid var(--sand);
+}
+.lbe-tributeName {
+  font-weight: 450;
+  font-size: clamp(36px, 5vw, 56px);
+  line-height: 1.1;
+}
+.lbe-tributeMeta {
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 18px;
+  color: var(--forest);
+}
+
+/* ---------- the wall ---------- */
+
+.lbe-wall {
+  padding: 80px var(--gutter) 120px;
+  background:
+    repeating-linear-gradient(90deg, rgb(158 113 75 / 0.05) 0 1px, transparent 1px 5px),
+    repeating-linear-gradient(0deg, rgb(249 248 247 / 0.06) 0 1px, transparent 1px 4px),
+    radial-gradient(90% 60% at 50% 0%, rgb(249 248 247 / 0.35), transparent 70%),
+    var(--sand);
+}
+.lbe-wallHead {
+  max-width: 1120px;
+  margin: 0 auto 64px;
+  text-align: center;
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+}
+.lbe-wallTitle {
+  font-weight: 400;
+  font-size: clamp(32px, 4vw, 48px);
+  line-height: 1.15;
+}
+.lbe-wallLine {
+  max-width: 30em;
+  font-size: 20px;
+}
+.lbe-status {
+  margin-top: 16px;
+  padding: 14px 20px;
+  border-radius: 10px;
+  background: var(--paper);
+  text-align: left;
+  color: var(--forest);
+}
+.lbe-prints {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+.lbe-hang {
+  width: 84%;
+}
+.lbe-hang:nth-child(odd) {
+  align-self: flex-start;
+}
+.lbe-hang:nth-child(even) {
+  align-self: flex-end;
+}
+.lbe-hang[data-kind="tall"] {
+  width: 66%;
+}
+@media (min-width: 760px) {
+  .lbe-prints {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 64px 56px;
+  }
+  .lbe-hang,
+  .lbe-hang:nth-child(odd),
+  .lbe-hang:nth-child(even) {
+    align-self: auto;
+    margin-top: var(--drop);
+    width: 330px;
+  }
+  .lbe-hang[data-kind="tall"] {
+    width: 236px;
+  }
+  .lbe-hang[data-kind="card"] {
+    width: 300px;
+  }
+}
+.lbe-print {
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+  width: 100%;
+  rotate: var(--tilt);
+  transition: rotate 400ms var(--out), translate 400ms var(--out), opacity 300ms ease;
+}
+.lbe-hang[data-away] .lbe-print {
+  opacity: 0.25;
+}
+@media (hover: hover) and (pointer: fine) {
+  .lbe-print:hover {
+    rotate: 0deg;
+    translate: 0 -6px;
+  }
+}
+.lbe-frame {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 12px;
+  background: #fff;
+  box-shadow:
+    0 1px 2px rgb(41 38 34 / 0.18),
+    0 26px 40px -24px rgb(41 38 34 / 0.6);
+}
+.lbe-frame[data-stack]::before,
+.lbe-frame[data-stack]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: #fff;
+  box-shadow: 0 6px 16px -8px rgb(41 38 34 / 0.5);
+}
+.lbe-frame[data-stack]::before {
+  rotate: 4deg;
+  translate: 8px 4px;
+}
+.lbe-frame[data-stack="3"]::after {
+  rotate: -3.5deg;
+  translate: -8px 6px;
+}
+.lbe-frame {
+  isolation: isolate;
+}
+.lbe-frontImg {
+  width: 100%;
+  height: auto;
+}
+.lbe-card {
+  display: grid;
+  align-content: center;
+  aspect-ratio: 4 / 3;
+  padding: 24px;
+  background: var(--paper-2);
+  text-align: left;
+}
+.lbe-cardWords {
+  font-style: italic;
+  font-size: 30px;
+  line-height: 1.2;
+  color: var(--ink);
+}
+.lbe-label {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  max-width: 100%;
+  padding: 10px 18px 12px;
+  background: var(--paper);
+  box-shadow: 0 2px 6px rgb(41 38 34 / 0.15);
+  text-align: center;
+}
+.lbe-labelName {
+  font-size: 21px;
+  line-height: 1.25;
+  color: var(--ink);
+}
+.lbe-labelMeta {
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 18px;
+  color: var(--forest);
+}
+.lbe-labelSent {
+  margin-bottom: 6px;
+}
+.lbe-more {
+  display: flex;
+  margin: 56px auto 0;
+}
+
+/* ---------- a print, turned over ---------- */
+
+.lbe-dialog {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  max-width: none;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: rgb(41 38 34 / 0.97);
+  color: var(--ink);
+  font-family: var(--serif);
+}
+.lbe-dialog::backdrop {
+  background: rgb(41 38 34 / 0.5);
+}
+.lbe-dialog :focus-visible {
+  outline: 3px solid var(--sand);
+  outline-offset: 3px;
+}
+.lbe-dialogInner {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 16px 12px 64px;
+  perspective: 1800px;
+}
+.lbe-dialogInner .lbe-close {
+  position: sticky;
+  top: 12px;
+  z-index: 2;
+  margin: 0 0 20px auto;
+  display: flex;
+  width: fit-content;
+  background: var(--dark);
+  color: var(--paper);
+  border-color: var(--sand);
+}
+.lbe-turnCard {
+  transform-origin: 50% 30%;
+}
+.lbe-turnCard[data-side="back"] [data-face="front"],
+.lbe-turnCard[data-side="front"] [data-face="back"] {
+  display: none;
+}
+.lbe-face[data-face="front"] {
+  padding: 16px;
+  background: #fff;
+}
+.lbe-face[data-face="back"] {
+  padding: 40px 22px 32px;
+  background:
+    radial-gradient(60% 40% at 85% 10%, rgb(214 192 167 / 0.25), transparent 70%),
+    radial-gradient(50% 30% at 10% 95%, rgb(214 192 167 / 0.2), transparent 70%),
+    var(--paper);
+  box-shadow: 0 40px 80px -40px rgb(0 0 0 / 0.6);
+}
+.lbe-face :focus-visible {
+  outline-color: var(--bronze);
+}
+@media (min-width: 700px) {
+  .lbe-dialogInner {
+    padding: 32px 24px 96px;
+  }
+  .lbe-face[data-face="back"] {
+    padding: 64px clamp(40px, 7vw, 88px) 48px;
+  }
+}
+.lbe-backHead {
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+  padding-bottom: 28px;
+  margin-bottom: 36px;
+  border-bottom: 1px solid var(--sand);
+}
+.lbe-backName {
+  font-weight: 450;
+  font-size: clamp(34px, 4.4vw, 52px);
+  line-height: 1.1;
+  outline-offset: 6px;
+}
+.lbe-backMeta {
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 1.55;
+  color: var(--forest);
+}
+.lbe-backPhotos {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid var(--sand);
+}
+.lbe-backPhotosLabel {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--forest);
+  margin-bottom: 16px;
+}
+.lbe-backPhotoRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.lbe-backPhoto {
+  height: 132px;
+  aspect-ratio: var(--ar);
+  padding: 6px;
+  background: #fff;
+  box-shadow: 0 8px 18px -10px rgb(41 38 34 / 0.5);
+}
+.lbe-turn {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 48px;
+  padding-top: 20px;
+  border-top: 1px solid var(--sand);
+}
+.lbe-turnButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 64px;
+  text-align: left;
+}
+.lbe-turnNext {
+  margin-left: auto;
+  text-align: right;
+}
+.lbe-turnButton > span {
+  display: grid;
+}
+.lbe-turnWord {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--forest);
+}
+.lbe-turnName {
+  font-size: 21px;
+  line-height: 1.3;
+  text-decoration: underline;
+  text-decoration-color: var(--tan);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 5px;
+}
+.lbe-blankCard .lbe-face[data-face="back"] {
+  background: var(--paper);
+}

@@ -1,0 +1,606 @@
+/*
+  Lưu bút options (lab, 2026-11-18): the shared base. Prefix lbk- here, lba- … lbe- per option.
+  Palette from the owner's Farewell reference, written once here as custom properties:
+    paper #F9F8F7, paper-2 #F4F2EF, mist #E8E0DC, ink #17082D (text only), sand #D6C0A7,
+    tan #C6A983, bronze #9E714B, forest #313D36, dark #292622, dark-2 #3A342E.
+  Contrast (WCAG, computed): ink on paper 17.9, ink on mist 14.5, ink on sand 10.8,
+  forest on paper 10.7, forest on mist 8.7, paper on dark 14.2, mist on dark 11.6, sand on dark 8.6,
+  paper on forest 10.7. Bronze (4.0 on paper) only for marks, rules and display sizes of 44 px+.
+  Reading text: 21 px Source Serif 4, line-height 1.7, at most 34em wide; nothing under 18 px.
+*/
+
+.lbk-page {
+  --paper: #f9f8f7;
+  --paper-2: #f4f2ef;
+  --mist: #e8e0dc;
+  --sand: #d6c0a7;
+  --tan: #c6a983;
+  --bronze: #9e714b;
+  --forest: #313d36;
+  --ink: #17082d;
+  --dark: #292622;
+  --dark-2: #3a342e;
+  --error: #8c1d18;
+  --serif: var(--font-lbk-serif), Georgia, "Times New Roman", serif;
+  --sans: var(--font-lbk-sans), system-ui, sans-serif;
+  --enter: cubic-bezier(0.16, 1, 0.3, 1);
+  --out: cubic-bezier(0.23, 1, 0.32, 1);
+  --gutter: 20px;
+
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: clip;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-optical-sizing: auto;
+  font-size: 20px;
+  line-height: 1.65;
+  accent-color: var(--forest);
+  -webkit-tap-highlight-color: transparent;
+  overflow-wrap: break-word;
+  text-rendering: optimizeLegibility;
+}
+@media (min-width: 900px) {
+  .lbk-page {
+    --gutter: 48px;
+  }
+}
+html:has(.lbk-page) {
+  background: #f9f8f7;
+  scrollbar-color: #9e714b #f4f2ef;
+}
+:where(.lbk-page) :where(*, *::before, *::after) {
+  box-sizing: border-box;
+}
+:where(.lbk-page) :where(h1, h2, h3, h4, p, figure, blockquote, ul, ol) {
+  margin: 0;
+}
+:where(.lbk-page) :where(ul, ol) {
+  padding: 0;
+  list-style: none;
+}
+:where(.lbk-page) :where(button) {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+:where(.lbk-page) :where(img) {
+  display: block;
+  max-width: 100%;
+}
+.lbk-page ::selection {
+  background: var(--sand);
+  color: var(--ink);
+}
+.lbk-page :focus-visible {
+  outline: 3px solid var(--bronze);
+  outline-offset: 3px;
+}
+.lbk-page [id] {
+  scroll-margin-top: 24px;
+}
+.lbk-srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ---------- lab chrome ---------- */
+
+.lbk-labBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px 20px;
+  padding: 6px var(--gutter);
+  background: var(--dark);
+  color: var(--paper);
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 18px;
+}
+.lbk-labBack {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  color: var(--paper);
+  text-underline-offset: 5px;
+}
+.lbk-labBar :focus-visible {
+  outline-color: var(--sand);
+}
+.lbk-labName {
+  color: var(--sand);
+}
+.lbk-note {
+  padding: 56px var(--gutter) 72px;
+  background: var(--mist);
+  border-top: 1px solid var(--sand);
+}
+.lbk-noteInner {
+  max-width: 760px;
+  margin-inline: auto;
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--forest);
+}
+.lbk-noteInner h2 {
+  margin-bottom: 12px;
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 30px;
+  color: var(--ink);
+}
+.lbk-noteInner p + p,
+.lbk-noteInner ul {
+  margin-top: 12px;
+}
+.lbk-noteInner ul {
+  list-style: disc;
+  padding-left: 1.2em;
+}
+.lbk-noteInner strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* ---------- controls ---------- */
+
+.lbk-primary,
+.lbk-ghost,
+.lbk-textButton,
+.lbk-label,
+.lbk-sentMark {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1.4;
+  letter-spacing: 0.005em;
+}
+.lbk-primary,
+.lbk-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 56px;
+  padding: 12px 28px;
+  border-radius: 999px;
+  text-align: center;
+  text-decoration: none;
+  text-wrap: balance;
+  touch-action: manipulation;
+  transition:
+    background-color 200ms ease,
+    color 200ms ease,
+    border-color 200ms ease,
+    scale 140ms var(--out);
+}
+.lbk-primary svg,
+.lbk-ghost svg {
+  flex: none;
+}
+.lbk-primary {
+  background: var(--forest);
+  color: var(--paper);
+}
+.lbk-ghost {
+  border: 1.5px solid currentColor;
+}
+.lbk-primary:active,
+.lbk-ghost:active {
+  scale: 0.97;
+}
+.lbk-primary[aria-disabled="true"] {
+  background: var(--dark-2);
+  cursor: progress;
+}
+@media (hover: hover) and (pointer: fine) {
+  .lbk-primary:not([aria-disabled="true"]):hover {
+    background: var(--dark);
+  }
+  .lbk-ghost:hover {
+    background: color-mix(in srgb, var(--sand) 35%, transparent);
+  }
+}
+.lbk-textButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 5px;
+}
+.lbk-photoButton {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: zoom-in;
+}
+.lbk-photoButton img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ---------- reading ---------- */
+
+.lbk-read {
+  max-width: 34em;
+  font-size: 21px;
+  line-height: 1.72;
+  white-space: pre-line;
+  text-wrap: pretty;
+  hanging-punctuation: first;
+}
+.lbk-read > * + * {
+  margin-top: 0.95em;
+}
+.lbk-tributeTitle {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  color: var(--forest);
+}
+.lbk-signature {
+  font-style: italic;
+  color: var(--forest);
+}
+@media (min-width: 900px) {
+  .lbk-read {
+    font-size: 22px;
+  }
+}
+
+.lbk-sentMark {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px 6px 10px;
+  border-radius: 999px;
+  background: var(--sand);
+  color: var(--ink);
+}
+.lbk-statusLine:empty {
+  display: none;
+}
+.lbk-status {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 19px;
+  line-height: 1.5;
+}
+.lbk-status svg {
+  flex: none;
+  margin-top: 2px;
+}
+
+/* ---------- the form (shared; options dress the frame around it) ---------- */
+
+.lbk-form {
+  color: var(--ink);
+}
+.lbk-form[hidden] {
+  display: none;
+}
+.lbk-formHead {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 30px;
+}
+.lbk-formTitle {
+  font-weight: 450;
+  font-size: clamp(32px, 4vw, 44px);
+  line-height: 1.15;
+}
+.lbk-formIntro {
+  font-size: 20px;
+  line-height: 1.55;
+  color: var(--forest);
+}
+.lbk-formCloseRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 10px;
+}
+.lbk-fields {
+  display: grid;
+  gap: 32px;
+}
+.lbk-field {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.lbk-fieldPair {
+  display: grid;
+  gap: 32px;
+}
+.lbk-label {
+  padding: 0;
+  font-size: 19px;
+  color: var(--ink);
+}
+.lbk-hint {
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 1.5;
+  color: var(--forest);
+}
+.lbk-input {
+  width: 100%;
+  min-height: 56px;
+  margin-top: 8px;
+  padding: 12px 16px;
+  border: 1.5px solid var(--forest);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 21px;
+  line-height: 1.5;
+  caret-color: var(--bronze);
+}
+.lbk-input:focus-visible {
+  outline-offset: 1px;
+  border-color: var(--ink);
+}
+.lbk-input[aria-invalid="true"] {
+  border-color: var(--error);
+  border-width: 2.5px;
+}
+.lbk-textarea {
+  min-height: 300px;
+  resize: vertical;
+  line-height: 1.7;
+}
+.lbk-salutation {
+  margin-top: 18px;
+  font-style: italic;
+  font-size: 24px;
+  color: var(--ink);
+}
+.lbk-formRule {
+  height: 0;
+  margin: 4px 0;
+  border: 0;
+  border-top: 1px solid var(--sand);
+}
+.lbk-radios {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+.lbk-radios[data-invalid] {
+  padding: 8px;
+  border: 2.5px solid var(--error);
+  border-radius: 10px;
+}
+.lbk-radio {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px;
+  padding: 0 20px 0 16px;
+  border: 1.5px solid var(--forest);
+  border-radius: 999px;
+  white-space: nowrap;
+  background: #fff;
+  cursor: pointer;
+  font-size: 20px;
+  transition: background-color 180ms ease, color 180ms ease;
+}
+.lbk-radio input {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  accent-color: var(--forest);
+}
+.lbk-radio:has(input:checked) {
+  background: var(--forest);
+  color: var(--paper);
+}
+.lbk-radio:has(input:checked) input {
+  accent-color: var(--sand);
+}
+.lbk-radio:has(input:focus-visible) {
+  outline: 3px solid var(--bronze);
+  outline-offset: 3px;
+}
+.lbk-fieldError {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  color: var(--error);
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 19px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.lbk-fieldError svg {
+  flex: none;
+  margin-top: 2px;
+}
+.lbk-fieldError span {
+  min-width: 0;
+}
+.lbk-pickButton {
+  align-self: flex-start;
+  margin-top: 12px;
+  color: var(--ink);
+}
+.lbk-thumbs {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+}
+.lbk-thumb {
+  display: grid;
+  grid-template-columns: 72px 1fr auto;
+  align-items: center;
+  gap: 14px;
+}
+.lbk-thumb img {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+.lbk-thumbName {
+  min-width: 0;
+  font-size: 18px;
+  overflow-wrap: anywhere;
+}
+.lbk-privacy {
+  margin-top: 34px;
+  padding-top: 20px;
+  border-top: 1px solid var(--sand);
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--forest);
+}
+.lbk-summary {
+  margin-top: 18px;
+}
+.lbk-send {
+  margin-top: 26px;
+  width: 100%;
+}
+@media (min-width: 640px) {
+  .lbk-fieldPair {
+    grid-template-columns: 1fr 1fr;
+  }
+  .lbk-send {
+    width: auto;
+    min-width: 240px;
+  }
+}
+
+/* ---------- viewer ---------- */
+
+.lbk-viewer {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  max-width: none;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: var(--dark);
+  color: var(--paper);
+  font-family: var(--serif);
+  overscroll-behavior: contain;
+}
+.lbk-viewer::backdrop {
+  background: var(--dark);
+}
+.lbk-viewer :focus-visible {
+  outline-color: var(--sand);
+}
+.lbk-viewer[data-closing] {
+  opacity: 0;
+  transition: opacity 200ms ease-out;
+}
+.lbk-viewerGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto minmax(0, 1fr) auto auto;
+  gap: 12px;
+  height: 100%;
+  padding: 12px 16px calc(16px + env(safe-area-inset-bottom));
+}
+.lbk-viewerCount {
+  align-self: center;
+  color: var(--sand);
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 18px;
+}
+.lbk-viewer .lbk-ghost {
+  border-color: var(--sand);
+  color: var(--paper);
+  padding-inline: 20px;
+}
+.lbk-viewer .lbk-ghost[aria-disabled="true"] {
+  opacity: 0.4;
+  cursor: default;
+}
+.lbk-viewerClose,
+.lbk-viewerNext {
+  justify-self: end;
+}
+.lbk-viewerPrev {
+  justify-self: start;
+}
+.lbk-viewerStage {
+  position: relative;
+  grid-column: 1 / -1;
+  min-height: 0;
+}
+.lbk-viewerPhoto {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: contain;
+}
+.lbk-viewerCaption {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--mist);
+  font-size: 19px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .lbk-viewer[open] {
+    animation: lbk-fade 320ms ease-out both;
+  }
+  .lbk-viewerPhoto {
+    animation: lbk-fade 360ms ease-out both;
+  }
+}
+@keyframes lbk-fade {
+  from {
+    opacity: 0;
+  }
+}
+@media (hover: hover) and (pointer: fine) {
+  .lbk-viewer .lbk-ghost:not([aria-disabled="true"]):hover {
+    background: var(--sand);
+    color: var(--ink);
+  }
+}
+@media (min-width: 900px) {
+  .lbk-viewerGrid {
+    padding: 20px 32px 28px;
+  }
+}
