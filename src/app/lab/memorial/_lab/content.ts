@@ -38,7 +38,7 @@ export const ui = {
     langGroup: "Ngôn ngữ",
     title: "Một ánh Dương còn mãi",
     intro:
-      "Năm 1955, thầy là một trong 150 em nhỏ lên tàu ở ga Hàng Cỏ sang nước Đức. Từ 1970 đến 1988, thầy dạy tiếng Đức ở Thanh Xuân, Hà Nội. Thầy kể gần như lớp sinh viên nào sang Đức học thời ấy cũng qua lớp thầy.",
+      "Từ ga Hàng Cỏ năm 1955 đến lớp tiếng Đức ở Thanh Xuân, 1970–1988.",
     jump: { film: "Phim", journey: "Hành trình", book: "Lưu bút" },
     filmHeading: "Thầy kể",
     films: [
@@ -64,7 +64,7 @@ export const ui = {
     langGroup: "Sprache",
     title: "Ein Sonnenstrahl, der bleibt",
     intro:
-      "1955 stieg er als eines von 150 Kindern am Bahnhof Hàng Cỏ in den Zug nach Deutschland. Von 1970 bis 1988 unterrichtete er Deutsch in Thanh Xuân, Hanoi. Er erzählte, dass fast jeder Jahrgang, der damals zum Studium in die DDR ging, bei ihm lernte.",
+      "Vom Bahnhof Hàng Cỏ 1955 zum Deutschunterricht in Hanoi, 1970–1988.",
     jump: { film: "Film", journey: "Lebensweg", book: "Gästebuch" },
     filmHeading: "Er erzählt",
     films: [
@@ -161,6 +161,7 @@ export const entries = [
     paragraphs: [
       "Lieber Thầy,",
       "ich denke heute an Ihren Unterricht in Hà Nội. Ich war 1974 in Ihrem Deutschkurs, und Ihr erster Satz an der Tafel war „Guten Morgen, wir beginnen pünktlich.“",
+      "Fotos von unserem Kurs: https://photos.example.org/album/deutschkurs-1974-hanoi-thanh-xuan-lop-tieng-duc-thay-duong-2026",
       "<b>Danke</b> &amp; auf Wiedersehen",
     ],
   },

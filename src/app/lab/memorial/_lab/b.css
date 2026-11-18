@@ -343,7 +343,7 @@
   margin: 0 auto;
 }
 .lb-bookHead {
-  font: 700 44px/1 var(--narrow);
+  font: 700 36px/1.15 var(--narrow);
   text-transform: uppercase;
   margin: 0 0 16px;
 }
@@ -397,7 +397,7 @@
 @media (min-width: 900px) {
   .lb-header {
     grid-template-columns: 45% 1fr;
-    min-height: calc(100vh - 40px);
+    min-height: min(calc(100svh - 40px), 900px);
   }
   .lb-portraitWrap {
     aspect-ratio: auto;
@@ -448,5 +448,35 @@
 @media (prefers-reduced-motion: reduce) {
   .lb-bracket {
     transition: none;
+  }
+}
+
+/* ---------- design review fixes, 2026-11-18 ---------- */
+.lb-entry p,
+.lb-who {
+  overflow-wrap: anywhere;
+}
+.lb-clipButton [data-play] {
+  min-height: 56px;
+  padding: 0 22px;
+}
+.lb-bracket {
+  transition: background-color 600ms ease;
+}
+.lb-page :focus-visible {
+  outline: 3px solid var(--enamel);
+  outline-offset: 3px;
+}
+@media (min-width: 900px) {
+  .lb-bookHead {
+    font-size: 52px;
+    line-height: 1.1;
+  }
+}
+@media (max-width: 899px) {
+  .lb-film {
+    aspect-ratio: auto;
+    min-height: 200px;
+    gap: 16px;
   }
 }
