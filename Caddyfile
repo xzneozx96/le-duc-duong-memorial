@@ -1,0 +1,19 @@
+# Reverse proxy with automatic HTTPS for the domain in SITE_DOMAIN.
+{$SITE_DOMAIN} {
+	encode zstd gzip
+
+	# Body limits: photos are 5 MB at most plus multipart overhead; posts are small JSON.
+	@photos path /api/photos /api/photos/*
+	request_body @photos {
+		max_size 6MB
+	}
+	@entries path /api/entries
+	request_body @entries {
+		max_size 64KB
+	}
+
+	reverse_proxy app:3000 {
+		# The app trusts the first hop of X-Forwarded-For, so overwrite whatever the client sent.
+		header_up X-Forwarded-For {remote_host}
+	}
+}

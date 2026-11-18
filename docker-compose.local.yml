@@ -1,0 +1,10 @@
+# Local smoke test of the production stack (no real domain, plain HTTP on 127.0.0.1:18080):
+#   cp .env.example .env   # then set SITE_DOMAIN=http://localhost and any passwords/keys
+#   docker compose -p memorial-smoke -f docker-compose.yml -f docker-compose.local.yml up -d --build
+#   curl http://127.0.0.1:18080/api/health
+#   docker compose -p memorial-smoke -f docker-compose.yml -f docker-compose.local.yml down -v
+services:
+  caddy:
+    ports: !override
+      - "127.0.0.1:18080:80"
+      - "127.0.0.1:18443:443"
