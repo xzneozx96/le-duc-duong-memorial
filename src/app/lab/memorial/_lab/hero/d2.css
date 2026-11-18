@@ -1,0 +1,129 @@
+/*
+  Hero option D2, "Quạt ảnh" (the fanned prints). Prefix lhd2-.
+  Paper ground, ink text (17.9:1). The prints have paper borders and a soft shadow; the fan's
+  geometry (offsets in portrait heights, tilt in degrees) comes from option-d2.tsx as --x, --y, --r.
+*/
+
+.lhd2-hero {
+  --rowH: 280px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100svh;
+  padding-block: 36px 40px;
+  overflow-x: clip;
+  background: linear-gradient(180deg, var(--paper) 0%, var(--paper) 50%, var(--paper-2) 100%);
+  text-align: center;
+}
+.lhd2-hero .lhx-name {
+  padding-inline: var(--gutter);
+}
+
+.lhd2-stage {
+  position: relative;
+  width: 100%;
+  height: calc(var(--rowH) * 1.24);
+  margin-top: 18px;
+}
+.lhd2-cardOut {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: calc(var(--rowH) * var(--k));
+  translate: calc(-50% + var(--x) * var(--rowH)) calc(-50% + var(--y) * var(--rowH));
+  rotate: calc(var(--r) * 1deg);
+}
+.lhd2-card,
+.lhd2-cardIn {
+  height: 100%;
+}
+.lhd2-cardIn {
+  padding: 6px;
+  background: #fbfaf8;
+  box-shadow:
+    0 16px 30px -14px rgb(41 38 34 / 0.5),
+    0 1px 3px rgb(41 38 34 / 0.2);
+  transition: transform 0.6s var(--enter), box-shadow 0.6s var(--enter);
+}
+.lhd2-cardIn img {
+  height: 100%;
+  width: auto;
+  max-width: none;
+}
+.lhd2-past img {
+  filter: grayscale(1) contrast(0.96);
+}
+.lhd2-now img {
+  filter: saturate(0.92);
+}
+@media (hover: hover) and (pointer: fine) {
+  .lhd2-cardOut:hover {
+    z-index: 15 !important;
+  }
+  .lhd2-cardOut:hover .lhd2-cardIn {
+    transform: translateY(-10px);
+    box-shadow:
+      0 26px 40px -16px rgb(41 38 34 / 0.55),
+      0 1px 3px rgb(41 38 34 / 0.2);
+  }
+}
+.lhd2-outer {
+  display: none;
+}
+
+.lhd2-front {
+  position: absolute;
+  z-index: 20;
+  left: 50%;
+  top: 50%;
+  height: var(--rowH);
+  aspect-ratio: 4 / 5;
+  margin: 0;
+  padding: 8px;
+  translate: -50% -50%;
+  background: #fbfaf8;
+  box-shadow:
+    0 34px 56px -26px rgb(41 38 34 / 0.6),
+    0 2px 4px rgb(41 38 34 / 0.2);
+}
+.lhd2-front img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .lhd2-front img {
+    animation: lhd2-in 1.4s var(--enter) both;
+  }
+}
+@keyframes lhd2-in {
+  from {
+    opacity: 0;
+    transform: scale(1.04);
+  }
+}
+
+.lhd2-hero .lhx-foot {
+  margin-top: 22px;
+}
+
+@media (min-width: 640px) {
+  .lhd2-outer {
+    display: block;
+  }
+}
+@media (min-width: 900px) {
+  .lhd2-hero {
+    --rowH: min(35vh, 300px);
+    min-height: max(100svh, 720px);
+    justify-content: center;
+    padding-block: 28px;
+  }
+  .lhd2-stage {
+    margin-top: 14px;
+  }
+  .lhd2-hero .lhx-foot {
+    margin-top: 18px;
+  }
+}

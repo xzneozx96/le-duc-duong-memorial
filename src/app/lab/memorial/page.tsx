@@ -2,6 +2,11 @@ import Link from "next/link";
 
 const routes = [
   {
+    href: "/lab/memorial/hero",
+    title: "Hero options · D (owner's pick) and four variations D2 to D5",
+    note: "The first screen redesigned: his life as a line of real photographs around his portrait, black and white to the left, colour to the right. D2 fans the prints, D3 weaves them into his name, D4 runs them as a film whose faded frames come back to full tone as you scroll, D5 sends them into the life story below.",
+  },
+  {
     href: "/lab/memorial/demo",
     title: "Demo · The whole page, fourth look: a book of his life",
     note: "A title page (his portrait in front of a forest panel, his name either side of it, a GSAP entrance), the two films on one warm-dark band, his life as one vertical line that fills as you scroll with a marker that lights at each of the seven stations (sticky years that roll on from the last station, a country tag, photos that open as they arrive) that comes to rest under the family's photo of him walking away, with the date he died and the funeral date, and the Lưu bút as an open notebook of ruled pages on a forest band. Source Serif 4 and the Farewell palette on warm off-white grounds; reduced motion gets a still page. Paragraphs, captions and visitor entries are samples. Replaces the third look (git history).",

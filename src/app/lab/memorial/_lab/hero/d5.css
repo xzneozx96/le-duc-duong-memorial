@@ -1,0 +1,205 @@
+/*
+  Hero option D5, "Thành dòng đời" (the line becomes his life story). Prefix lhd5-.
+  Paper ground, ink (17.9:1), forest for the station years (10.7:1). The hero's photographs travel
+  into the timeline's slots while scrolling (moving version only); the slots keep their own copy
+  of each photo for the still version.
+*/
+
+.lhd5-hero {
+  --rowH: 300px;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100svh;
+  padding-block: 36px 40px;
+  overflow-x: clip;
+  background: linear-gradient(180deg, var(--paper) 0%, var(--paper) 55%, var(--paper-2) 100%);
+  text-align: center;
+}
+.lhd5-hero .lhx-name {
+  padding-inline: var(--gutter);
+}
+
+.lhd5-row {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  height: var(--rowH);
+  margin-top: 28px;
+}
+.lhd5-side {
+  display: flex;
+  align-items: center;
+  gap: inherit;
+}
+.lhd5-sidePast {
+  justify-content: flex-end;
+}
+.lhd5-sideNow {
+  justify-content: flex-start;
+}
+.lhd5-axis {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  z-index: -1;
+  background: var(--bronze);
+}
+.lhd5-item {
+  flex: 0 0 auto;
+  height: calc(var(--rowH) * var(--k));
+  margin: 0;
+}
+.lhd5-fly {
+  height: 100%;
+  will-change: transform;
+}
+.lhd5-fly img,
+.lhd5-slot img {
+  height: 100%;
+  width: auto;
+  max-width: none;
+}
+.lhd5-past img {
+  filter: grayscale(1) contrast(0.96);
+}
+.lhd5-now img {
+  filter: saturate(0.92);
+}
+.lhd5-centre {
+  height: var(--rowH);
+  aspect-ratio: 4 / 5;
+  margin: 0;
+  box-shadow: 0 30px 50px -28px rgb(41 38 34 / 0.55);
+}
+.lhd5-centre img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.lhd5-hero .lhx-foot {
+  margin-top: 30px;
+}
+
+/* ---------- the life story the photographs travel into ---------- */
+
+.lhd5-life {
+  position: relative;
+  z-index: 1;
+  padding-block: 72px 80px;
+  background: var(--paper-2);
+}
+.lhd5-lifeH {
+  font-weight: 340;
+  font-size: clamp(44px, 6vw, 84px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+.lhd5-tl {
+  position: relative;
+}
+.lhd5-stations {
+  position: relative;
+  display: grid;
+  gap: 56px;
+  margin: 44px 0 0;
+  padding: 0 0 0 36px;
+  list-style: none;
+}
+.lhd5-rail {
+  position: absolute;
+  left: 6px;
+  top: 54px;
+  bottom: 0;
+  width: 2px;
+  background: var(--bronze);
+  transform-origin: top center;
+}
+.lhd5-station {
+  position: relative;
+  display: grid;
+  gap: 18px;
+}
+.lhd5-station::before {
+  content: "";
+  position: absolute;
+  left: -36px;
+  top: 12px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--paper-2);
+  border: 2px solid var(--bronze);
+}
+.lhd5-years {
+  font-family: var(--sans);
+  font-size: 19px;
+  font-weight: 600;
+  font-variant-numeric: lining-nums tabular-nums;
+  color: var(--forest);
+}
+.lhd5-place {
+  margin: 4px 0 0;
+  font-size: clamp(30px, 3vw, 40px);
+  font-weight: 400;
+  line-height: 1.2;
+}
+.lhd5-stLine {
+  max-width: 30rem;
+  margin-top: 8px;
+  font-size: 20px;
+  line-height: 1.6;
+}
+.lhd5-slots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.lhd5-slot {
+  height: 132px;
+  background: var(--mist);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .lhd5-flying .lhd5-slot img {
+    visibility: hidden;
+  }
+}
+
+@media (min-width: 900px) {
+  .lhd5-hero {
+    --rowH: min(40vh, 330px);
+    min-height: max(100svh, 720px);
+    justify-content: center;
+    padding-block: 32px;
+  }
+  .lhd5-row {
+    gap: 16px;
+    margin-top: 34px;
+  }
+  .lhd5-life {
+    padding-block: 112px 120px;
+  }
+  .lhd5-stations {
+    gap: 72px;
+    padding-left: 56px;
+  }
+  .lhd5-station {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    align-items: center;
+    gap: 48px;
+  }
+  .lhd5-station::before {
+    left: -56px;
+  }
+  .lhd5-slot {
+    height: 200px;
+  }
+}
