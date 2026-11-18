@@ -17,8 +17,8 @@
     "glossary": null,                   // none found
     "retro": null,                      // none found
     "ux_docs": null,                    // none found; visual direction lives in .factory/brainstorm/2026-11-18-father-memorial-website/intent.md
-    "design_md": null,                  // none found
-    "lab_routes": [],                   // no app code yet
+    "design_md": "DESIGN.md",           // from the ux lens, 2026-11-18 (drafted in the item design folder, moved at the gate)
+    "lab_routes": ["src/app/lab/**", "src/components/lab/**"], // Next.js app scaffolded 2026-11-18; lab pages hidden in production
     "holdout": "~/.factory-holdout/{repo}"
   },
 
@@ -58,9 +58,9 @@
   "risk_raise": 1,
 
   "runtime": "auto",                   // from `sf orca status`: no Orca, so auto runs plain
-  "build": { "parallel": "off", "setup": null },
-  // Empty: no package manifest and no CI yet (CLAUDE.md "There is no application code yet").
-  "verify": { "commands": {}, "source": "ci" },
+  "build": { "parallel": "off", "setup": "pnpm install" },
+  // From package.json scripts (Next.js 16 scaffold, 2026-11-18). No CI yet, so source is the scripts.
+  "verify": { "commands": { "typecheck": "pnpm typecheck", "lint": "pnpm lint", "build": { "cmd": "pnpm build", "when": "verify" } }, "source": "package.json" },
 
   "qa": {
     "mode": "manual",
