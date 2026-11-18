@@ -5,7 +5,6 @@
 // his own voice in the two films, his life as one line that fills as you read, and the Lưu bút,
 // an open notebook in which the people who knew him keep writing. A lab route, not product code.
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import { ArrowUp, ArrowUpRight, Play } from "lucide-react";
 import { classes } from "../cls";
 import { Book } from "./book";
@@ -136,10 +135,6 @@ export function DemoPage() {
   return (
     <div id="top" className={`${s.page} ${demoFontVars}`}>
       <ViewerProvider t={t.viewer}>
-        <aside className={s.labBar} aria-label="Lab">
-          <p>{t.labBar}</p>
-          <Link href="/lab/memorial">{t.labHome}</Link>
-        </aside>
 
         <Hero lang={lang} t={t} />
 

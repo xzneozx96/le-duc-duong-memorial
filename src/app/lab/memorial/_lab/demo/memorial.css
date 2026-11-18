@@ -46,7 +46,7 @@
 @media (min-width: 900px) {
   .lm-page {
     --gutter: 48px;
-    --labH: 68px; /* the lab bar above the hero: one line on wide screens */
+    --labH: 0px; /* no lab bar on the demo any more */
   }
 }
 
