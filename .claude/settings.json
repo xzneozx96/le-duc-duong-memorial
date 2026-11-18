@@ -1,8 +1,23 @@
 {
-  "enabledPlugins": { "software-factory@ross-skills": true },
-  "permissions": {
-    "ask": ["Bash(gh pr merge *)", "Bash(git push origin main*)"],
-    "deny": ["Bash(git push --force *)", "Bash(git push -f *)", "Edit(/.factory/work/*/approvals.jsonl)"]
+  "enabledPlugins": {
+    "software-factory@ross-skills": false
   },
-  "sandbox": { "filesystem": { "denyWrite": [".factory/work/*/approvals.jsonl"] } }
+  "permissions": {
+    "ask": [
+      "Bash(gh pr merge *)",
+      "Bash(git push origin main*)"
+    ],
+    "deny": [
+      "Bash(git push --force *)",
+      "Bash(git push -f *)",
+      "Edit(/.factory/work/*/approvals.jsonl)"
+    ]
+  },
+  "sandbox": {
+    "filesystem": {
+      "denyWrite": [
+        ".factory/work/*/approvals.jsonl"
+      ]
+    }
+  }
 }
