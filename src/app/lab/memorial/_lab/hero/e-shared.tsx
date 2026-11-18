@@ -99,9 +99,9 @@ export function Backdrop({
   );
 }
 
-export function ScrollCue({ className }: { className?: string }) {
+export function ScrollCue({ className, href = "#cuoc-doi" }: { className?: string; href?: string }) {
   return (
-    <a className={`${s.cue} ${className ?? ""}`} href="#cuoc-doi" data-cue>
+    <a className={`${s.cue} ${className ?? ""}`} href={href} data-cue>
       <span>Cuộc đời của thầy</span>
       <ArrowDown aria-hidden size={22} strokeWidth={1.6} />
     </a>

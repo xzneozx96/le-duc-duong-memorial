@@ -12,7 +12,7 @@ import { BookEmbed } from "../book/parts";
 import "../book/book.css";
 import { FAMILY_EMAIL, films, sourceLinks, ui, type Lang, type Strings } from "./content";
 import { demoFontVars } from "./fonts";
-import { Hero } from "./hero";
+import { OptionE2 as Hero } from "../hero/option-e2";
 import { Journey } from "./journey";
 import { EASE, MOVE, gsap, useMotion, useRefreshOnResize } from "./motion";
 import { ViewerProvider } from "./viewer";
@@ -180,7 +180,8 @@ export function DemoPage() {
     <div id="top" className={`${s.page} ${demoFontVars}`}>
       <ViewerProvider t={t.viewer}>
 
-        <Hero lang={lang} t={t} />
+        {/* the approved hero: E2 (his portrait over the class photo in sepia mist) */}
+        <Hero withNext={false} cueHref="#film" />
 
         <main ref={main}>
           <Films lang={lang} t={t} />

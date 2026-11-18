@@ -12,7 +12,9 @@ import "./e2.css";
 
 const s = classes("he2");
 
-export function OptionE2() {
+/** In the demo page the block below the hero is the real page, so `withNext` is off and the
+ *  button points at the films. */
+export function OptionE2({ withNext = true, cueHref }: { withNext?: boolean; cueHref?: string } = {}) {
   const ref = useRef<HTMLElement>(null);
   useMotion(ref, (mm, el) => {
     mm.add(MOVE, () => {
@@ -68,12 +70,12 @@ export function OptionE2() {
             <Titles className={s.line} />
           </div>
             <div data-rest>
-              <ScrollCue className={s.cue} />
+              <ScrollCue className={s.cue} href={cueHref} />
             </div>
           </div>
         </div>
       </header>
-      <Next tone="light" />
+      {withNext && <Next tone="light" />}
     </Root>
   );
 }
