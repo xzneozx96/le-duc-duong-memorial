@@ -3,13 +3,14 @@
 // The Lưu bút form, copied from the demo (demo/book.tsx, MemoryForm) so every option shares one
 // working behaviour: labels and hints, no maxlength, worded field messages, photo checks (type,
 // 5 MB), a simulated send (one step per photo), and a form that stays mounted while closed, so
-// "Đóng biểu mẫu" keeps what was typed. Nothing is sent anywhere.
+// closing it keeps what was typed. Nothing is sent anywhere.
 // Two shapes: "fields" (the demo's order) and "letter" (the message first under a printed
 // salutation, then who wrote it, as one writes a letter). Options dress it through `className`.
 import { useEffect, useId, useRef, useState, type FormEvent, type ReactNode } from "react";
-import { CircleAlert, ImagePlus } from "lucide-react";
+import { CircleAlert, ImagePlus, X } from "lucide-react";
 import { classes } from "../cls";
-import { FAMILY_EMAIL, LIMITS, RELATIONS, t, type Entry, type Relation } from "./data";
+import { LIMITS, RELATIONS, t, type Entry, type Relation } from "./data";
+import { FieldMessage, SelectField, TextArea, TextField } from "./fields";
 
 const s = classes("lbk");
 const f = t.form;
@@ -41,15 +42,6 @@ function validate(v: Values): Errors {
   return e;
 }
 
-function FieldMessage({ id, text }: { id: string; text?: string }) {
-  if (!text) return null;
-  return (
-    <p id={id} className={s.fieldError}>
-      <CircleAlert aria-hidden size={24} strokeWidth={2} />
-      <span>{text}</span>
-    </p>
-  );
-}
 
 export function MemoryForm({
   open,
@@ -185,121 +177,86 @@ export function MemoryForm({
     setSending(null);
   }
 
-  const describe = (...ids: (string | false | undefined)[]) => ids.filter(Boolean).join(" ") || undefined;
+  const firstRef = (el: HTMLInputElement | HTMLTextAreaElement | null) => void (firstInput.current = el);
 
   const nameField = (
-    <div className={s.field} key="name">
-      <label htmlFor={id("name")} className={s.label}>
-        {f.name}
-      </label>
-      <input
-        ref={shape === "fields" ? (el) => void (firstInput.current = el) : undefined}
-        id={id("name")}
-        data-field="name"
-        className={s.input}
-        type="text"
-        autoComplete="name"
-        value={values.name}
-        onChange={set("name")}
-        aria-invalid={errors.name ? true : undefined}
-        aria-describedby={describe(errors.name && id("name-error"))}
-      />
-      <FieldMessage id={id("name-error")} text={errors.name} />
-    </div>
+    <TextField
+      key="name"
+      id={id("name")}
+      label={f.name}
+      inputRef={shape === "fields" ? firstRef : undefined}
+      data-field="name"
+      autoComplete="name"
+      value={values.name}
+      onChange={set("name")}
+      error={errors.name}
+    />
   );
 
   const relationField = (
-    <fieldset className={s.field} key="relation" aria-describedby={describe(errors.relation && id("relation-error"))}>
-      <legend className={s.label}>{f.relation}</legend>
-      <div className={s.radios} data-invalid={errors.relation ? true : undefined}>
-        {RELATIONS.map((r, i) => (
-          <label key={r} className={s.radio}>
-            <input
-              type="radio"
-              name={id("relation")}
-              data-field={i === 0 ? "relation" : undefined}
-              value={r}
-              checked={values.relation === r}
-              onChange={() => setValues((v) => ({ ...v, relation: r }))}
-            />
-            <span>{t.relation[r]}</span>
-          </label>
-        ))}
-      </div>
-      <FieldMessage id={id("relation-error")} text={errors.relation} />
-    </fieldset>
+    <SelectField
+      key="relation"
+      id={id("relation")}
+      label={f.relation}
+      placeholder="Chọn quan hệ"
+      data-field="relation"
+      value={values.relation}
+      onChange={(e) => setValues((v) => ({ ...v, relation: e.target.value as Relation }))}
+      options={RELATIONS.map((r) => ({ value: r, label: t.relation[r] }))}
+      error={errors.relation}
+    />
   );
 
   const pairField = (
     <div className={s.fieldPair} key="pair">
-      <div className={s.field}>
-        <label htmlFor={id("cls")} className={s.label}>
-          {f.cls}
-        </label>
-        <p id={id("cls-hint")} className={s.hint}>
-          {f.clsHint}
-        </p>
-        <input
-          id={id("cls")}
-          data-field="cls"
-          className={s.input}
-          type="text"
-          autoComplete="off"
-          value={values.cls}
-          onChange={set("cls")}
-          aria-invalid={errors.cls ? true : undefined}
-          aria-describedby={describe(id("cls-hint"), errors.cls && id("cls-error"))}
-        />
-        <FieldMessage id={id("cls-error")} text={errors.cls} />
-      </div>
-      <div className={s.field}>
-        <label htmlFor={id("year")} className={s.label}>
-          {f.year}
-        </label>
-        <p id={id("year-hint")} className={s.hint}>
-          {f.yearHint}
-        </p>
-        <input
-          id={id("year")}
-          data-field="year"
-          className={s.input}
-          type="text"
-          autoComplete="off"
-          value={values.year}
-          onChange={set("year")}
-          aria-invalid={errors.year ? true : undefined}
-          aria-describedby={describe(id("year-hint"), errors.year && id("year-error"))}
-        />
-        <FieldMessage id={id("year-error")} text={errors.year} />
-      </div>
+      <TextField
+        id={id("cls")}
+        label={f.cls}
+        hint={f.clsHint}
+        data-field="cls"
+        autoComplete="off"
+        value={values.cls}
+        onChange={set("cls")}
+        error={errors.cls}
+      />
+      <TextField
+        id={id("year")}
+        label={f.year}
+        hint={f.yearHint}
+        data-field="year"
+        autoComplete="off"
+        value={values.year}
+        onChange={set("year")}
+        error={errors.year}
+      />
     </div>
   );
 
   const messageField = (
-    <div className={`${s.field} ${s.messageField}`} key="message">
-      <label htmlFor={id("message")} className={s.label}>
-        {f.message}
-      </label>
-      <p id={id("message-hint")} className={s.hint}>
-        {f.messageHint}
-      </p>
-      <textarea
-        ref={shape === "letter" ? (el) => void (firstInput.current = el) : undefined}
-        id={id("message")}
-        data-field="message"
-        className={`${s.input} ${s.textarea}`}
-        rows={9}
-        autoComplete="off"
-        value={values.message}
-        onChange={set("message")}
-        aria-invalid={errors.message ? true : undefined}
-        aria-describedby={describe(id("message-hint"), errors.message && id("message-error"))}
-      />
-      {messageCount >= LIMITS.counterFrom && <p className={s.hint}>{f.counter(messageCount, LIMITS.message)}</p>}
-      <FieldMessage id={id("message-error")} text={errors.message} />
-    </div>
+    <TextArea
+      key="message"
+      id={id("message")}
+      label={f.message}
+      className={s.messageField}
+      inputRef={shape === "letter" ? firstRef : undefined}
+      data-field="message"
+      rows={9}
+      autoComplete="off"
+      value={values.message}
+      onChange={set("message")}
+      error={errors.message}
+      after={messageCount >= LIMITS.counterFrom ? <p className={s.hint}>{f.counter(messageCount, LIMITS.message)}</p> : null}
+    />
   );
 
+  const removePhoto = (p: Picked) => {
+    URL.revokeObjectURL(p.url);
+    setPhotos((all) => all.filter((x) => x.id !== p.id));
+    setAdded(0);
+  };
+
+  // Photos: a grid of tiles. Each chosen photo shows whole-width with a round x to remove it and
+  // its own caption field under it; the last tile adds more.
   const photosField = (
     <div className={s.field} key="photos">
       <p className={s.label} id={id("photos-label")}>
@@ -319,55 +276,43 @@ export function MemoryForm({
         aria-labelledby={id("photos-label")}
         onChange={(e) => pick(e.target.files)}
       />
-      <button
-        type="button"
-        className={`${s.ghost} ${s.pickButton}`}
-        aria-describedby={id("photos-hint")}
-        onClick={() => fileInput.current?.click()}
-      >
-        <ImagePlus aria-hidden size={24} strokeWidth={2} />
-        {f.pick}
-      </button>
-      {photos.length > 0 && (
-        <ul className={s.thumbs}>
-          {photos.map((p) => (
-            <li key={p.id} className={s.thumb}>
+      <ul className={s.photoGrid}>
+        {photos.map((p, i) => (
+          <li key={p.id} className={s.photoTile}>
+            <div className={s.photoFrame}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={p.url} alt="" width={96} height={96} />
-              <span className={s.thumbBody}>
-                <span className={s.thumbName}>{p.name}</span>
-                <label className={s.captionLabel} htmlFor={id(`cap-${p.id}`)}>
-                  Chú thích ảnh (nếu có)
-                </label>
-                <input
-                  id={id(`cap-${p.id}`)}
-                  className={`${s.input} ${s.captionInput}`}
-                  type="text"
-                  maxLength={CAPTION_MAX}
-                  placeholder="Ví dụ: Lớp D3 trước giờ học, năm 1978"
-                  value={p.caption ?? ""}
-                  onChange={(e) => {
-                    const caption = e.target.value;
-                    setPhotos((all) => all.map((x) => (x.id === p.id ? { ...x, caption } : x)));
-                  }}
-                />
-              </span>
-              <button
-                type="button"
-                className={s.textButton}
-                aria-label={f.removeNamed(p.name)}
-                onClick={() => {
-                  URL.revokeObjectURL(p.url);
-                  setPhotos((all) => all.filter((x) => x.id !== p.id));
-                  setAdded(0);
-                }}
-              >
-                {f.remove}
+              <img src={p.url} alt="" width={p.w} height={p.h} />
+              <button type="button" className={s.photoRemove} aria-label={f.removeNamed(p.name)} onClick={() => removePhoto(p)}>
+                <X aria-hidden size={22} strokeWidth={2.25} />
               </button>
-            </li>
-          ))}
-        </ul>
-      )}
+            </div>
+            <input
+              id={id(`cap-${p.id}`)}
+              className={`${s.control} ${s.photoCaption}`}
+              type="text"
+              maxLength={CAPTION_MAX}
+              placeholder="Thêm chú thích"
+              aria-label={`Chú thích cho ảnh ${i + 1}`}
+              value={p.caption ?? ""}
+              onChange={(e) => {
+                const caption = e.target.value;
+                setPhotos((all) => all.map((x) => (x.id === p.id ? { ...x, caption } : x)));
+              }}
+            />
+          </li>
+        ))}
+        <li className={s.photoTile}>
+          <button
+            type="button"
+            className={s.photoAdd}
+            aria-describedby={id("photos-hint")}
+            onClick={() => fileInput.current?.click()}
+          >
+            <ImagePlus aria-hidden size={34} strokeWidth={1.75} />
+            <span>{photos.length > 0 ? "Thêm ảnh" : f.pick}</span>
+          </button>
+        </li>
+      </ul>
       <div role="status" className={s.refusals}>
         {added > 0 && <p className={s.srOnly}>{f.added(added)}</p>}
         {refused.map((r) => (
@@ -394,6 +339,9 @@ export function MemoryForm({
       hidden={!open}
       noValidate
       onSubmit={submit}
+      onKeyDown={(e) => {
+        if (e.key === "Escape") onClose();
+      }}
       aria-labelledby={id("title")}
     >
       <div className={s.formHead}>
@@ -401,19 +349,12 @@ export function MemoryForm({
           {title}
         </h3>
         {intro && <div className={s.formIntro}>{intro}</div>}
-        <p className={s.formCloseRow}>
-          <button type="button" className={s.textButton} onClick={onClose}>
-            {t.formClose}
-          </button>
-          <span className={s.hint}>{t.formCloseNote}</span>
-        </p>
       </div>
 
       <div className={s.fields} inert={sending !== null}>
         {fields}
       </div>
 
-      <p className={s.privacy}>{f.privacy(FAMILY_EMAIL)}</p>
       <div role="alert">
         {errorCount > 0 && (
           <p className={`${s.fieldError} ${s.summary}`}>

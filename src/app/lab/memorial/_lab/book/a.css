@@ -727,3 +727,108 @@
   justify-content: center;
   border-radius: 50%;
 }
+
+/* An envelope at a real envelope's proportions (about 3 : 2), laid out like one: the sender
+   top left, the stamp and postmark top right, the recipient in the lower middle. */
+.lba-track {
+  --slideW: min(500px, 84vw);
+}
+.lba-slide .lba-envelope {
+  aspect-ratio: 3 / 2;
+  min-height: 0;
+  height: auto;
+  padding: 0;
+  overflow: hidden;
+}
+.lba-slide .lba-envText {
+  position: absolute;
+  top: 9%;
+  left: 7%;
+  right: 34%;
+  gap: 2px;
+}
+.lba-slide .lba-envName {
+  font-size: clamp(22px, 5vw, 27px);
+  line-height: 1.2;
+}
+.lba-slide .lba-envMeta {
+  font-size: 18px;
+  line-height: 1.35;
+}
+.lba-slide .lba-envFoot {
+  position: absolute;
+  left: 7%;
+  bottom: 9%;
+  margin: 0;
+}
+.lba-slide .lba-envText .lba-envFoot {
+  position: static;
+}
+.lba-slide .lba-stamp {
+  top: 9%;
+  right: 7%;
+}
+.lba-slide .lba-postmark {
+  top: 26%;
+  right: 22%;
+}
+.lba-recipient {
+  position: absolute;
+  left: 38%;
+  right: 7%;
+  bottom: 13%;
+  display: grid;
+  gap: 2px;
+  padding-top: 10px;
+  border-top: 1px solid rgb(41 38 34 / 0.18);
+  font-family: var(--serif);
+  color: var(--ink);
+}
+.lba-recipientTo {
+  font-style: italic;
+  font-size: 18px;
+  color: var(--forest);
+}
+.lba-recipientName {
+  font-size: clamp(20px, 4.4vw, 24px);
+  line-height: 1.25;
+}
+@media (max-width: 480px) {
+  .lba-slide .lba-envelope {
+    aspect-ratio: 4 / 3;
+  }
+  .lba-recipient {
+    left: 30%;
+  }
+}
+@media (max-width: 480px) {
+  .lba-slide .lba-stamp {
+    top: 8%;
+    right: 6%;
+    width: 54px;
+    height: 64px;
+    padding: 5px;
+  }
+  .lba-slide .lba-postmark {
+    top: 22%;
+    right: 17%;
+    width: 66px;
+    height: 66px;
+    outline-offset: -6px;
+    font-size: 18px;
+    line-height: 1.05;
+  }
+  .lba-slide .lba-postmark::before {
+    display: none;
+  }
+  .lba-slide .lba-envText {
+    right: 40%;
+  }
+  .lba-slide .lba-envMeta {
+    font-size: 18px;
+  }
+  .lba-recipient {
+    left: 24%;
+    bottom: 11%;
+  }
+}

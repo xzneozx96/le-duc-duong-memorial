@@ -68,6 +68,10 @@ function Envelope({
             <span className={s.stampInitial}>{lastWord(entry.name).charAt(0)}</span>
           )}
         </span>
+        <span className={s.recipient} aria-hidden>
+          <span className={s.recipientTo}>Kính gửi</span>
+          <span className={s.recipientName}>Thầy Lê Đức Dương</span>
+        </span>
         <span className={s.postmark} aria-hidden data-postmark>
           <span>{entry.date.slice(0, 5)}</span>
           <span>{entry.date.slice(6)}</span>
