@@ -2,6 +2,11 @@ import Link from "next/link";
 
 const routes = [
   {
+    href: "/lab/memorial/demo",
+    title: "Demo · The whole page in direction B (for the family)",
+    note: "Every section of the one-page site in the night-train look, in Vietnamese and German: header, the two films, seven stations with their photos and the 58-second clip, the full-screen photo viewer, the Lưu bút with a working form (nothing is sent), and the sources. Paragraphs, captions and visitor entries are samples.",
+  },
+  {
     href: "/lab/memorial/a",
     title: "A · The family album (safe)",
     note: "Warm paper, oxblood station plates, prints in white mounts with photo corners, a double rail with sleepers. On wide screens the station text stays in view while the prints scroll past. Closest to the brainstorm.",
