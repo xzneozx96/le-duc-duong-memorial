@@ -279,8 +279,8 @@ export const stations: Station[] = [
     vi: "Hà Nam, Việt Nam",
     de: "Hà Nam, Vietnam",
     text: {
-      vi: "Thầy sinh ngày 01.05.1942 và lớn lên ở vùng quê Hà Nam. Mùa hè 1955, thầy cùng 150 em nhỏ tập trung ba tháng ở trường Chu Văn An, rồi lên tàu ở ga Hàng Cỏ.",
-      de: "Er wurde am 01.05.1942 geboren und wuchs auf dem Land in Hà Nam auf. Im Sommer 1955 verbrachte er mit 150 Kindern drei Monate an der Chu-Văn-An-Schule, dann stiegen sie am Bahnhof Hàng Cỏ in den Zug.",
+      vi: "Thầy sinh ngày 01.05.1942 và lớn lên ở vùng quê Hà Nam. Cuối tháng 8.1955, sau ba tháng tập trung ở trường Chu Văn An, thầy cùng đoàn 150 em nhỏ lên tàu ở ga Hàng Cỏ.",
+      de: "Er wurde am 01.05.1942 geboren und wuchs auf dem Land in Hà Nam auf. Ende August 1955 stieg er nach drei Monaten an der Chu-Văn-An-Schule mit einer Gruppe von 150 Kindern am Bahnhof Hàng Cỏ in den Zug.",
     },
     sheet: [],
   },
@@ -291,8 +291,8 @@ export const stations: Station[] = [
     vi: "Moritzburg, CHDC Đức",
     de: "Moritzburg, DDR",
     text: {
-      vi: "Ngày 23.9.1955, đoàn đến CHDC Đức và vào Käthe-Kollwitz-Heim ở Moritzburg. Các em học tiếng Đức từ những câu đầu tiên. Thầy kể rằng năm 1957 Bác Hồ đến thăm trường.",
-      de: "Am 23.9.1955 kam die Gruppe in der DDR an und zog ins Käthe-Kollwitz-Heim in Moritzburg. Die Kinder lernten Deutsch vom ersten Satz an. Er erzählte, dass Hồ Chí Minh die Schule 1957 besuchte.",
+      vi: "Ngày 23.9.1955, đoàn đến CHDC Đức và vào Käthe-Kollwitz-Heim ở Moritzburg. Các em học tiếng Đức từ con số không, mọi môn đều học thẳng bằng tiếng Đức. Thầy kể rằng năm 1957 Bác Hồ đến thăm trường.",
+      de: "Am 23.9.1955 kam die Gruppe in der DDR an und zog ins Käthe-Kollwitz-Heim in Moritzburg. Die Kinder lernten Deutsch von null an; alle Fächer wurden direkt auf Deutsch unterrichtet. Er erzählte, dass Hồ Chí Minh die Schule 1957 besuchte.",
     },
     lead: {
       photo: img("moritzburg-1", 1532, 1021, "Các em xếp hàng đi trước nhà trường ở Moritzburg.", "Die Kinder ziehen in Reihen am Schulhaus in Moritzburg vorbei.", "62% 50%"),
@@ -328,8 +328,8 @@ export const stations: Station[] = [
     vi: "Radebeul và Dresden, CHDC Đức",
     de: "Radebeul und Dresden, DDR",
     text: {
-      vi: "Tháng 7.1959 cả trường về nước. Tháng 9, thầy cùng khoảng 150 bạn quay lại Đức học nghề thợ nguội ở Radebeul và Dresden.",
-      de: "Im Juli 1959 kehrte die Schule nach Vietnam zurück. Im September kam er mit etwa 150 anderen wieder, um in Radebeul und Dresden Schlosser zu lernen.",
+      vi: "Tháng 7.1959 cả hai trường về nước. Tháng 9, thầy cùng khoảng 150 bạn quay lại Đức học nghề thợ nguội ở Radebeul và Dresden.",
+      de: "Im Juli 1959 kehrten beide Schulen nach Vietnam zurück. Im September kam er mit etwa 150 anderen wieder, um in Radebeul und Dresden Schlosser zu lernen.",
     },
     aside: {
       ratio: "265 / 400",
@@ -349,8 +349,8 @@ export const stations: Station[] = [
     vi: "Hà Nội, Việt Nam",
     de: "Hanoi, Vietnam",
     text: {
-      vi: "Về nước, thầy làm ở Viện Đo lường, buổi tối học bổ túc văn hóa và tốt nghiệp lớp 10.",
-      de: "Zurück in Hanoi arbeitete er am Institut für Messwesen, lernte abends weiter und schloss die 10. Klasse ab.",
+      vi: "Về nước, ban ngày thầy làm ở Viện Đo lường, ban đêm học bổ túc văn hóa và tốt nghiệp lớp 10.",
+      de: "Zurück in Hanoi arbeitete er tagsüber am Institut für Messwesen, lernte nachts weiter und schloss die 10. Klasse ab.",
     },
     sheet: [],
   },
@@ -361,7 +361,7 @@ export const stations: Station[] = [
     vi: "Magdeburg, CHDC Đức",
     de: "Magdeburg, DDR",
     text: {
-      vi: "Lần thứ ba sang Đức, thầy học đại học tại TH Magdeburg và tốt nghiệp kỹ sư cơ khí.",
+      vi: "Lần thứ ba sang Đức, thầy học đại học tại TH Magdeburg và tốt nghiệp kỹ sư (Diplom-Ingenieur) ngành cơ khí chế tạo máy.",
       de: "Zum dritten Mal in der DDR studierte er an der TH Magdeburg und schloss als Diplom-Ingenieur für Maschinenbau ab.",
     },
     aside: {
@@ -382,8 +382,8 @@ export const stations: Station[] = [
       de: "Er unterrichtete Deutsch an der Fremdsprachenhochschule und dolmetschte. 1975–1976 studierte er ein Jahr Deutschdidaktik in Leipzig.",
     },
     pull: {
-      vi: "Thầy kể gần như lớp sinh viên nào sang Đức thời ấy cũng qua lớp thầy.",
-      de: "Er erzählte, dass fast jeder Jahrgang, der damals in die DDR ging, bei ihm lernte.",
+      vi: "Thầy kể mình là giáo viên rất nghiêm khắc, và gần như mọi thế hệ lưu học sinh đi Đức thời ấy đều qua lớp thầy.",
+      de: "Er erzählte, er sei ein sehr strenger Lehrer gewesen, und fast jeder Jahrgang, der damals zum Studium in die DDR ging, sei durch seine Klasse gegangen.",
     },
     sheetKind: "pair",
     sheet: [
@@ -398,8 +398,8 @@ export const stations: Station[] = [
     vi: "Nước Đức",
     de: "Deutschland",
     text: {
-      vi: "Ngày 22.12.1988, thầy trở lại Đức. Năm 2005, đúng 50 năm sau ngày sang Đức, thầy tự về thăm Moritzburg. Những năm sau, học trò cũ hẹn gặp thầy ở Moritzburg và Spreewald; thầy cười nhiều bên các chú chó của mình.",
-      de: "Am 22.12.1988 kehrte er in die DDR zurück. 2005, fünfzig Jahre nach der Ankunft, fuhr er selbst nach Moritzburg. Später trafen ihn seine früheren Schüler in Moritzburg und im Spreewald; zu Hause lachte er viel mit seinen Hunden.",
+      vi: "Ngày 22.12.1988, thầy trở lại Đức. Năm 2005, nhân 50 năm ngày sang Đức, thầy tự về thăm Moritzburg, và giúp đoàn bạn cũ từ Việt Nam tìm mộ ba người bạn ở nghĩa trang Dresden. Năm 2015, thầy cùng chị Võ Cẩm Trang trả lời phỏng vấn tờ Spiegel.",
+      de: "Am 22.12.1988 kehrte er in die DDR zurück. 2005, zum 50. Jahrestag der Ankunft, fuhr er selbst nach Moritzburg und half den alten Freunden aus Vietnam, die Gräber von drei Kameraden auf dem Dresdner Friedhof zu finden. 2015 gab er gemeinsam mit Võ Cẩm Trang dem Spiegel ein Interview.",
     },
     lead: {
       photo: img("germany-1", 1280, 960, "Gặp mặt học trò cũ ở Moritzburg.", "Treffen mit früheren Schülern in Moritzburg."),

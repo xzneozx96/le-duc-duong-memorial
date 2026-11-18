@@ -8,7 +8,7 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { Play } from "lucide-react";
 import { classes } from "../cls";
-import { farewellPhoto, person, stations, type Lang, type Photo, type Station, type Strings } from "./content";
+import { farewellPhoto, stations, type Lang, type Photo, type Station, type Strings } from "./content";
 import { EASE, MOVE, ScrollTrigger, gsap, useMotion } from "./motion";
 import { useViewer, type ViewerPhoto } from "./viewer";
 
@@ -286,7 +286,7 @@ function StationBlock({ st, prevYear, lang, t }: { st: Station; prevYear: string
   );
 }
 
-/** The quiet ending: the day he died, the funeral, and the photo of him walking away. */
+/** The quiet ending: the title "Một ánh Dương còn mãi" and the photo of him walking away. */
 function Farewell({ lang, t }: { lang: Lang; t: Strings }) {
   const group = useMemo<ViewerPhoto[]>(
     () => [{ src: farewellPhoto.src, w: farewellPhoto.w, h: farewellPhoto.h, caption: farewellPhoto.caption[lang] }],
@@ -299,12 +299,9 @@ function Farewell({ lang, t }: { lang: Lang; t: Strings }) {
       </div>
       <span className={s.node} aria-hidden data-node />
       <div className={s.stationBody}>
-        <h3 id="sign-farewell" className={s.farewellLine} data-reveal>
-          {t.farewell.died}
+        <h3 id="sign-farewell" className={s.farewellLine} lang={lang} data-reveal>
+          {t.title}
         </h3>
-        <p className={s.farewellNote} data-reveal>
-          {t.farewell.funeral}
-        </p>
         <Frame photo={farewellPhoto} lang={lang} group={group} index={0} className={s.farewellPhoto} />
       </div>
     </section>
@@ -426,17 +423,6 @@ export function Journey({ lang, t }: { lang: Lang; t: Strings }) {
             <StationBlock key={st.id} st={st} prevYear={i > 0 ? stations[i - 1].years.split("–")[0] : ""} lang={lang} t={t} />
           ))}
           <Farewell lang={lang} t={t} />
-        </div>
-        <div className={s.lineEnd}>
-          <span className={s.rest} aria-hidden />
-          <p className={s.lineEndDates}>
-            <span>{person.born}</span>
-            <span aria-hidden className={s.heroDash} />
-            <span>{person.died}</span>
-          </p>
-          <p className={s.lineEndTitle} lang={lang}>
-            {t.title}
-          </p>
         </div>
       </div>
     </section>
