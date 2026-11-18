@@ -1,0 +1,5 @@
+# software-factory
+.factory/work/*/runtime/
+.factory/runtime/
+.factory/companion/
+.factory/brainstorm/*/briefs/

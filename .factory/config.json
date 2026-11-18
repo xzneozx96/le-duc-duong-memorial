@@ -1,0 +1,86 @@
+// software-factory project config: .factory/config.json (JSONC: comments and trailing commas allowed).
+// init filled it on 2026-11-18. The repo had no code, CI, branches or remote yet, so most values are template defaults.
+// Run init again in refresh mode once the stack is chosen, to fill verify.commands and the deploy settings.
+{
+  "version": 1,
+
+  // Template default: the repo had no branches to learn a pattern from (git init on 2026-11-18).
+  "branch": { "pattern": "sf/{id}-{slug}" },
+
+  "paths": {
+    "adr": "docs/adr",                  // folder does not exist yet; templates/adr/ is used for the first ADR
+    "adr_index": "docs/adr/INDEX.md",
+    "decisions": "docs/decisions",      // folder does not exist yet; created with the first decision record
+    "test_cases": "docs/testing/sprint-{sprint}-manual-test-cases.md", // no sprints here, so items use docs/testing/<item-id>-manual-test-cases.md
+    "test_case_rules": null,            // none in the repo; templates/testing/manual-test-cases-rules.md is used
+    "backlog": null,                    // no story table found
+    "glossary": null,                   // none found
+    "retro": null,                      // none found
+    "ux_docs": null,                    // none found; visual direction lives in .factory/brainstorm/2026-11-18-father-memorial-website/intent.md
+    "design_md": null,                  // none found
+    "lab_routes": [],                   // no app code yet
+    "holdout": "~/.factory-holdout/{repo}"
+  },
+
+  "tests": { "title_rule": null },     // no test rule in CLAUDE.md
+
+  "backlog": { "kind": "none" },       // no plan file with a story table
+
+  "sprint": {
+    "enabled": false,
+    "ready_rules": [],
+    "status_names": ["Backlog", "Ready", "In progress", "In review", "Verified", "Done", "Blocked"]
+  },
+
+  "people": { "developer": "you", "owner": null },
+
+  // No git remote, no sync script, no Orca. Nothing to sync with.
+  "tracker": { "kind": "none", "command": null, "fallback": null, "github": {}, "linear": {}, "jira": {}, "lark": {} },
+  "tracker_ownership": { "status": "tracker", "assignee": "tracker", "comments": "tracker", "spec": "repo", "plan": "repo" },
+
+  "roles": {
+    "implementer":       { "model": "sonnet", "effort": "medium", "tier": "execute" },
+    "researcher":        { "model": "sonnet", "effort": "low",    "tier": "execute" },
+    "qa":                { "model": "sonnet", "effort": "medium", "tier": "execute" },
+    "mockup-maker":      { "model": "sonnet", "effort": "medium", "tier": "execute" },
+    "architect":         { "model": "opus",   "effort": "high",   "tier": "judge" },
+    "data-designer":     { "model": "opus",   "effort": "high",   "tier": "judge" },
+    "api-designer":      { "model": "opus",   "effort": "medium", "tier": "judge" },
+    "ai-designer":       { "model": "opus",   "effort": "high",   "tier": "judge" },
+    "ux-designer":       { "model": "opus",   "effort": "medium", "tier": "judge" },
+    "spec-reviewer":     { "model": "opus",   "effort": "medium", "tier": "judge" },
+    "code-reviewer":     { "model": "opus",   "effort": "medium", "tier": "judge" },
+    "security-reviewer": { "model": "opus",   "effort": "high",   "tier": "judge" },
+    "data-reviewer":     { "model": "opus",   "effort": "high",   "tier": "judge" },
+    "design-reviewer":   { "model": "opus",   "effort": "medium", "tier": "judge" },
+    "cold-reader":       { "model": "opus",   "effort": "medium", "tier": "judge" }
+  },
+  "risk_raise": 1,
+
+  "runtime": "auto",                   // from `sf orca status`: no Orca, so auto runs plain
+  "build": { "parallel": "off", "setup": null },
+  // Empty: no package manifest and no CI yet (CLAUDE.md "There is no application code yet").
+  "verify": { "commands": {}, "source": "ci" },
+
+  "qa": {
+    "mode": "manual",
+    "automation": "on-request",
+    "e2e_paths": ["e2e/**", "**/e2e/**", "playwright/**", "**/*.e2e.*", "**/*.pw.*", ".maestro/**", "maestro/**", "playwright.config.*"]
+  },
+  "ci": { "provider": "github-actions", "wait_for_checks": true }, // template default; no CI files and no remote yet
+  "environments": { "preview": null, "staging": null, "prod": null }, // domain and hosting are open questions in intent.md
+  "prelaunch": true,                   // from intent.md: the site goes live by 27.11.2026, nothing is deployed yet
+  "flags": { "provider": null },
+  "deploy": { "patterns": "preset:auto", "smoke": null, "observability": null },
+  "release": { "changelog": null, "mobile": null },
+  "scanning": { "secrets": "gitleaks", "deps": "auto" },
+  "protected_branches": ["main"],     // from `git symbolic-ref HEAD` after git init
+  // The memory wall stores visitors' names, messages and photos, and the admin page sits behind a password (intent.md).
+  "risk_triggers": ["**/migrations/**", "**/auth/**", "/payment|billing|money|order|pii/i", "/upload|admin|password/i"],
+
+  "bans": [],                          // CLAUDE.md bans no commands
+  "ask": [],                           // CLAUDE.md asks for no confirmations
+
+  "tdd": { "exempt_kinds": ["styling", "lab", "config-copy-i18n", "schema-migration"] },
+  "limits": { "fix_rounds": 3, "track_envelope": { "quick": { "files": 3 }, "task": { "files": 15 } } }
+}
