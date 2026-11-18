@@ -1,0 +1,178 @@
+/* E4 · Giảng đường */
+.he4-hero {
+  position: relative;
+  height: 100svh;
+  min-height: 660px;
+  overflow: hidden;
+  background: var(--dark);
+  color: var(--paper);
+}
+.he4-stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.he4-bg,
+.he4-bgImg {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.he4-bgImg {
+  object-fit: cover;
+  object-position: 50% 40%;
+}
+/* the wall darkens toward the ceiling for the name, the seats toward the floor for the dates */
+.he4-grade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(41, 38, 34, 0.88) 0%,
+    rgba(41, 38, 34, 0.45) 26%,
+    rgba(41, 38, 34, 0.1) 46%,
+    rgba(41, 38, 34, 0.55) 76%,
+    var(--dark) 100%
+  );
+}
+.he4-dim {
+  position: absolute;
+  inset: 0;
+  background: var(--dark);
+  opacity: 0;
+  visibility: hidden;
+}
+.he4-title {
+  position: relative;
+  z-index: 2;
+  padding: clamp(36px, 7svh, 72px) 20px 0;
+  text-align: center;
+}
+.he4-title h1 {
+  margin: 0;
+}
+.he4-hon {
+  display: block;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 20px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--sand);
+}
+.he4-name {
+  display: block;
+  margin-top: 0.08em;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(48px, 7vw, 112px);
+  line-height: 1.12;
+  letter-spacing: -0.005em;
+  font-optical-sizing: auto;
+  color: var(--paper);
+}
+.he4-word {
+  display: inline-block;
+}
+.he4-figure {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  bottom: 0;
+  height: min(68svh, 680px);
+  aspect-ratio: 1024 / 1535;
+  translate: -50% 0;
+}
+.he4-portrait {
+  display: block;
+  width: 100%;
+  height: 100%;
+  -webkit-mask-image:
+    linear-gradient(to bottom, #000 56%, transparent 96%),
+    linear-gradient(to right, transparent 0%, #000 18%, #000 82%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to bottom, #000 56%, transparent 96%),
+    linear-gradient(to right, transparent 0%, #000 18%, #000 82%, transparent 100%);
+  mask-composite: intersect;
+}
+.he4-foot {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0 clamp(24px, 5vw, 80px) clamp(28px, 5svh, 56px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) min(34vw, 460px) minmax(0, 1fr);
+  grid-template-areas:
+    "dates . cue"
+    "line . cue";
+  align-items: end;
+  column-gap: 24px;
+}
+.he4-footL {
+  grid-area: dates;
+}
+.he4-footR {
+  grid-area: cue;
+  justify-self: end;
+}
+.he4-dates {
+  font-family: var(--serif);
+  font-size: clamp(24px, 2.1vw, 30px);
+  color: var(--paper);
+}
+.he4-line {
+  grid-area: line;
+  margin-top: 8px !important;
+  max-width: 30ch;
+  font-family: var(--serif);
+  font-size: clamp(20px, 1.5vw, 22px);
+  line-height: 1.55;
+  color: var(--mist);
+}
+.he4-cue {
+  color: var(--sand);
+}
+
+@media (max-width: 900px) {
+  .he4-hero {
+    height: auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .he4-grade {
+    background: linear-gradient(
+      to bottom,
+      rgba(41, 38, 34, 0.88) 0%,
+      rgba(41, 38, 34, 0.35) 20%,
+      rgba(41, 38, 34, 0.15) 38%,
+      rgba(41, 38, 34, 0.75) 62%,
+      var(--dark) 72%
+    );
+  }
+  .he4-figure {
+    position: relative;
+    left: auto;
+    translate: none;
+    align-self: center;
+    height: min(50svh, 460px);
+    margin-top: 8px;
+  }
+  .he4-foot {
+    position: relative;
+    display: block;
+    padding: 4px 20px 44px;
+    margin-top: -4px;
+  }
+  .he4-line {
+    margin-top: 10px !important;
+  }
+  .he4-footR {
+    margin-top: 14px;
+  }
+}
