@@ -10,7 +10,7 @@ import { useEffect, useId, useRef, useState, type FormEvent, type ReactNode } fr
 import { CircleAlert, ImagePlus, X } from "lucide-react";
 import { classes } from "../cls";
 import { LIMITS, RELATIONS, t, type Entry, type Relation } from "./data";
-import { postEntry, uploadPhoto } from "./api";
+import { GUESTBOOK_DEMO, formatDate, postEntry, uploadPhoto } from "./api";
 import { FieldMessage, SelectField, TextArea, TextField } from "./fields";
 import { failureMessage, isHeic, sendLetter } from "./send";
 
@@ -173,6 +173,34 @@ export function MemoryForm({
     }
     setFailure(null);
     setServerErrors({});
+    if (GUESTBOOK_DEMO) {
+      // Demo build: nothing leaves this browser; the letter shows on the wall until reload.
+      const n = photos.length;
+      for (let i = n ? 1 : 0; i <= n; i++) {
+        setSending({ i, n });
+        await new Promise((r) => setTimeout(r, n ? 450 : 900));
+      }
+      if (beforePost) await beforePost();
+      onPosted({
+        id: `demo-${crypto.randomUUID()}`,
+        name: values.name.trim(),
+        relation: values.relation || "other",
+        cls: values.cls.trim() || undefined,
+        year: values.year.trim() || undefined,
+        date: formatDate(new Date().toISOString()),
+        text: values.message.trim().replace(/\n{3,}/g, "\n\n"),
+        // the object URLs stay alive: the letter shows them
+        photos: photos.map((p) => ({ src: p.url, w: p.w ?? 1200, h: p.h ?? 900, caption: p.caption?.trim() || undefined })),
+        justSent: true,
+      });
+      setValues(start);
+      setPhotos([]);
+      setRefused([]);
+      setAdded(0);
+      setTried(false);
+      setSending(null);
+      return;
+    }
     setSending({ i: 0, n: 0 });
     const result = await sendLetter({
       fields: { ...values, relation: values.relation || "other" },

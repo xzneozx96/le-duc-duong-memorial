@@ -43,11 +43,15 @@ export type PostResult =
 
 const two = (n: number) => String(n).padStart(2, "0");
 /** "19.11.2026", as the sample letters write it (the reader's local day). */
-function formatDate(iso: string) {
+export function formatDate(iso: string) {
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return "";
   return `${two(d.getDate())}.${two(d.getMonth() + 1)}.${d.getFullYear()}`;
 }
+
+/** Demo mode (the Vercel preview has no backend): the wall shows the sample letters and a send
+ *  stays in this browser. On by default when the build runs on Vercel; see next.config.ts. */
+export const GUESTBOOK_DEMO = process.env.NEXT_PUBLIC_GUESTBOOK_MODE === "demo";
 
 export function toEntry(p: PublicEntry): Entry {
   return {

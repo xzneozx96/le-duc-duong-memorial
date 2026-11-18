@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState, type CSSProperties, type ReactNode } from "react";
 import { ArrowLeft, Check } from "lucide-react";
 import { classes } from "../cls";
-import { fetchEntries } from "./api";
+import { GUESTBOOK_DEMO, fetchEntries } from "./api";
 import { isTribute, paragraphs, t, tributeEntry, tributeParts, visitorEntries, type Entry } from "./data";
 import { bookFontVars } from "./fonts";
 import { useViewer, ViewerProvider, type ViewerPhoto } from "./viewer";
@@ -69,7 +69,7 @@ export function BookEmbed({ children }: { children: ReactNode }) {
 }
 
 /** The six invented letters, for previewing a full wall in dev only. */
-const SAMPLES = process.env.NEXT_PUBLIC_SAMPLE_ENTRIES === "1";
+const SAMPLES = GUESTBOOK_DEMO || process.env.NEXT_PUBLIC_SAMPLE_ENTRIES === "1";
 
 /** The book's state: the tribute, letters sent in this visit (newest first), then the letters the
  *  server holds (newest first). Samples only when NEXT_PUBLIC_SAMPLE_ENTRIES=1. */
@@ -80,6 +80,7 @@ export function useBook() {
   const [posted, setPosted] = useState(false);
   const [shown, setShown] = useState(BATCH);
   useEffect(() => {
+    if (GUESTBOOK_DEMO) return; // no backend in the demo build
     const ctl = new AbortController();
     void fetchEntries(ctl.signal).then((r) => {
       if (ctl.signal.aborted) return;
