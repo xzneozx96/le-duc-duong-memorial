@@ -242,7 +242,7 @@ All ratios measured on 2026-11-18 with the WCAG 2.x formula.
 | well | #0C0B0A | Behind loading photos, film facades, the viewer | |
 | hidden-surface | #2E2A25 | A hidden entry on the admin page | |
 | text | #EFE8DC | All reading text | 15.1:1 on ground, 13.5:1 on surface, 16.2:1 on well, 11.7:1 on hidden-surface |
-| muted | #B9AFA0 | Captions, meta, hints, header years | 8.5:1 on ground, 7.6:1 on surface, 9.1:1 on well, 6.6:1 on hidden-surface |
+| muted | #B9AFA0 | Captions, meta, hints, header years; never on hidden-surface | 8.5:1 on ground, 7.6:1 on surface, 9.1:1 on well (6.6:1 on hidden-surface, under the 7:1 rule, so text there uses `text`) |
 | amber | #F2B347 | The title, and actions: primary button, clip play pill, film play controls, text buttons, the lit rail bracket | 9.9:1 on ground, 8.8:1 on surface, 10.6:1 on well |
 | on-amber | #161412 | Labels on amber fills | 9.9:1 on amber |
 | enamel, on-enamel | #EFE8DC, #161412 | Signs, active language | 15.1:1 |
@@ -256,7 +256,7 @@ All ratios measured on 2026-11-18 with the WCAG 2.x formula.
 - **No pure white.** Reading text is #EFE8DC. A ceiling of 16:1 for running text; #FFFFFF on the ground would be 18.5:1 and is not used.
 - **No light weights.** Spectral 400 is the lightest weight on the page; Archivo Narrow 500 the lightest for labels. Nothing at 300.
 - **Size and spacing.** Body 20 px with line height 1.7, measure at most 70 characters (the 760 px stop column). Captions 18 px with line height 1.5.
-- **Secondary text at 7:1 or more**, not just 4.5:1 (muted is 7.6 to 9.1).
+- **Secondary text at 7:1 or more**, not just 4.5:1 (muted is 7.6 to 9.1). On the hidden-surface (a hidden admin row, a just-sent entry) meta uses `text`, 11.7:1, because muted there is 6.6:1.
 - **No italic for reading text** (changed from the lab, which set captions in italic). Spectral italic at 18 px light-on-dark is the hardest text on the page to read.
 - **No text over photos.** Captions sit under frames.
 - **Bright fields stay small.** Enamel is for signs and the active language, amber fills for buttons and play pills. No large white panels next to reading text.
@@ -289,7 +289,7 @@ Glyph coverage was measured on 2026-11-18 with fontTools on `ArchivoNarrow[wght]
 | sign-years | Years under a sign, text colour | 22 px Archivo Narrow 600, tracking 0.18em, tabular | 22 px |
 | heading-entry | Name on a Lưu bút entry | 26 px Archivo Narrow 600 | 26 px |
 | film-title | Film titles on the facades | 24 px Spectral 400 | 24 px |
-| body-lg | The two-line intro | 22 px Spectral 400, 1.6 | 24 px |
+| body-lg | The intro, at most two rendered lines at 375 px (AC-2) | 22 px Spectral 400, 1.6 | 24 px |
 | body | Station text, entries, input | 20 px Spectral 400, 1.7 | 20 px |
 | caption | Photo captions, roman | 18 px Spectral 400, 1.5, muted | 18 px |
 | label | Buttons, jump links, language switch, capitals | 18 px Archivo Narrow 600, tracking 0.06em | 18 px |
@@ -332,23 +332,23 @@ Rules:
 
 **Film facade.** A 16:9 `well` plate with a 1 px rule border, the episode label in `label` muted (changed from amber, which is for actions), the title in `film-title`, and an amber play control with on-amber `label`, an icon and "Phát video" / "Video abspielen", 48 px tall. Pressing it loads the YouTube player (youtube-nocookie) in the same frame.
 
-**Clip.** The 58-second clip as a poster in a `well` frame with a 1 px rule border; the play control is an amber pill with on-amber `label`, 48 px tall, bottom left. Native controls after the press.
+**Clip.** The 58-second clip as a poster in a `well` frame with a 1 px rule border; the play control is an amber pill with on-amber `label` and words ("Xem đoạn phim 58 giây" / "58-Sekunden-Film abspielen") and a play icon, 56 px tall, bottom left. Native controls after the press.
 
 **Buttons.** Primary: amber fill, on-amber `label` (9.9:1), 56 px, square. Ghost: transparent, 1 px edge border, text-colour `label`, 48 px. Text button ("Đọc hết bài", "Thử lại", "Đóng biểu mẫu"): amber `label` with no fill, 48 px tall. Every button has words; an icon may sit beside them. Hover: ghost buttons turn their border to text colour, text buttons gain a 2 px amber underline, and the primary gains a 2 px text-colour outline at 2 px offset. Disabled: muted label on hidden-surface fill, dashed edge border, `aria-disabled`; no opacity change. Busy: the label changes, the width stays.
 
 **Focus.** A 3 px enamel outline at 3 px offset on every focusable element, `:focus-visible` only. On the amber primary button and the enamel signs the ring sits on the ground beside them at 3 px offset and reads at 15.1:1 against the ground.
 
-**Language switch.** Two buttons, "Tiếng Việt" and "Deutsch", in `label`, each in its own language with its own `lang`, 48 px, 1 px edge border. The active one is enamel with on-enamel text and `aria-pressed="true"`. No flags.
+**Language switch.** In the header: under the portrait on phones, at the top of the text column on wide screens; again in the footer. Two buttons, "Tiếng Việt" and "Deutsch", in `label`, each in its own language with its own `lang`, 48 px, 1 px edge border. The active one is enamel with on-enamel text and `aria-pressed="true"`. No flags.
 
 **Jump links.** Three links in `label`, 48 px tall, each with a 2 px edge underline that turns text colour on hover. They are navigation, not actions, so they stay out of amber (changed from the lab).
 
-**Lưu bút.** The whole section sits on `surface` with a 1 px rule on top. The heading in `heading-section`, the invitation in `body`, the primary button "Viết lưu bút" / "Ins Gästebuch schreiben", then the entries in a list, each separated by a 1 px rule and 28 px of space. Each entry: the name in `heading-entry`, the meta in `meta` muted on its own lines (relationship, class and year on one line; the date on the next; commas, no middle dots, changed from the lab), the message in `body` with the visitor's line breaks kept, then its photos as small frames. The tribute is the first entry with no badge. A just-sent entry has a `hidden-surface` fill and the label "Vừa gửi" / "Gerade eingetragen" until reload.
+**Lưu bút.** The whole section sits on `surface` with a 1 px rule on top. The heading in `heading-section` (36 px at 1.15, 52 px at 1.1 wide; changed from the lab's 44 px at line height 1), the invitation in `body`, the primary button "Viết lưu bút" / "Ins Gästebuch schreiben", then the entries in a list, each separated by a 1 px rule and 28 px of space. Each entry: the name in `heading-entry`, the meta in `meta` muted on its own lines (relationship, class and year on one line; the date on the next; commas, no middle dots, changed from the lab), the message in `body` with the visitor's line breaks kept, then its photos as small frames. Names, meta and messages break a word or URL that does not fit (`overflow-wrap: anywhere`, `word-break: normal`, `min-width: 0` on the grid or flex parent), so a long URL wraps inside the 760 px column and at 320 px and is never cut off. A just-sent entry's meta uses `text`, not muted, on its hidden-surface fill. The tribute is the first entry with no badge. A just-sent entry has a `hidden-surface` fill and the label "Vừa gửi" / "Gerade eingetragen" until reload.
 
 **Form.** On `surface`. Inputs: `ground` fill, 2 px edge border (4.3:1 against the surface), square, 56 px, text in `body`. Label above in `label` but mixed case (labels are read, not signed), hint under the label in `meta` muted, message under the field in `meta` error with an icon; an invalid field also gets a 2 px error border. The relationship is five 48 px radio rows. The privacy note in `meta` text colour beside the send button.
 
 **Viewer.** Full screen on `well`. The photo is fitted whole. Caption in `caption` muted, credit in `credit`. Controls are ghost buttons at 56 px with words and icons: "Đóng", "Ảnh trước", "Ảnh sau", and a counter "Ảnh 3/8" in `meta`.
 
-**Admin rows.** On `surface`, a 1 px rule between rows; a hidden row on `hidden-surface` with the status word. Same buttons and focus as the public page.
+**Admin rows.** On `surface`, a 1 px rule between rows; a hidden row on `hidden-surface` with the status word, its meta in `text` (11.7:1), not muted. Same buttons and focus as the public page.
 
 **Icons.** Lucide, 2 px stroke, 24 px beside 18 px labels, always next to words.
 

@@ -11,15 +11,16 @@ revised: 2026-11-18, against the newer ux references (art direction, motion, UI 
 ## Brief
 
 - **Job and audience.** His students, colleagues and friends, mostly aged 60 to 75, in Vietnam and Germany, open a link someone sent them, often on a phone, around the funeral on 27.11.2026. They want to see him, read his story, and write something to him and about him. A few family members use a private admin page to hide entries.
-- **Outcome and proof.** A reader finds his face and name at once, follows his life station by station in their language, opens any photo full screen, and writes into the memory book without an account. Proof is AC-1 to AC-26.
+- **Outcome and proof.** A reader finds his face and name at once, follows his life station by station in their language, opens any photo full screen, and writes into the memory book without an account. Proof is the acceptance criteria AC-1 to AC-26 in the spec
 - **Direction.** B, the night train, picked by the human on 2026-11-18 from the round-1 lab: a warm near-black ground, the archive photos as film frames edge to edge, white enamel station signs hung from one rail, Archivo Narrow and Spectral, amber on the title and on actions. The spec Constraints line names it. Visual tokens are in `DESIGN.md`.
+- **The two-line intro** (AC-2, the human's reading, 2026-11-18): at most two rendered lines on a 375 px phone in each language, in `body-lg`. The lab's sample intro is three sentences and must be cut; the rule is checked in the round-2 capture at 375 px in both languages.
 - **Modes.** The public page is a story page (Persuade): header, film, timeline. The memory book form and the admin page are working screens (Operate): plain words, standard controls, no story motion.
 - **Scope and anti-goals.** One public page plus the admin page. No accounts, likes, replies, filters, gallery, CMS or QR code. No motion on load, no clock or leaf motifs, no mourning look (no black frames, candles or crosses, warm text, colour photos in colour), no faked film grain or sprocket holes.
 - **Constraints.** Next.js, live by 26.11.2026, so the simplest design that meets the spec wins every tie. Prelaunch. Two languages everywhere. Every word at 18 px or more and 4.5:1 or more.
 
 ## Foundation
 
-Platform: web (Next.js), phones first. Library: none yet. Repo UI skills: none (`.claude/` holds settings only). Source of truth for tokens: `DESIGN.md` (proposed, written by this lens). Themes: light only.
+Platform: web (Next.js), phones first. Library: none yet. Repo UI skills: none (`.claude/` holds settings only). Source of truth for tokens: `DESIGN.md` (proposed, written by this lens). Themes: one dark theme (direction B); no light mode at launch.
 
 ### Reused
 
@@ -65,7 +66,7 @@ One public page, top to bottom (AC-1). A separate admin page, not linked from it
 
 | Surface | Mode | Reached from | Purpose | Criteria |
 |---|---|---|---|---|
-| Top bar | Persuade | Page top | Language switch, right aligned | AC-3 |
+| Language switch | Persuade | Header: under the portrait on phones, at the top of the text column on wide screens; again in the footer | Switches all page text between Vietnamese and German | AC-3 |
 | Header | Persuade | Page top | Portrait, name, 1942–2026, title, two-line intro, three jump links | AC-1, AC-2, AC-26 |
 | Film | Persuade | Jump link "Phim" or scroll | Two YouTube interviews, played in the page | AC-1, AC-7, AC-26 |
 | Timeline | Persuade | Jump link "Hành trình" or scroll | Railway line, one station per period: years, two-language sign, paragraph, frames | AC-1, AC-8, AC-9, AC-11, AC-23, AC-26 |
@@ -176,7 +177,7 @@ Wrong password path: "Mật khẩu chưa đúng. Còn 3 lần thử, sau đó tr
 | Language switch | Instant, no spinner | n/a | Cookie blocked: the switch still works for this visit | n/a | All page text swaps at once, `<html lang>` updates, focus stays on the pressed option, form contents untouched | n/a |
 | Film facades | Facade shows at once (no thumbnail fetched) | n/a | YouTube blocked or offline: the player's own error, and under the frame a link "Mở trên YouTube" / "Auf YouTube öffnen" | n/a | The player replaces the facade in the same 16:9 frame and starts | The real title "Gespräch mit dem Deutschlehrer LÊ ĐỨC DƯƠNG" wraps under its facade, capitals as given |
 | Station | Frames have fixed boxes in the well colour; photos lazy-load as they come near (AC-26) | No photos: years, sign and paragraph only, no empty frame (AC-8) | One photo fails: the line and "Thử lại" inside its frame; caption stays | More than 3 frames (phone) or 6 (wide): "Xem thêm {n} ảnh" | Years, sign, paragraph, frames; marker filled once reached | German paragraph about 20% longer, wraps; a two-line sign name wraps inside the plate |
-| Bác Hồ clip | Poster frame with a 72 px play button, `preload="none"` | n/a | Fails: "Đoạn phim chưa phát được." with "Thử lại" | n/a | Plays inline with native controls after the press (AC-9) | Caption in the page's language, written as his account |
+| Bác Hồ clip | Poster frame with a 56 px amber pill "Xem đoạn phim 58 giây" / "58-Sekunden-Film abspielen" bottom left, `preload="none"` | n/a | Fails: "Đoạn phim chưa phát được." with "Thử lại" | n/a | Plays inline with native controls after the press (AC-9) | Caption in the page's language, written as his account |
 | Photo viewer | Caption shows at once, the photo when loaded; neighbours preloaded | n/a | Photo fails: the line in place, controls work | First photo: "Ảnh trước" disabled; last: "Ảnh sau" disabled; the counter says where you are | Photo, caption, credit, counter | Long caption scrolls in its own area; a 4000×200 panorama or a 1080×2400 screenshot fits whole |
 | Memory book | Rendered with the page on the server, no first-load spinner | Tribute only: under it "Chưa có lưu bút nào khác. Lưu bút đầu tiên sẽ hiện ngay dưới lời tri ân của thầy Cao Hữu Ngạn." Tribute hidden too: "Chưa có lưu bút nào. Lưu bút đầu tiên sẽ hiện ở đây." | "Xem thêm" fails: "Chưa tải được các bài cũ hơn." and "Thử lại" in place | 20 visitor entries, then "Xem thêm {n} bài" (n = the next batch, up to 20); exactly 20 shows no button | Tribute, then visitor entries newest first | See Worst-case data |
 | Form | n/a | Closed: the "Viết lưu bút" button only. Open: labels, hints, no errors | Field messages (AC-13), file refusals (AC-14), send failure (AC-16) | Some photos refused, the others kept | Entry inserted, form closes and clears, status line | Message counter from 4,500 characters: "4.812/5.000 ký tự" |
@@ -194,12 +195,12 @@ The fixture the lab uses (one dataset, real naming patterns, limits from the spe
 
 | Value | Source | Limit | Optional | Rule |
 |---|---|---|---|---|
-| Visitor name | form | 100 characters (AC-13), counted on NFC text, trimmed | no | Wrap, never truncate; `overflow-wrap: anywhere`; only spaces counts as missing |
+| Visitor name | form | 100 characters (AC-13), counted on NFC text, trimmed | no | Wrap, never truncate; `overflow-wrap: anywhere` (also on class, year, captions, credits and sign names); only spaces counts as missing |
 | Relationship | form, a code | 5 values | no | Label in the page's language (U14) |
 | Class | form, free text | 50 | yes | Wrap; shown as typed, no prefix; missing parts leave no stray comma |
 | Year | form, free text | 50 | yes | As typed ("1975", "1970–1988", "khoảng 1980", "75") |
 | Date posted | server | n/a | no | Date only, `dd.mm.yyyy`, the viewer's time zone |
-| Message | form | 5,000 (AC-13) | no | Keep the visitor's line breaks, collapse more than one blank line; clamp to 8 lines with "Đọc hết bài" when over about 600 characters; never auto-link URLs (spam is out of scope at launch, and links invite it); markup shows as literal text |
+| Message | form | 5,000 (AC-13) | no | Keep the visitor's line breaks (`white-space: pre-line`), collapse more than one blank line; break a word or URL that does not fit anywhere it must (`overflow-wrap: anywhere`, `word-break: normal`, `min-width: 0` on its flex or grid parent), so fixture entry 7's URL wraps inside the column at 320 and 375 px and nothing is cut off; clamp to 8 lines with "Đọc hết bài" when over about 600 characters; never auto-link URLs (spam is out of scope at launch, and links invite it); markup shows as literal text |
 | Entry photos | form | 5 MB each, no count limit (spec) | yes | First 6 small 3:2 frames with a keyline, then a "Xem thêm {n} ảnh" tile that opens the viewer at photo 7; square crop in the grid, whole photo in the viewer |
 | Station names, VI and DE | content files | none found (finding: add a content check) | no | Wrap inside the sign |
 | Station paragraph | content files | none found | no | Wrap; aim for 60 to 120 words per language |
@@ -243,12 +244,12 @@ All new. Visual specs are in `DESIGN.md`.
 
 | Component | Where used | Behaviour rules |
 |---|---|---|
-| LanguageSwitch | Top bar, footer | Two `<button aria-pressed>` in a group named "Ngôn ngữ" / "Sprache". Swaps text client-side with no reload, writes the cookie, updates `<html lang>`, keeps focus (U3) |
+| LanguageSwitch | Header (under the portrait on phones, top of the text column on wide), footer | Two `<button aria-pressed>` in a group named "Ngôn ngữ" / "Sprache". Swaps text client-side with no reload, writes the cookie, updates `<html lang>`, keeps focus (U3) |
 | JumpLinks | Header | Three anchors to section ids `film`, `timeline`, `memories`; sections have `scroll-margin-top` |
 | FilmFrame | Header portrait, stations, entries, admin | Edge to edge, no mount. Timeline frames: caption and credit under the frame, the photo is a `<button>` named by the caption. Entry frames: no caption, button named "Ảnh {i} của {name}" / "Foto {i} von {name}", and in the viewer the caption line is the writer's name and date. Portrait: no caption, not a button, `alt` is his name, light grade only on it. Fixed box in the well colour so nothing shifts; `loading="lazy"` except the portrait |
 | ContactSheet | Stations | The station's other photos, one column on phones and three from 900 px, first 3 or 6, the rest behind a ghost button |
-| VideoFacade | Film | `<button>` named "Phát video: {title}"; on press an `<iframe>` from youtube-nocookie.com with `autoplay=1` replaces it and takes focus |
-| ClipPlayer | Moritzburg station | Native `<video controls preload="none" playsinline>` with poster and a 72 px play overlay until first play; no autoplay, no sound before the press |
+| VideoFacade | Film | `<button>` with the visible label "Xem phim" / "Film ansehen" and the accessible name "Xem phim: {title}" / "Film ansehen: {title}"; on press an `<iframe>` from youtube-nocookie.com with `autoplay=1` replaces it and takes focus |
+| ClipPlayer | Moritzburg station | Native `<video controls preload="none" playsinline>` with poster and a 56 px amber pill with words until first play; no autoplay, no sound before the press |
 | Rail, ticks, Bracket | Timeline | One SVG, `aria-hidden`; brackets light once reached (Motion plan) |
 | Station | Timeline | `<section>` with an `<h3>` holding both sign lines (each with its `lang`) and the years; the extra-photos button |
 | StationSign | Station | Two lines, VI then DE, always both (AC-8) |
@@ -296,24 +297,28 @@ Voice card: `DESIGN.md`, Voice. Device budget for the story page: no two-fragmen
 | Moment | Vietnamese | German | Not |
 |---|---|---|---|
 | Switch group | Ngôn ngữ | Sprache | flags |
+| Intro (AC-2) | At most two rendered lines at 375 px in body-lg, about 60 characters. Sample, family to confirm: "Đi tàu sang Đức năm 1955, dạy tiếng Đức ở Thanh Xuân 1970–1988." | Sample: "1955 mit dem Zug in die DDR, 1970 bis 1988 Deutschlehrer in Hanoi." | the lab's three-sentence intro, which runs to six or more lines and states "almost every cohort" as fact |
 | Title (AC-2, Q1 answered) | Một ánh Dương còn mãi | Ein Sonnenstrahl, der bleibt (draft, `lang="de"`, amber; the German speaker checks it; alternatives in `ux.md` Q1) | the Vietnamese title on the German page |
 | Jump links | Phim · Hành trình · Lưu bút (three links) | Film · Lebensweg · Gästebuch (three links) | "Khám phá" / "Entdecken" |
-| Film heading | Hai buổi trò chuyện năm 2020 | Zwei Gespräche aus dem Jahr 2020 | "Trò chuyện với thầy" (says nothing the titles do not) |
+| Film heading | Hai buổi trò chuyện năm 2020 | Zwei Gespräche aus dem Jahr 2020 | "Thầy kể" / "Er erzählt" (the lab), "Trò chuyện với thầy" |
 | Film line | Trong podcast «Sống chung với Corona» của Trương Hồng Quang, thầy kể về cuộc đời mình. | Im Podcast «Sống chung với Corona» von Trương Hồng Quang erzählt er aus seinem Leben. | |
-| Facade | Phát video: {title} (name) · Phát từ YouTube (note) | Video abspielen: {title} · Wird von YouTube abgespielt | a bare play icon |
+| Film facade | Xem phim (visible) · Xem phim: {title} (accessible name) | Film ansehen · Film ansehen: {title} | "Phát video", a bare play icon |
+| Film episode labels | Phần I (K4gtri_cHB8, "Gespräch mit dem Deutschlehrer LÊ ĐỨC DƯƠNG", episode 17 of 06.09.2020) · Phần II (otEfBuw2AoE, "Talk with the former “Moritzburger” Lê Đức Dương", episode 18 of 13.09.2020); shown in that order | Teil I · Teil II, same order | the lab's order, which labels "Talk with…" as part I (the life-story PDF lists K4gtri_cHB8 as Kỳ I) |
+| Film note | Phim mở từ YouTube khi bạn bấm xem. | Der Film lädt erst von YouTube, wenn Sie ihn starten. | "Phát từ YouTube" (first draft) |
+| Film titles | As in AC-7, in their own language, never translated: "Talk with the former “Moritzburger” Lê Đức Dương", "Gespräch mit dem Deutschlehrer LÊ ĐỨC DƯƠNG" | same | |
 | Timeline heading | Hành trình của thầy | Sein Lebensweg | "Dòng thời gian" / "Zeitleiste" |
 | Extra photos | Xem thêm {n} ảnh · Thu gọn ảnh | {n} weitere Fotos zeigen · Weniger Fotos zeigen | "Xem tất cả" |
 | Photo failed | Ảnh này chưa tải được. · Thử lại | Dieses Foto wurde nicht geladen. · Erneut versuchen | a broken-image icon |
-| Clip button | Phát đoạn phim 58 giây | 58-Sekunden-Film abspielen | |
+| Clip button (56 px amber pill) | Xem đoạn phim 58 giây | 58-Sekunden-Film abspielen | "Phát đoạn phim" (first draft) |
 | Clip caption (sample, family to confirm) | Thầy kể về lần gặp Bác Hồ khi Bác thăm trường ở Moritzburg năm 1957. | Er erzählte von der Begegnung mit Hồ Chí Minh bei dessen Besuch in Moritzburg 1957. | a caption stating the meeting as fact |
 | Viewer | Đóng · Ảnh trước · Ảnh sau · Ảnh {i}/{n} | Schließen · Voriges Foto · Nächstes Foto · Foto {i} von {n} | "✕", "‹ ›" alone |
 | Credit | Ảnh: {source} | Foto: {source} | |
 | Book heading | Lưu bút | Gästebuch | "Lời tưởng nhớ", "Sổ tưởng nhớ", "Erinnerungsbuch" (earlier drafts) |
-| Invitation | Ai từng học, làm việc hay sống cùng thầy đều có thể viết lưu bút ở đây. Bạn không cần tài khoản. | Wer mit ihm gelernt, gearbeitet oder gelebt hat, kann sich hier ins Gästebuch eintragen. Ein Konto ist nicht nötig. | "Hãy chia sẻ kỷ niệm của bạn!" |
+| Invitation | Ai từng học, làm việc hay sống cùng thầy đều có thể viết lưu bút ở đây. Bạn không cần tài khoản. | Wer mit ihm gelernt, gearbeitet oder gelebt hat, kann sich hier ins Gästebuch eintragen. Ein Konto ist nicht nötig. | the lab's question form "Bạn từng học… ?" / "Haben Sie… ?", "Hãy chia sẻ kỷ niệm của bạn!" |
 | Open form | Viết lưu bút | Ins Gästebuch schreiben | "Gửi" / "Absenden" |
 | Close form | Đóng biểu mẫu (những gì bạn đã viết vẫn được giữ) | Formular schließen (Ihr Text bleibt erhalten) | "Hủy" / "Abbrechen", which sounds like it deletes |
 | Name | Tên của bạn | Ihr Name | "Họ tên*" |
-| Relationship | Quan hệ với thầy: Học trò · Đồng nghiệp · Bạn bè · Gia đình · Khác | Ihre Verbindung zu ihm: Schüler/in · Kollege/Kollegin · Freund/in · Familie · Andere | a select |
+| Relationship | Quan hệ với thầy: Học trò · Đồng nghiệp · Bạn bè · Gia đình · Khác | Ihre Verbindung zu ihm: Schüler/in · Kollege/Kollegin · Freund/in · Familie · Andere | "Schüler", "Kollege" without the other form (the lab), a select |
 | Class | Lớp hoặc khóa (nếu có), hint "Ví dụ: lớp tiếng Đức khóa 1974" | Klasse oder Jahrgang (freiwillig), hint "Zum Beispiel: Deutschkurs 1974" | "Lớp*" |
 | Year | Năm (nếu có), hint "Ví dụ: 1975 hoặc 1975–1979" | Jahr (freiwillig), hint "Zum Beispiel 1975 oder 1975–1979" | |
 | Message | Lời lưu bút, hint "Bạn có thể viết bằng tiếng Việt hay tiếng Đức. Lưu bút hiện đúng như bạn viết, không dịch." | Ihr Eintrag, hint "Auf Deutsch oder Vietnamesisch. Er erscheint so, wie Sie ihn schreiben, ohne Übersetzung." | "Nội dung" / "Inhalt" |
@@ -334,8 +339,9 @@ Voice card: `DESIGN.md`, Voice. Device budget for the story page: no two-fragmen
 | Server error (AC-16) | Chưa gửi được vì trang đang gặp lỗi. Lời lưu bút và ảnh của bạn vẫn còn nguyên ở đây. Xin bạn bấm “Gửi lưu bút” lại sau vài phút. Nếu vẫn không được, xin báo gia đình: {email}. | Nicht eingetragen, weil die Seite einen Fehler hat. Text und Fotos sind noch da. Bitte tippen Sie in ein paar Minuten erneut auf „Eintragen“. Wenn es dann nicht klappt, schreiben Sie der Familie: {email}. | "Lỗi 500" |
 | Empty book | Chưa có lưu bút nào khác. Lưu bút đầu tiên sẽ hiện ngay dưới lời tri ân của thầy Cao Hữu Ngạn. | Noch keine weiteren Einträge. Der erste erscheint direkt unter der Würdigung von Cao Hữu Ngạn. | "Hãy là người đầu tiên!" |
 | Entry meta | {Học trò}, {class}, {year} · Gửi ngày {dd.mm.yyyy} (two lines) | {Schüler/in}, {class}, {year} · Eingetragen am {dd.mm.yyyy} | "lớp {class}" prefix |
-| Read more | Đọc hết bài · Thu gọn bài | Ganzen Eintrag lesen · Eintrag einklappen | "Xem thêm…" |
+| Read more | Đọc hết bài · Thu gọn bài | Ganzen Eintrag lesen · Eintrag einklappen | "Thu gọn" / "Einklappen" alone (the lab), "Xem thêm…" |
 | More entries | Xem thêm {n} bài · Đang tải… · Chưa tải được các bài cũ hơn. Thử lại | {n} weitere Einträge zeigen · Wird geladen … · Ältere Einträge wurden nicht geladen. Erneut versuchen | infinite scroll |
+| Lab bar (lab only, never in the product) | Bản thử: đoạn văn, chú thích và một lưu bút là mẫu, gia đình chưa viết. | Entwurf: Absätze, Bildunterschriften und ein Eintrag sind Beispiele, die Familie hat sie noch nicht geschrieben. | |
 | Footer | Tư liệu & nguồn · Trang do gia đình thầy Lê Đức Dương lập năm 2026. Liên hệ: {email} · Lên đầu trang | Quellen · Eine Seite der Familie von Lê Đức Dương, 2026. Kontakt: {email} · Nach oben | "Made with love" |
 | Admin | Quản lý lưu bút · Mật khẩu của gia đình · Hiện mật khẩu · Vào trang quản lý · Thoát · {n} lưu bút, {h} đang ẩn | Gästebuch verwalten · Familienpasswort · Passwort anzeigen · Anmelden · Abmelden · {n} Einträge, davon {h} ausgeblendet | "Dashboard" |
 | Admin status and actions | Đang hiện · Đang ẩn · Ẩn bài · Hiện lại · Đã ẩn bài của {name}. Bấm “Hiện lại” nếu nhầm. · Đã hiện lại bài của {name}. | Sichtbar · Ausgeblendet · Ausblenden · Wieder zeigen · Eintrag von {name} ausgeblendet. „Wieder zeigen“ macht das rückgängig. · Eintrag von {name} wieder sichtbar. | "Xóa" / "Löschen" |
@@ -373,9 +379,9 @@ Directions and states to build are in `ux.md`, Lab. Summary:
 
 | Option | Route | What it tries | Trade-offs | Picked |
 |---|---|---|---|---|
-| Direction A, the family album | `/lab/memorial/direction?d=a` | Paper, ink and oxblood plates, mounted prints with photo corners, a sticky album grid on wide screens, Literata and Be Vietnam Pro | Closest to the brainstorm; the warm paper ground is a common default | No |
-| Direction B, the night train | `/lab/memorial/direction?d=b` | Near-black ground, archive photos edge to edge, white enamel station signs, Archivo Narrow and Spectral | The boldest; near the dark-mournful rut and harder for some older eyes, handled by the rules in `DESIGN.md` Colors | Yes, the human, 2026-11-18 |
-| Direction C, Hà Nội daylight | `/lab/memorial/direction?d=c` | White ground, a broad ochre rail band, colour photos at full size, Bricolage Grotesque and Lexend | Bright and modern; risks a cheerful template look; breaks the spec's serif pin | No |
+| Direction A, the family album | `/lab/memorial/a` | Paper, ink and oxblood plates, mounted prints with photo corners, a sticky album grid on wide screens, Literata and Be Vietnam Pro | Closest to the brainstorm; the warm paper ground is a common default | No |
+| Direction B, the night train | `/lab/memorial/b` | Near-black ground, archive photos edge to edge, white enamel station signs, Archivo Narrow and Spectral | The boldest; near the dark-mournful rut and harder for some older eyes, handled by the rules in `DESIGN.md` Colors | Yes, the human, 2026-11-18 |
+| Direction C, Hà Nội daylight | `/lab/memorial/c` | White ground, a broad ochre rail band, colour photos at full size, Bricolage Grotesque and Lexend | Bright and modern; risks a cheerful template look; breaks the spec's serif pin | No |
 | Wall A | `/lab/memorial/book?option=a` | Form always open above the tribute | One tap fewer; a screen and a half of form before any memory | No |
 | Wall B | `/lab/memorial/book?option=b` | Form behind "Viết lưu bút", opens in place | Memories read first, the form is one tap away | Yes |
 
@@ -384,67 +390,67 @@ The timeline layout options of the first pass (rail left at every width against 
 ## Decisions
 
 ### U1 Visual system from direction B, the night train (changed)
-The human picked B on 2026-11-18. `DESIGN.md` is rewritten from the lab as built (commit b03dca2): warm near-black ground, text #EFE8DC, amber #F2B347 on the title and on actions, white enamel signs, Archivo Narrow and Spectral, film frames and a contact sheet, the Lưu bút on a raised dark surface. Corrections to the lab, each with its reason, are marked in `DESIGN.md`. Criteria AC-2, AC-5, AC-6, AC-8.
+The human picked B on 2026-11-18. `DESIGN.md` is rewritten from the lab as built (commit b03dca2): warm near-black ground, text #EFE8DC, amber #F2B347 on the title and on actions, white enamel signs, Archivo Narrow and Spectral, film frames and a contact sheet, the Lưu bút on a raised dark surface. Corrections to the lab, each with its reason, are marked in `DESIGN.md`. Criteria: AC-2, AC-5, AC-6, AC-8
 
 ### U2 18 px floor for all text, 20 px body
-Unchanged. Criteria AC-6.
+Unchanged. Criteria: AC-6
 
 ### U3 Language switch without reload, cookie-backed
-Unchanged. Criteria AC-3.
+Unchanged. Criteria: AC-3
 
 ### U4 Station signs always bilingual, Vietnamese line first
-Unchanged. Criteria AC-8.
+Unchanged. Criteria: AC-8
 
 ### U5 Captions on every timeline photo, credits always visible (changed: film frames instead of mounted prints)
-Unchanged. Criteria AC-8, AC-10, AC-23.
+Unchanged. Criteria: AC-8, AC-10, AC-23
 
 ### U6 Extra photos behind an inline expand (changed: a contact sheet under each station's lead frame)
-Unchanged. Criteria AC-8, AC-26.
+Unchanged. Criteria: AC-8, AC-26
 
 ### U7 Form behind a button above the tribute (Wall B)
-Unchanged. Criteria AC-12, AC-25.
+Unchanged. Criteria: AC-12, AC-25
 
 ### U8 Validation on send, in the page's language
-Unchanged; messages rewritten (U16). Criteria AC-13, AC-14.
+Unchanged; messages rewritten (U16). Criteria: AC-13, AC-14
 
 ### U9 Modal viewer that phone Back closes
-Unchanged; next and previous by keyboard swap without animation. Criteria AC-10, AC-17.
+Unchanged; next and previous by keyboard swap without animation. Criteria: AC-10, AC-17
 
 ### U10 Film as click-to-load facades
-Unchanged. Criteria AC-7, AC-26.
+Unchanged. Criteria: AC-7, AC-26
 
 ### U11 20 entries, then "Xem thêm", long entries clamped
-Unchanged. Criteria AC-1, AC-17, AC-23.
+Unchanged. Criteria: AC-1, AC-17, AC-23
 
 ### U12 Admin list with status words, Hide and Show again, no confirm
-Revised: built to the operate-screens rules (one question, count line with real zeros, errors inside the row, no story motion). Criteria AC-18 to AC-21.
+Revised: built to the operate-screens rules (one question, count line with real zeros, errors inside the row, no story motion). Criteria: AC-18 to AC-21
 
 ### U13 Three jump links, no sticky bar
-Unchanged. Criteria AC-1.
+Unchanged. Criteria: AC-1
 
 ### U14 Relationship label in the page's language
-Unchanged. Criteria AC-4, AC-17, AC-25.
+Unchanged. Criteria: AC-4, AC-17, AC-25
 
 ### U15 The memory wall is named "Lưu bút" / "Gästebuch" (changed: on the raised dark surface)
-"Lưu bút" / "Gästebuch", the whole section on the raised dark surface, "Viết lưu bút" and "Gửi lưu bút" / "Ins Gästebuch schreiben" and "Eintragen" (the human's answer, 2026-11-18). Lưu bút is the book Vietnamese students write in for classmates and teachers at the end of their school years, so his former students know at once what to do. Gästebuch is the word older German readers know for a book or page they sign with a short entry, and "sich ins Gästebuch eintragen" is its everyday verb. The German speaker may prefer "Kondolenzbuch"; it fits the funeral but not the weeks after. Criteria AC-12, AC-17, AC-25.
+"Lưu bút" / "Gästebuch", the whole section on the raised dark surface, "Viết lưu bút" and "Gửi lưu bút" / "Ins Gästebuch schreiben" and "Eintragen" (the human's answer, 2026-11-18). Lưu bút is the book Vietnamese students write in for classmates and teachers at the end of their school years, so his former students know at once what to do. Gästebuch is the word older German readers know for a book or page they sign with a short entry, and "sich ins Gästebuch eintragen" is its everyday verb. The German speaker may prefer "Kondolenzbuch"; it fits the funeral but not the weeks after. Criteria: AC-12, AC-17, AC-25
 
 ### U16 Copy rewritten to the ui-copy rules (new)
-Every error names the field, the limit and the fix; refusals keep the other photos and give a way to shrink a photo; the server error gives the family contact; one verb per action through the flow. Criteria AC-13, AC-14, AC-15, AC-16.
+Every error names the field, the limit and the fix; refusals keep the other photos and give a way to shrink a photo; the server error gives the family contact; one verb per action through the flow. Criteria: AC-13, AC-14, AC-15, AC-16
 
 ### U17 Motion plan (changed for B)
-The bracket light is the one authored moment; the viewer opens as a 450 ms film cut (fade to the well, then the photo) and closes in 200 ms; a new entry fades in and stays marked; nothing on load; reduced motion keeps opacity and colour only. Criteria AC-8, AC-10, AC-12.
+The bracket light is the one authored moment; the viewer opens as a 450 ms film cut (fade to the well, then the photo) and closes in 200 ms; a new entry fades in and stays marked; nothing on load; reduced motion keeps opacity and colour only. Criteria: AC-8, AC-10, AC-12
 
 ### U18 Worst-case rules per field (new)
-Names wrap and never truncate, messages keep line breaks and clamp at 8 lines, URLs are not linked, markup is literal, German plural forms, file sizes with a decimal comma. Criteria AC-5, AC-13, AC-17.
+Names wrap and never truncate, messages keep line breaks and clamp at 8 lines, URLs are not linked, markup is literal, German plural forms, file sizes with a decimal comma. Criteria: AC-5, AC-13, AC-17
 
 ### U19 The German page has its own title (new)
-"Ein Sonnenstrahl, der bleibt" in amber on the German page, "Một ánh Dương còn mãi" on the Vietnamese page (the human's answer to Q1, 2026-11-18). Draft for the German speaker's check. Criteria AC-2, AC-3.
+"Ein Sonnenstrahl, der bleibt" in amber on the German page, "Một ánh Dương còn mãi" on the Vietnamese page (the human's answer to Q1, 2026-11-18). Draft for the German speaker's check. Criteria: AC-2, AC-3
 
 ### U21 Amber on the title and on actions (new)
-The human's answer to Q6, 2026-11-18: amber #F2B347 on the title, the primary button, the clip play pill, the film play controls, text buttons such as "Đọc hết bài", and the lit rail bracket; labels on amber are #161412 at 9.9:1. Never on running text, years, headings, captions or meta. Criteria AC-2, AC-6.
+The human's answer to Q6, 2026-11-18: amber #F2B347 on the title, the primary button, the clip play pill, the film play controls, text buttons such as "Đọc hết bài", and the lit rail bracket; labels on amber are #161412 at 9.9:1. Never on running text, years, headings, captions or meta. Criteria: AC-2, AC-6
 
 ### U20 Rules for light text on dark (new)
-No pure white, no weight under 400, body 20 px at line height 1.7, secondary text at 7:1 or more, no italic reading text, no text over photos, bright enamel kept to signs and the active language. They go past AC-6 because the readers are 60 to 75 and the page is dark. Criteria AC-6.
+No pure white, no weight under 400, body 20 px at line height 1.7, secondary text at 7:1 or more (muted on the hidden-surface is only 6.6:1, so meta in a hidden admin row or a just-sent entry uses the text colour, 11.7:1), no italic reading text, no text over photos, bright enamel kept to signs and the active language. They go past AC-6 because the readers are 60 to 75 and the page is dark. Criteria: AC-6
 
 ## Open questions
 

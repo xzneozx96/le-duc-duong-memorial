@@ -42,8 +42,8 @@ export const ui = {
     jump: { film: "Phim", journey: "Hành trình", book: "Lưu bút" },
     filmHeading: "Thầy kể",
     films: [
-      { title: "Talk with the former “Moritzburger” Lê Đức Dương", length: "Phần I" },
-      { title: "Gespräch mit dem Deutschlehrer LÊ ĐỨC DƯƠNG", length: "Phần II" },
+      { title: "Gespräch mit dem Deutschlehrer LÊ ĐỨC DƯƠNG", length: "Phần I" },
+      { title: "Talk with the former “Moritzburger” Lê Đức Dương", length: "Phần II" },
     ],
     play: "Xem phim",
     filmNote: "Phim mở từ YouTube khi bạn bấm xem.",
@@ -68,8 +68,8 @@ export const ui = {
     jump: { film: "Film", journey: "Lebensweg", book: "Gästebuch" },
     filmHeading: "Er erzählt",
     films: [
-      { title: "Talk with the former “Moritzburger” Lê Đức Dương", length: "Teil I" },
-      { title: "Gespräch mit dem Deutschlehrer LÊ ĐỨC DƯƠNG", length: "Teil II" },
+      { title: "Gespräch mit dem Deutschlehrer LÊ ĐỨC DƯƠNG", length: "Teil I" },
+      { title: "Talk with the former “Moritzburger” Lê Đức Dương", length: "Teil II" },
     ],
     play: "Film ansehen",
     filmNote: "Der Film lädt erst von YouTube, wenn Sie ihn starten.",
@@ -128,8 +128,8 @@ export const stations: Station[] = [
     vi: "Nước Đức",
     de: "Deutschland",
     text: {
-      vi: "Ngày 22.12.1988, thầy trở lại Đức. Thầy làm phiên dịch và gắn bó với cộng đồng người Việt. Những năm sau, học trò cũ khắp nơi hẹn gặp thầy ở Moritzburg, ở Spreewald, và thầy vẫn là người đến đúng giờ nhất.",
-      de: "Am 22.12.1988 kehrte er nach Deutschland zurück. Er arbeitete als Dolmetscher und blieb der vietnamesischen Gemeinschaft eng verbunden. Später trafen ihn seine früheren Schüler in Moritzburg und im Spreewald, und er war immer als Erster pünktlich da.",
+      vi: "Ngày 22.12.1988, thầy trở lại Đức. Thầy làm phiên dịch và gắn bó với cộng đồng người Việt. Những năm sau, học trò cũ hẹn gặp thầy ở Moritzburg và Spreewald. Đồng nghiệp ngày trước vẫn gọi thầy là “người đúng giờ”.",
+      de: "Am 22.12.1988 kehrte er nach Deutschland zurück. Er arbeitete als Dolmetscher und blieb der vietnamesischen Gemeinschaft eng verbunden. Später trafen ihn seine früheren Schüler in Moritzburg und im Spreewald. Frühere Kollegen nannten ihn „den Pünktlichen“.",
     },
     photos: [
       { src: "/lab/de-park-group.jpg", w: 1280, h: 960, caption: cap("Gặp mặt học trò cũ ở công viên Moritzburg.", "Treffen ehemaliger Schüler im Park von Moritzburg.") },

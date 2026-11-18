@@ -222,4 +222,5 @@ export function Reach({ children, className, as: Tag = "div" }: { children: Reac
   );
 }
 
-export const FILM_IDS = ["otEfBuw2AoE", "K4gtri_cHB8"] as const;
+// Part I (06.09.2020) and part II (13.09.2020), per the life-story PDF, page 11.
+export const FILM_IDS = ["K4gtri_cHB8", "otEfBuw2AoE"] as const;
