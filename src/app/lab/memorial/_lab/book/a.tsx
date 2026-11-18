@@ -1,17 +1,19 @@
 "use client";
 
-// Option A: Thư gửi thầy (letters to him). The book is a writing desk. Every memory is a letter
-// in an airmail envelope (he lived between Hà Nội and Germany), stamped with the writer's own
-// photo and postmarked with the day it was sent. One letter lies open on the desk at a time,
-// the tribute of Cao Hữu Ngạn first. Writing is writing a letter: "Kính gửi thầy Lê Đức Dương,"
-// is already on the sheet; on sending, the sheet folds, goes into an envelope and the postmark
-// lands on it.
-import { useEffect, useRef, useState } from "react";
-import { ArrowLeft, ArrowRight, BookOpen, Images, PenLine } from "lucide-react";
+// Option A: Thư gửi thầy (letters to him), revised after the owner's notes.
+// Every memory is a letter in an airmail envelope, stamped with the writer's own photo and
+// postmarked with the day it was sent, the tribute of Cao Hữu Ngạn first in a black-edged
+// mourning envelope. The envelopes sit in one centred carousel, one at a time, with previous and
+// next buttons. Opening a letter, or writing one, raises a full-screen sheet from the bottom
+// (the way a phone opens a sheet): Escape, the "Đóng" button and the phone's Back button close
+// it, and focus returns to the envelope. On sending, the written sheet folds in three and the
+// new envelope takes its place in the carousel with its postmark.
+import { useCallback, useEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
+import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight, Images, PenLine, X } from "lucide-react";
 import { classes } from "../cls";
 import { isTribute, metaLine, photoCount, t, type Entry } from "./data";
 import { MemoryForm } from "./form";
-import { EASE, MOVE, bringIntoView, gsap, moving, useMotion } from "./motion";
+import { EASE, MOVE, gsap, moving, useMotion } from "./motion";
 import { LetterText, MoreButton, PhotoButtons, SentMark, StatusLine, useBook } from "./parts";
 import "./a.css";
 
@@ -22,26 +24,26 @@ const lastWord = (name: string) => name.trim().split(/\s+/).pop() ?? name;
 
 function Envelope({
   entry,
-  open,
+  centred,
   index,
   onOpen,
 }: {
   entry: Entry;
-  open: boolean;
+  centred: boolean;
   index: number;
-  onOpen: () => void;
+  onOpen: (el: HTMLButtonElement) => void;
 }) {
   const photo = entry.photos?.[0];
   const n = photoCount(entry);
   return (
-    <li className={s.slot} style={{ "--i": index } as React.CSSProperties} data-envelope={entry.id}>
+    <li className={s.slide} data-envelope={entry.id} data-centred={centred || undefined} aria-current={centred || undefined}>
       <button
         type="button"
         className={s.envelope}
-        aria-current={open || undefined}
         data-tribute={isTribute(entry) || undefined}
         data-new={entry.justSent || undefined}
-        onClick={onOpen}
+        onClick={(e) => onOpen(e.currentTarget)}
+        style={{ "--i": index } as CSSProperties}
       >
         <span className={s.envText}>
           <span className={s.envName}>{entry.name}</span>
@@ -54,10 +56,7 @@ function Envelope({
                 {n} ảnh
               </span>
             )}
-            <span className={s.reading}>
-              <BookOpen aria-hidden size={20} strokeWidth={2} />
-              Đang đọc
-            </span>
+            <span className={s.envOpen}>Mở thư</span>
           </span>
         </span>
         <span className={s.stamp} aria-hidden>
@@ -78,24 +77,102 @@ function Envelope({
   );
 }
 
+/** One open letter, as it reads inside the sheet. */
+function Letter({
+  entry,
+  prev,
+  next,
+  onGo,
+  headingRef,
+}: {
+  entry: Entry;
+  prev?: Entry;
+  next?: Entry;
+  onGo: (id: string) => void;
+  headingRef: React.RefObject<HTMLHeadingElement | null>;
+}) {
+  return (
+    <article className={s.page} aria-labelledby="a-letter-h">
+      <header className={s.letterHead}>
+        {entry.justSent && <SentMark />}
+        <h3 id="a-letter-h" ref={headingRef} tabIndex={-1} className={s.from}>
+          {entry.name}
+        </h3>
+        <p className={s.fromMeta}>
+          {isTribute(entry) ? t.bookKicker : metaLine(entry)}
+          <br />
+          {t.sentOn(entry.date)}
+        </p>
+      </header>
+      <LetterText entry={entry} className={s.text} />
+      {photoCount(entry) > 0 && (
+        <div className={s.enclosed}>
+          <p className={s.enclosedLabel}>Ảnh gửi kèm</p>
+          <PhotoButtons
+            entry={entry}
+            className={s.prints}
+            itemClass={s.print}
+            style={(i, n) =>
+              ({
+                "--r": `${[-1.6, 1.2, -0.6, 1.8, -1.1][i % 5]}deg`,
+                "--ar": `${entry.photos![i].w ?? 4} / ${entry.photos![i].h ?? 3}`,
+                "--span": n === 1 ? "2" : "1",
+              }) as CSSProperties
+            }
+          />
+        </div>
+      )}
+      <nav className={s.turn} aria-label="Đọc tiếp">
+        {prev ? (
+          <button type="button" className={s.turnButton} onClick={() => onGo(prev.id)}>
+            <ArrowLeft aria-hidden size={22} strokeWidth={2} />
+            <span>
+              <span className={s.turnWord}>Thư trước</span>
+              <span className={s.turnName}>{prev.name}</span>
+            </span>
+          </button>
+        ) : (
+          <span />
+        )}
+        {next && (
+          <button type="button" className={`${s.turnButton} ${s.turnNext}`} onClick={() => onGo(next.id)}>
+            <span>
+              <span className={s.turnWord}>Thư sau</span>
+              <span className={s.turnName}>{next.name}</span>
+            </span>
+            <ArrowRight aria-hidden size={22} strokeWidth={2} />
+          </button>
+        )}
+      </nav>
+    </article>
+  );
+}
+
+const FOCUSABLE =
+  'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
 export function OptionA() {
   const book = useBook();
-  const [openId, setOpenId] = useState("tribute");
-  const [writing, setWriting] = useState(false);
-  const root = useRef<HTMLElement>(null);
-  const sheet = useRef<HTMLDivElement>(null);
-  const page = useRef<HTMLDivElement>(null);
-  const writeButton = useRef<HTMLButtonElement>(null);
-  const heading = useRef<HTMLHeadingElement>(null);
-  const focusAfter = useRef<"heading" | "write" | null>(null);
-
   const all = book.all;
-  const index = Math.max(0, all.findIndex((e) => e.id === openId));
-  const entry = all[index];
-  const prev = all[index - 1];
-  const next = all[index + 1];
+  const [openId, setOpenId] = useState<string | null>(null);
+  const [writing, setWriting] = useState(false);
+  const [closing, setClosing] = useState(false);
+  const [centre, setCentre] = useState(0);
+  const sheetOpen = openId !== null || writing;
 
-  // Arrival: the heading rises, the envelopes are dealt into the tray one after another.
+  const root = useRef<HTMLElement>(null);
+  const track = useRef<HTMLOListElement>(null);
+  const panel = useRef<HTMLDivElement>(null);
+  const body = useRef<HTMLDivElement>(null);
+  const formWrap = useRef<HTMLDivElement>(null);
+  const heading = useRef<HTMLHeadingElement>(null);
+  const trigger = useRef<HTMLElement | null>(null);
+  const pushed = useRef(false);
+
+  const index = openId ? Math.max(0, all.findIndex((e) => e.id === openId)) : -1;
+  const entry = index >= 0 ? all[index] : undefined;
+
+  // Arrival: the heading rises and the envelopes are dealt into the carousel one after another.
   useMotion(root, (mm, el) => {
     mm.add(MOVE, () => {
       const q = gsap.utils.selector(el);
@@ -109,81 +186,185 @@ export function OptionA() {
       });
       gsap.from(q("[data-envelope]"), {
         opacity: 0,
-        x: 60,
-        rotate: 4,
+        y: 40,
         duration: 0.9,
         stagger: 0.07,
         ease: EASE.enter,
         clearProps: "transform,opacity",
-        scrollTrigger: { trigger: q("[data-tray]")[0], start: "top 85%", once: true },
-      });
-      gsap.from(q("[data-sheet]"), {
-        opacity: 0,
-        y: 40,
-        rotate: -1.2,
-        duration: 1.1,
-        ease: EASE.enter,
-        clearProps: "transform,opacity",
-        scrollTrigger: { trigger: q("[data-sheet]")[0], start: "top 85%", once: true },
+        scrollTrigger: { trigger: track.current, start: "top 85%", once: true },
       });
     });
   });
 
-  // A letter coming out of its envelope: the sheet unfolds downwards from its top edge.
-  const unfold = () => {
-    const el = page.current;
-    if (!el || !moving()) return;
-    gsap.fromTo(
-      el,
-      { clipPath: "inset(0% 0% 100% 0%)", y: -18 },
-      { clipPath: "inset(0% 0% 0% 0%)", y: 0, duration: 0.9, ease: EASE.soft, clearProps: "clipPath,transform" },
-    );
+  // ----- carousel -----
+  const slides = () => Array.from(track.current?.querySelectorAll<HTMLElement>("[data-envelope]") ?? []);
+  const measure = useCallback(() => {
+    const el = track.current;
+    if (!el) return;
+    const mid = el.scrollLeft + el.clientWidth / 2;
+    let best = 0;
+    let bestD = Infinity;
+    slides().forEach((li, i) => {
+      const d = Math.abs(li.offsetLeft + li.offsetWidth / 2 - mid);
+      if (d < bestD) {
+        bestD = d;
+        best = i;
+      }
+    });
+    setCentre((c) => (c === best ? c : best));
+  }, []);
+  const go = useCallback((i: number, smooth = true) => {
+    const el = track.current;
+    const li = slides()[i];
+    if (!el || !li) return;
+    const left = li.offsetLeft - (el.clientWidth - li.offsetWidth) / 2;
+    el.scrollTo({ left, behavior: smooth && moving() ? "smooth" : "auto" });
+  }, []);
+  useEffect(() => {
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [measure, all.length]);
+
+  const onTrackKey = (e: KeyboardEvent<HTMLOListElement>) => {
+    if (e.key === "ArrowRight") {
+      e.preventDefault();
+      go(Math.min(all.length - 1, centre + 1));
+    } else if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      go(Math.max(0, centre - 1));
+    }
   };
 
-  function openLetter(id: string) {
+  // ----- the sheet -----
+  const finishClose = useCallback(() => {
+    const done = () => {
+      setClosing(false);
+      setOpenId(null);
+      setWriting(false);
+      trigger.current?.focus({ preventScroll: true });
+    };
+    if (moving()) {
+      setClosing(true);
+      window.setTimeout(done, 280);
+    } else {
+      done();
+    }
+  }, []);
+
+  const closeSheet = useCallback(() => {
+    if (pushed.current) {
+      pushed.current = false;
+      window.history.back();
+    }
+    finishClose();
+  }, [finishClose]);
+
+  const openSheet = (from: HTMLElement | null) => {
+    trigger.current = from;
+    if (!pushed.current) {
+      window.history.pushState({ lbaSheet: true }, "");
+      pushed.current = true;
+    }
+  };
+
+  // The phone's Back button closes the sheet instead of leaving the page.
+  useEffect(() => {
+    const onPop = () => {
+      // Back that only closes the photo viewer lands on the sheet's own entry: the sheet stays.
+      const onSheetEntry = (window.history.state as { lbaSheet?: boolean } | null)?.lbaSheet;
+      if (pushed.current && !onSheetEntry) {
+        pushed.current = false;
+        finishClose();
+      }
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, [finishClose]);
+
+  // While the sheet is open the page behind it does not scroll.
+  useEffect(() => {
+    if (!sheetOpen) return;
+    const html = document.documentElement;
+    const before = html.style.overflow;
+    html.style.overflow = "hidden";
+    return () => {
+      html.style.overflow = before;
+    };
+  }, [sheetOpen]);
+
+  // Focus moves into the sheet: the letter's heading, or the form's first field.
+  useEffect(() => {
+    if (!sheetOpen) return;
+    body.current?.scrollTo({ top: 0 });
+    if (entry) heading.current?.focus({ preventScroll: true });
+    else panel.current?.querySelector<HTMLElement>("input, textarea")?.focus({ preventScroll: true });
+  }, [sheetOpen, openId, writing, entry]);
+
+  // Escape closes; Tab stays inside the sheet.
+  const onPanelKey = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Escape") {
+      e.preventDefault();
+      closeSheet();
+      return;
+    }
+    if (e.key !== "Tab" || !panel.current) return;
+    const items = Array.from(panel.current.querySelectorAll<HTMLElement>(FOCUSABLE)).filter((x) => x.offsetParent !== null);
+    if (items.length === 0) return;
+    const first = items[0];
+    const last = items[items.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  };
+
+  function openLetter(id: string, from: HTMLElement | null) {
+    openSheet(from);
     setWriting(false);
     setOpenId(id);
-    focusAfter.current = "heading";
+    const i = all.findIndex((e) => e.id === id);
+    if (i >= 0) go(i);
   }
 
-  useEffect(() => {
-    if (focusAfter.current === "heading") {
-      focusAfter.current = null;
-      heading.current?.focus({ preventScroll: true });
-      const top = sheet.current?.getBoundingClientRect().top ?? 0;
-      if (top < 0 || top > window.innerHeight * 0.6) bringIntoView(sheet.current);
-      unfold();
-    } else if (focusAfter.current === "write") {
-      focusAfter.current = null;
-      writeButton.current?.focus();
-    }
-  }, [openId, writing]);
+  function turnTo(id: string) {
+    setOpenId(id);
+    const i = all.findIndex((e) => e.id === id);
+    if (i >= 0) go(i, false);
+    // the next letter comes in from the bottom of the sheet, gently
+    requestAnimationFrame(() => {
+      const page = body.current?.querySelector("article");
+      if (page && moving()) gsap.fromTo(page, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5, ease: EASE.enter, clearProps: "transform,opacity" });
+    });
+  }
 
-  // The send moment: the written sheet folds in three and drops into the tray.
+  // The send moment: the written sheet folds in three and slips away.
   const fold = async () => {
-    const el = sheet.current;
+    const el = formWrap.current;
     if (!el || !moving()) return;
     await gsap
       .timeline()
       .to(el, { scaleY: 0.34, transformOrigin: "50% 0%", duration: 0.55, ease: "power2.inOut" })
-      .to(el, { scale: 0.3, x: () => -el.offsetWidth * 0.4, y: 40, opacity: 0, duration: 0.6, ease: "power2.in" })
+      .to(el, { scale: 0.3, y: 60, opacity: 0, duration: 0.6, ease: "power2.in" })
       .then(() => undefined);
   };
 
   const onPosted = (e: Entry) => {
     book.add(e);
+    if (formWrap.current) gsap.set(formWrap.current, { clearProps: "transform,opacity" });
     setWriting(false);
     setOpenId(e.id);
-    focusAfter.current = "heading";
-    if (sheet.current) gsap.set(sheet.current, { clearProps: "transform,opacity" });
+    // behind the sheet, the new envelope takes its place in the carousel and is postmarked
     requestAnimationFrame(() => {
+      const i = [...slides()].findIndex((li) => li.dataset.envelope === e.id);
+      if (i >= 0) go(i, false);
       const env = root.current?.querySelector(`[data-envelope="${e.id}"]`);
       const mark = env?.querySelector("[data-postmark]");
-      if (!env || !moving()) return;
-      gsap
-        .timeline()
-        .from(env, { y: -90, opacity: 0, rotate: -5, duration: 0.8, ease: EASE.enter, clearProps: "transform,opacity" })
-        .from(mark ?? [], { scale: 1.9, opacity: 0, rotate: 18, duration: 0.45, ease: "back.out(2)" }, "-=0.2");
+      if (env && mark && moving()) gsap.from(mark, { scale: 1.9, opacity: 0, rotate: 18, duration: 0.45, delay: 0.3, ease: "back.out(2)" });
+      trigger.current = env?.querySelector("button") ?? trigger.current;
     });
   };
 
@@ -195,14 +376,13 @@ export function OptionA() {
         </h2>
         <p className={s.invite}>{t.bookInvite}</p>
         <button
-          ref={writeButton}
           type="button"
           className={`${k.primary} ${s.write}`}
-          aria-expanded={writing}
-          aria-controls="a-sheet"
-          onClick={() => {
+          aria-haspopup="dialog"
+          onClick={(e) => {
+            openSheet(e.currentTarget);
+            setOpenId(null);
             setWriting(true);
-            requestAnimationFrame(() => bringIntoView(sheet.current));
           }}
         >
           <PenLine aria-hidden size={22} strokeWidth={2} />
@@ -210,89 +390,77 @@ export function OptionA() {
         </button>
       </div>
 
-      <div className={s.desk}>
-        <div className={s.sheetCol}>
-          <div ref={sheet} id="a-sheet" className={s.sheet} data-sheet data-writing={writing || undefined}>
-            <MemoryForm
-              open={writing}
-              shape="letter"
-              className={s.letterForm}
-              prefill={"Kính gửi thầy,\n\n"}
-              onClose={() => {
-                setWriting(false);
-                focusAfter.current = "write";
-              }}
-              beforePost={fold}
-              onPosted={onPosted}
-            />
-            <article ref={page} className={s.page} hidden={writing} aria-labelledby="a-letter-h" key={entry.id}>
-              <header className={s.letterHead}>
-                {entry.justSent && <SentMark />}
-                <h3 id="a-letter-h" ref={heading} tabIndex={-1} className={s.from}>
-                  {entry.name}
-                </h3>
-                <p className={s.fromMeta}>
-                  {isTribute(entry) ? t.bookKicker : metaLine(entry)}
-                  <br />
-                  {t.sentOn(entry.date)}
-                </p>
-              </header>
-              <LetterText entry={entry} className={s.text} />
-              {photoCount(entry) > 0 && (
-                <div className={s.enclosed}>
-                  <p className={s.enclosedLabel}>Ảnh gửi kèm</p>
-                  <PhotoButtons
-                    entry={entry}
-                    className={s.prints}
-                    itemClass={s.print}
-                    style={(i, n) =>
-                      ({
-                        "--r": `${[-1.6, 1.2, -0.6, 1.8, -1.1][i % 5]}deg`,
-                        "--ar": `${entry.photos![i].w ?? 4} / ${entry.photos![i].h ?? 3}`,
-                        "--span": n === 1 ? "2" : "1",
-                      }) as React.CSSProperties
-                    }
-                  />
-                </div>
-              )}
-              <nav className={s.turn} aria-label="Đọc tiếp">
-                {prev ? (
-                  <button type="button" className={s.turnButton} onClick={() => openLetter(prev.id)}>
-                    <ArrowLeft aria-hidden size={22} strokeWidth={2} />
-                    <span>
-                      <span className={s.turnWord}>Thư trước</span>
-                      <span className={s.turnName}>{prev.name}</span>
-                    </span>
-                  </button>
-                ) : (
-                  <span />
-                )}
-                {next && (
-                  <button type="button" className={`${s.turnButton} ${s.turnNext}`} onClick={() => openLetter(next.id)}>
-                    <span>
-                      <span className={s.turnWord}>Thư sau</span>
-                      <span className={s.turnName}>{next.name}</span>
-                    </span>
-                    <ArrowRight aria-hidden size={22} strokeWidth={2} />
-                  </button>
-                )}
-              </nav>
-            </article>
-          </div>
-          <StatusLine posted={book.posted} className={s.status} />
-        </div>
+      <StatusLine posted={book.posted} className={s.status} />
 
-        <div className={s.tray} data-tray>
-          <h3 className={s.trayTitle}>Những lá thư gửi thầy</h3>
-          <p className={s.trayCount}>{all.length} lá thư. Bấm vào một phong thư để đọc.</p>
-          <ol className={s.stack}>
-            {all.map((e, i) => (
-              <Envelope key={e.id} entry={e} index={i} open={!writing && e.id === openId} onOpen={() => openLetter(e.id)} />
-            ))}
-          </ol>
-          <MoreButton hidden={book.hidden} onMore={book.more} className={s.more} />
+      <div className={s.carousel} role="region" aria-roledescription="carousel" aria-label="Những lá thư gửi thầy">
+        <p className={s.trayCount}>{all.length} lá thư. Bấm vào một phong thư để đọc.</p>
+        <ol ref={track} className={s.track} tabIndex={0} onScroll={measure} onKeyDown={onTrackKey}>
+          {all.map((e, i) => (
+            <Envelope key={e.id} entry={e} index={i} centred={i === centre} onOpen={(el) => openLetter(e.id, el)} />
+          ))}
+        </ol>
+        <div className={s.nav}>
+          <button type="button" className={s.arrow} onClick={() => go(Math.max(0, centre - 1))} disabled={centre === 0} aria-label="Lá thư trước">
+            <ChevronLeft aria-hidden size={28} strokeWidth={1.75} />
+          </button>
+          <p className={s.count} aria-live="polite">
+            Thư {centre + 1} / {all.length}
+          </p>
+          <button
+            type="button"
+            className={s.arrow}
+            onClick={() => go(Math.min(all.length - 1, centre + 1))}
+            disabled={centre >= all.length - 1}
+            aria-label="Lá thư sau"
+          >
+            <ChevronRight aria-hidden size={28} strokeWidth={1.75} />
+          </button>
         </div>
+        <MoreButton hidden={book.hidden} onMore={book.more} className={s.more} />
       </div>
+
+      {sheetOpen && (
+        <div className={s.overlay} data-closing={closing || undefined} onClick={closeSheet}>
+          <div
+            ref={panel}
+            className={s.panel}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby={entry ? "a-letter-h" : undefined}
+            aria-label={entry ? undefined : t.bookOpen}
+            onClick={(e) => e.stopPropagation()}
+            onKeyDown={onPanelKey}
+          >
+            <div className={s.panelBar}>
+              <span className={s.handle} aria-hidden />
+              <button type="button" className={s.close} onClick={closeSheet}>
+                <X aria-hidden size={22} strokeWidth={2} />
+                Đóng
+              </button>
+            </div>
+            <div ref={body} className={s.panelBody}>
+              <div className={s.sheet}>
+                {writing && (
+                  <div ref={formWrap}>
+                    <MemoryForm
+                      open
+                      shape="letter"
+                      className={s.letterForm}
+                      prefill={"Kính gửi thầy,\n\n"}
+                      onClose={closeSheet}
+                      beforePost={fold}
+                      onPosted={onPosted}
+                    />
+                  </div>
+                )}
+                {entry && !writing && (
+                  <Letter key={entry.id} entry={entry} prev={all[index - 1]} next={all[index + 1]} onGo={turnTo} headingRef={heading} />
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
