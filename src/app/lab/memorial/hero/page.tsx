@@ -17,7 +17,7 @@ const options = [
   {
     id: "e2",
     name: "Sương sớm Moritzburg · morning mist at Moritzburg",
-    note: "Light and quiet. His own 1955 photo of the Moritzburg school, the Vietnamese children walking in front of it, graded into a sepia mist that dissolves into the page's off-white. He stands frontal in the middle of the mist; his name sits beneath him like the plate under a portrait. Arrival: the mist clears to show the castle and he comes into focus; on scroll the mist closes over him. Recommended.",
+    note: "Light and quiet. A group photo from his own collection (picked by the owner), graded into a sepia mist. His whole portrait stands large on the left on desktop with his name, titles and dates beside him; on a phone the portrait sits above the name. The mist clears on arrival; on scroll it closes over him.",
   },
   {
     id: "e3",

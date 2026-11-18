@@ -1,13 +1,13 @@
 "use client";
 
-// E2 · Sương sớm Moritzburg. His own 1955 photo of the Moritzburg school, the children from
-// Vietnam walking in front of it, graded into a sepia mist that melts into the page's off-white. He stands in the middle of the
+// E2 · Sương sớm Moritzburg. A group photo from his own collection (the owner's pick), graded
+// into a sepia mist that melts into the page's off-white. He stands in the middle of the
 // mist, frontal and calm, and his name is set beneath him like the plate under a portrait.
-// The mist clears on arrival to show the castle; on scroll it closes again over him.
+// The mist clears on arrival to show the group; on scroll it closes again over him.
 import { useRef } from "react";
 import { classes } from "../cls";
 import { EASE, MOVE, gsap, useMotion } from "../demo/motion";
-import { Backdrop, Dates, HERO, NameWords, Next, Portrait, Root, ScrollCue } from "./e-shared";
+import { Backdrop, Dates, HERO, NameWords, Next, Portrait, Root, ScrollCue, Titles } from "./e-shared";
 import "./e2.css";
 
 const s = classes("he2");
@@ -40,8 +40,8 @@ export function OptionE2() {
     <Root className={s.root}>
       <header ref={ref} className={s.hero}>
         <Backdrop
-          wide="/lab/hero/e2-moritzburg1955-wide.webp"
-          tall="/lab/hero/e2-moritzburg1955-tall.webp"
+          wide="/lab/hero/e2-thanhxuan-2-wide.webp"
+          tall="/lab/hero/e2-thanhxuan-2-tall.webp"
           className={s.bg}
           imgClassName={s.bgImg}
         />
@@ -56,6 +56,7 @@ export function OptionE2() {
               <span className={s.hon} data-hon>
                 {HERO.honorific}
               </span>
+              {" "}
               <span className={s.name}>
                 <NameWords wordClass={s.word} />
               </span>
@@ -63,9 +64,9 @@ export function OptionE2() {
             <div data-rest>
               <Dates className={s.dates} />
             </div>
-            <p className={s.line} data-rest>
-              {HERO.line}
-            </p>
+            <div data-rest>
+            <Titles className={s.line} />
+          </div>
             <div data-rest>
               <ScrollCue className={s.cue} />
             </div>

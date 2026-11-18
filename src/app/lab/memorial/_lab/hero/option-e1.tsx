@@ -7,7 +7,7 @@
 import { useRef } from "react";
 import { classes } from "../cls";
 import { EASE, MOVE, gsap, useMotion } from "../demo/motion";
-import { Backdrop, Dates, HERO, NameWords, Next, Portrait, Root, ScrollCue } from "./e-shared";
+import { Backdrop, Dates, HERO, NameWords, Next, Portrait, Root, ScrollCue, Titles } from "./e-shared";
 import "./e1.css";
 
 const s = classes("he1");
@@ -56,6 +56,7 @@ export function OptionE1() {
             <span className={s.hon} data-hon>
               {HERO.honorific}
             </span>
+            {" "}
             <span className={s.name}>
               <NameWords wordClass={s.word} />
             </span>
@@ -63,9 +64,9 @@ export function OptionE1() {
           <div data-rest>
             <Dates className={s.dates} />
           </div>
-          <p className={s.line} data-rest>
-            {HERO.line}
-          </p>
+          <div data-rest>
+            <Titles className={s.line} />
+          </div>
           <div data-rest>
             <ScrollCue className={s.cue} />
           </div>

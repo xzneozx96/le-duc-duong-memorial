@@ -16,10 +16,27 @@ export const HERO = {
   name: "Lê Đức Dương",
   born: "01.05.1942",
   died: "11.11.2026",
-  /** the one line about his life as a teacher; facts from the brief only */
-  line: "Dạy tiếng Đức cho nhiều thế hệ sinh viên ở Thanh Xuân, Hà Nội, từ 1970 đến 1988.",
+  /** his titles, from his life story and the research dossier (no exact role in the German section:
+   *  the dossier says not to claim one until it is confirmed) */
+  titles: ["Giảng viên tiếng Đức", "Phiên dịch viên Việt – Đức", "Kỹ sư cơ khí"],
+  /** what he is remembered for; his life story: almost every generation going to Germany then passed through his classes */
+  legacy: "Người thầy của nhiều thế hệ lưu học sinh Việt Nam sang Đức, Trường Đại học Ngoại ngữ Hà Nội, 1970–1988.",
   portrait: { src: "/demo/portrait-cutout.webp", w: 1024, h: 1535, alt: "Chân dung Nhà giáo Lê Đức Dương" },
 };
+
+/** His titles in one row, then the line of what he is remembered for. */
+export function Titles({ className }: { className?: string }) {
+  return (
+    <div className={`${s.titles} ${className ?? ""}`}>
+      <ul className={s.titleList}>
+        {HERO.titles.map((t) => (
+          <li key={t}>{t}</li>
+        ))}
+      </ul>
+      <p className={s.legacy}>{HERO.legacy}</p>
+    </div>
+  );
+}
 
 export function Root({ className, children }: { className?: string; children: ReactNode }) {
   return <div className={`${s.root} ${className ?? ""}`}>{children}</div>;
