@@ -654,3 +654,76 @@
 .lba-panelBody .lba-sheet {
   background: var(--paper);
 }
+
+/* Photos sent with a letter: one sideways row, each at its own width, caption underneath. */
+.lba-strip {
+  --rowH: clamp(190px, 26vw, 260px);
+  display: flex;
+  gap: 18px;
+  margin: 0 calc(-1 * clamp(16px, 4vw, 40px));
+  padding: 4px clamp(16px, 4vw, 40px) 14px;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scroll-padding-inline: clamp(16px, 4vw, 40px);
+  scrollbar-width: thin;
+  scrollbar-color: var(--sand) transparent;
+}
+.lba-strip:focus-visible {
+  outline: 3px solid var(--forest);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+.lba-stripItem {
+  flex: none;
+  width: calc(var(--rowH) * var(--arn));
+  max-width: 84vw;
+  scroll-snap-align: start;
+}
+.lba-stripFig {
+  margin: 0;
+}
+.lba-stripButton {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--sand);
+  cursor: zoom-in;
+}
+.lba-stripButton img {
+  display: block;
+  width: 100%;
+  height: var(--rowH);
+  object-fit: cover;
+  transition: transform 500ms var(--out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .lba-stripButton:hover img {
+    transform: scale(1.03);
+  }
+}
+.lba-stripButton:focus-visible {
+  outline: 3px solid var(--forest);
+  outline-offset: 3px;
+}
+.lba-stripCaption {
+  margin-top: 10px;
+  font-family: var(--sans);
+  font-size: 18px;
+  line-height: 1.45;
+  color: var(--forest);
+  text-wrap: pretty;
+}
+
+/* the sheet's close: a round x */
+.lba-close {
+  width: 52px;
+  height: 52px;
+  min-height: 0;
+  padding: 0;
+  justify-content: center;
+  border-radius: 50%;
+}

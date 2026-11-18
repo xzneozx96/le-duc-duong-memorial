@@ -473,7 +473,7 @@ export type Entry = {
   /** the text's own language, when it is known (the tribute); visitor entries carry none */
   lang?: Lang;
   text: string;
-  photos?: { src: string; w?: number; h?: number; pos?: string }[];
+  photos?: { src: string; w?: number; h?: number; pos?: string; caption?: string }[];
   justSent?: boolean;
 };
 
@@ -489,7 +489,7 @@ export const tributeEntry: Entry = {
 // Sample visitor entries, newest first. Not real people; the lab bar says so.
 // MOCK ENTRIES for previewing the Lưu bút layout only. They are invented, not real memories:
 // remove them (back to an empty array) before the site goes live.
-const ph = (name: string, w: number, h: number, pos?: string) => ({ src: `/demo/${name}.jpg`, w, h, pos });
+const ph = (name: string, w: number, h: number, caption?: string, pos?: string) => ({ src: `/demo/${name}.jpg`, w, h, pos, caption });
 export const sampleEntries: Entry[] = [
   {
     id: "mock-1",
@@ -500,7 +500,7 @@ export const sampleEntries: Entry[] = [
     date: "19.11.2026",
     text:
       "Kính gửi thầy,\n\nEm vào lớp tiếng Đức của thầy năm 1978, khi cả lớp chưa ai biết nói một câu cho tròn. Buổi đầu tiên thầy bước vào đúng giờ, không sớm một phút, không muộn một phút, đặt chiếc cặp lên bàn và nói bằng tiếng Đức. Cả lớp ngơ ngác, còn thầy thì cứ kiên nhẫn chỉ vào từng đồ vật trong phòng mà gọi tên.\n\nThầy nghiêm lắm. Ai làm bài thiếu, thầy không mắng, chỉ nhìn rồi bảo: «Ngày mai em đọc lại cho tôi nghe.» Vậy mà đứa nào cũng sợ hơn bị mắng. Nhờ những ngày ấy mà sang Đức em không bỡ ngỡ, nghe giảng được ngay từ học kỳ đầu.\n\nGần năm mươi năm rồi, em vẫn giữ quyển vở chép tay có những dòng thầy sửa bằng mực đỏ. Em xin thắp một nén nhang từ xa, cầu mong thầy yên nghỉ.",
-    photos: [ph("thanhxuan-2", 720, 535)],
+    photos: [ph("thanhxuan-2", 720, 535, "Lớp tiếng Đức của chúng em, chụp trước giờ học.")],
   },
   {
     id: "mock-2",
@@ -511,7 +511,7 @@ export const sampleEntries: Entry[] = [
     date: "19.11.2026",
     text:
       "Thưa thầy,\n\nChúng em là lứa sinh viên đi Đức cuối những năm tám mươi. Ký túc xá Thanh Xuân hồi ấy mất điện thường xuyên, tối nào cả phòng cũng ngồi quanh ngọn đèn dầu ôn từ vựng thầy giao. Có hôm thầy đi ngang, thấy chúng em đọc sai trọng âm, thầy dừng lại sửa từng chữ, rồi mới về.\n\nSau này gặp lại thầy ở Đức, thầy vẫn nhớ tên gần hết lớp, nhớ cả đứa hay ngủ gật ở bàn cuối. Thầy cười to, kể chuyện ngày xưa, kể chuyện những chuyến phiên dịch toát mồ hôi. Chúng em ngồi nghe mà như được trở lại lớp học năm nào.\n\nCảm ơn thầy vì đã mở cho chúng em cánh cửa sang một đất nước khác, một cuộc đời khác.",
-    photos: [ph("germany-1", 1280, 960), ph("germany-13", 1024, 768), ph("germany-7", 960, 720)],
+    photos: [ph("germany-1", 1280, 960, "Gặp mặt lớp cũ ở công viên Moritzburg."), ph("germany-13", 1024, 768, "Cả nhà và học trò cũ trên bậc thềm."), ph("germany-7", 960, 720, "Trên thuyền ở Spreewald.")],
   },
   {
     id: "mock-3",
@@ -530,7 +530,7 @@ export const sampleEntries: Entry[] = [
     date: "20.11.2026",
     text:
       "Ông ơi,\n\nCháu lớn lên ở Đức, tiếng Việt của cháu không giỏi bằng tiếng Đức, vậy mà ông chưa bao giờ trách. Mỗi lần cháu về thăm, ông lại kiên nhẫn dạy cháu đọc từng câu thơ, như ông đã dạy bao nhiêu thế hệ học trò đọc tiếng Đức.\n\nCháu nhớ những buổi chiều ông dắt chó đi dạo quanh khu phố, gặp ai cũng chào, ai cũng biết ông. Cháu nhớ ông kể chuyện chuyến tàu năm 1955, chuyện những người bạn nhỏ ở Moritzburg. Ngày ấy cháu nghe như nghe chuyện cổ tích.\n\nGiờ cháu mới hiểu, đó là cả một đời người. Cháu sẽ giữ những câu chuyện ấy, và kể lại cho các em cháu sau này.",
-    photos: [ph("germany-3", 768, 1024), ph("germany-6", 768, 1024)],
+    photos: [ph("germany-3", 768, 1024, "Ông dắt chó đi dạo cùng cháu."), ph("germany-6", 768, 1024, "Ông với chú chó trắng trước cửa.")],
   },
   {
     id: "mock-5",
@@ -541,7 +541,7 @@ export const sampleEntries: Entry[] = [
     date: "21.11.2026",
     text:
       "Anh Dương kính mến,\n\nNhững năm đầu ở Thanh Xuân, cả tổ chỉ hơn mười người, chưa ai được đào tạo sư phạm bài bản. Anh là người đi học thêm ở Leipzig về, mang theo bao nhiêu giáo trình, cách soạn bài, cách ra đề, rồi chia sẻ hết cho anh em.\n\nAnh nghiêm với sinh viên nhưng rất thương. Có những em không đạt, phải ở lại, anh là người buồn nhất. Có những buổi tối anh ngồi chấm bài đến khuya dưới ánh đèn dầu, sáng hôm sau vẫn có mặt ở lớp trước giờ.\n\nAnh đi rồi, nhưng những lứa học trò anh dạy vẫn còn đó, ở khắp Việt Nam và nước Đức. Đó là điều anh để lại lớn nhất.",
-    photos: [ph("thanhxuan-1", 1024, 768)],
+    photos: [ph("thanhxuan-1", 1024, 768, "Gia đình anh những năm ở Hà Nội.")],
   },
   {
     id: "mock-6",
@@ -552,7 +552,7 @@ export const sampleEntries: Entry[] = [
     date: "21.11.2026",
     text:
       "Thầy ơi,\n\nCon chỉ học thầy một năm, nhưng đó là năm con nhớ nhất thời sinh viên. Thầy dạy chúng con không chỉ tiếng Đức mà cả cách sống ở một đất nước xa lạ: đúng giờ, giữ lời, tự lo cho mình. Những điều tưởng nhỏ ấy theo con suốt những năm học ở Dresden.\n\nNăm 2019, cả lớp hẹn gặp lại thầy ở công viên Moritzburg. Thầy đến sớm nhất, đứng chờ dưới gốc cây, vẫn dáng thẳng và nụ cười hiền như ngày nào. Chúng con chụp chung một tấm ảnh, ai cũng tóc đã bạc.\n\nCon xin gửi lại tấm ảnh ấy ở đây, để thầy và chúng con còn mãi bên nhau.",
-    photos: [ph("germany-2", 960, 642), ph("germany-4", 960, 1280), ph("germany-12", 1024, 768), ph("germany-8", 768, 1024)],
+    photos: [ph("germany-2", 960, 642, "Cả lớp trên thuyền, ai cũng cười."), ph("germany-4", 960, 1280, "Thầy cùng các bạn nữ trong áo dài."), ph("germany-12", 1024, 768, "Thầy ngồi uống trà ngoài hiên."), ph("germany-8", 768, 1024, "Thầy bế chú chó trắng.")],
   },
 ];
 

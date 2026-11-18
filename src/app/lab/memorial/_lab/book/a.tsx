@@ -13,8 +13,9 @@ import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight, Images, PenLine, X } 
 import { classes } from "../cls";
 import { isTribute, metaLine, photoCount, t, type Entry } from "./data";
 import { MemoryForm } from "./form";
+import { useViewer, type ViewerPhoto } from "./viewer";
 import { EASE, MOVE, gsap, moving, useMotion } from "./motion";
-import { LetterText, MoreButton, PhotoButtons, SentMark, StatusLine, useBook } from "./parts";
+import { LetterText, MoreButton, SentMark, StatusLine, useBook } from "./parts";
 import "./a.css";
 
 const s = classes("lba");
@@ -77,6 +78,31 @@ function Envelope({
   );
 }
 
+const captionOf = (entry: Entry, i: number) => entry.photos?.[i]?.caption?.trim() || `Ảnh ${i + 1}`;
+
+/** The photos sent with a letter: one row at one height, each at its own width (a horizontal
+ *  masonry), scrolled sideways, each with its caption under it. A photo opens full screen. */
+function PhotoStrip({ entry }: { entry: Entry }) {
+  const open = useViewer();
+  const photos = entry.photos ?? [];
+  const group: ViewerPhoto[] = photos.map((p, i) => ({ src: p.src, w: p.w, h: p.h, caption: captionOf(entry, i) }));
+  return (
+    <ul className={s.strip} tabIndex={0} aria-label={`Ảnh của ${entry.name}`}>
+      {photos.map((p, i) => (
+        <li key={`${p.src}-${i}`} className={s.stripItem} style={{ "--ar": `${p.w ?? 4} / ${p.h ?? 3}`, "--arn": (p.w ?? 4) / (p.h ?? 3) } as CSSProperties}>
+          <figure className={s.stripFig}>
+            <button type="button" className={s.stripButton} aria-label={`${captionOf(entry, i)}. Xem ảnh lớn`} onClick={() => open(group, i)}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={p.src} width={p.w} height={p.h} alt="" loading="lazy" style={p.pos ? { objectPosition: p.pos } : undefined} />
+            </button>
+            <figcaption className={s.stripCaption}>{captionOf(entry, i)}</figcaption>
+          </figure>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 /** One open letter, as it reads inside the sheet. */
 function Letter({
   entry,
@@ -108,18 +134,7 @@ function Letter({
       {photoCount(entry) > 0 && (
         <div className={s.enclosed}>
           <p className={s.enclosedLabel}>Ảnh gửi kèm</p>
-          <PhotoButtons
-            entry={entry}
-            className={s.prints}
-            itemClass={s.print}
-            style={(i, n) =>
-              ({
-                "--r": `${[-1.6, 1.2, -0.6, 1.8, -1.1][i % 5]}deg`,
-                "--ar": `${entry.photos![i].w ?? 4} / ${entry.photos![i].h ?? 3}`,
-                "--span": n === 1 ? "2" : "1",
-              }) as CSSProperties
-            }
-          />
+          <PhotoStrip entry={entry} />
         </div>
       )}
       <nav className={s.turn} aria-label="Đọc tiếp">
@@ -433,9 +448,8 @@ export function OptionA() {
           >
             <div className={s.panelBar}>
               <span className={s.handle} aria-hidden />
-              <button type="button" className={s.close} onClick={closeSheet}>
-                <X aria-hidden size={22} strokeWidth={2} />
-                Đóng
+              <button type="button" className={s.close} onClick={closeSheet} aria-label="Đóng">
+                <X aria-hidden size={26} strokeWidth={2} />
               </button>
             </div>
             <div ref={body} className={s.panelBody}>
