@@ -116,10 +116,6 @@ function Films({ lang, t }: { lang: Lang; t: Strings }) {
           <Film index={0} lang={lang} t={t} />
           <Film index={1} lang={lang} t={t} />
         </div>
-        <div className={s.filmNotes}>
-          <p>{t.filmNote}</p>
-          <p>{t.filmPhotos}</p>
-        </div>
       </div>
     </section>
   );

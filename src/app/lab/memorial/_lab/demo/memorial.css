@@ -1918,3 +1918,27 @@ html:has(.lm-page) {
 .lm-jumps a {
   white-space: nowrap;
 }
+/* The timeline's title and its lede read as one block, from the page's left edge. */
+.lm-journeyIntro {
+  max-width: 40em;
+  margin-bottom: 64px;
+  text-align: left;
+}
+.lm-journeyIntro .lm-journeyLede {
+  margin-top: 20px;
+}
+@media (min-width: 900px) {
+  .lm-journeyIntro {
+    margin-bottom: 96px;
+  }
+}
+/* The place under each chapter title, marked with a pin. */
+.lm-placeAlt {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.lm-placeIcon {
+  flex: none;
+  color: var(--bronze);
+}

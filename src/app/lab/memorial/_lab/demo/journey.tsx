@@ -6,7 +6,7 @@
 // station when it arrives. Each station carries a small tag for its country. The line ends with
 // the family's photo of him walking away down a tree-lined street, and comes to rest below it.
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
-import { Play } from "lucide-react";
+import { Play, MapPin } from "lucide-react";
 import { classes } from "../cls";
 import { farewellPhoto, stations, type Lang, type Photo, type Station, type Strings } from "./content";
 import { EASE, MOVE, ScrollTrigger, gsap, useMotion } from "./motion";
@@ -269,6 +269,7 @@ function StationBlock({ st, prevYear, lang, t }: { st: Station; prevYear: string
         <h3 id={`sign-${st.id}`} className={s.place} data-reveal>
           <span lang={lang}>{st.chapter[lang]}</span>
           <span className={s.placeAlt} lang={lang}>
+            <MapPin aria-hidden className={s.placeIcon} size={22} strokeWidth={1.75} />
             {lang === "vi" ? st.vi : st.de}
           </span>
         </h3>
@@ -418,10 +419,12 @@ export function Journey({ lang, t }: { lang: Lang; t: Strings }) {
   return (
     <section ref={root} id="journey" className={s.journey} aria-labelledby="journey-h">
       <div className={s.wrap}>
-        <h2 id="journey-h" className={`${s.h2} ${s.journeyHead}`}>
-          {t.journeyHeading}
-        </h2>
-        <p className={`${s.lede} ${s.journeyLede}`}>{t.journeyLine}</p>
+        <div className={s.journeyIntro}>
+          <h2 id="journey-h" className={s.h2}>
+            {t.journeyHeading}
+          </h2>
+          <p className={`${s.lede} ${s.journeyLede}`}>{t.journeyLine}</p>
+        </div>
         <div className={s.line}>
           <div className={s.lineTrack} aria-hidden>
             <div className={s.lineFill} />
