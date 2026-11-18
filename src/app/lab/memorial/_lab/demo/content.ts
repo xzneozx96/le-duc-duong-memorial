@@ -38,14 +38,14 @@ export type Station = {
   sheetKind?: "pair" | "wall";
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const MARK: Two = { vi: " (chú thích mẫu)", de: " (Beispieltext)" };
+const cap = (vi: string, de: string): Two => ({ vi: vi + MARK.vi, de: de + MARK.de });
 const img = (name: string, w: number, h: number, vi: string, de: string, pos?: string): Photo => ({
   src: `/demo/${name}.jpg`,
   w,
   h,
   pos,
-  // Captions stay empty until the family writes them; the descriptive text is kept for reference only.
-  caption: { vi: "", de: "" },
+  caption: cap(vi, de),
 });
 
 export const FAMILY_EMAIL = "giadinh@example.com";
@@ -85,7 +85,7 @@ const size = (bytes: number) => (bytes / 1_000_000).toFixed(1).replace(".", ",")
 
 export const ui = {
   vi: {
-    labBar: "Bản thử: chú thích ảnh để trống, gia đình sẽ bổ sung.",
+    labBar: "Bản thử: chú thích ảnh là mẫu, gia đình sẽ viết lại.",
     labHome: "Về trang lab",
     portraitAlt: "Chân dung thầy Lê Đức Dương",
     title: "Một ánh Dương còn mãi",
@@ -96,7 +96,7 @@ export const ui = {
     filmLine: "Trong podcast «Sống chung với Corona» của Trương Hồng Quang, thầy kể về cuộc đời mình.",
     filmPlay: "Xem phim",
     filmNote: "Phim mở từ YouTube khi bạn bấm xem.",
-    filmPhotos: "Ảnh trên hai phim: thầy nói chuyện trong các buổi gặp mặt học trò cũ.",
+    filmPhotos: "Ảnh trên hai phim: thầy nói chuyện trong các buổi gặp mặt học trò cũ (chú thích mẫu).",
     journeyHeading: "Hành trình của thầy",
     lands: { vn: "Việt Nam", de: "Đức" },
     farewell: { died: "Thầy mất ngày 11.11.2026.", funeral: "Lễ tang ngày 27.11.2026." },
@@ -171,7 +171,7 @@ export const ui = {
   },
   de: {
     labBar:
-      "Entwurf: Die Bildunterschriften sind noch leer, die Familie ergänzt sie.",
+      "Entwurf: Die Bildunterschriften sind Beispiele, die Familie schreibt sie neu.",
     labHome: "Zur Lab-Übersicht",
     portraitAlt: "Porträt von Lê Đức Dương",
     title: "Ein Sonnenstrahl, der bleibt",
@@ -182,7 +182,7 @@ export const ui = {
     filmLine: "Im Podcast «Sống chung với Corona» von Trương Hồng Quang erzählt er aus seinem Leben.",
     filmPlay: "Film ansehen",
     filmNote: "Der Film lädt erst von YouTube, wenn Sie ihn starten.",
-    filmPhotos: "Fotos auf den Filmen: Er spricht bei Treffen mit früheren Schülern.",
+    filmPhotos: "Fotos auf den Filmen: Er spricht bei Treffen mit früheren Schülern (Beispieltext).",
     journeyHeading: "Sein Lebensweg",
     lands: { vn: "Vietnam", de: "Deutschland" },
     farewell: { died: "Er ist am 11.11.2026 gestorben.", funeral: "Die Trauerfeier ist am 27.11.2026." },
@@ -305,10 +305,10 @@ export const stations: Station[] = [
       src: "/demo/gap-bac-ho-clean.mp4",
       w: 464,
       h: 294,
-      caption: {
-        vi: "Phim tư liệu về chuyến thăm CHDC Đức của Bác Hồ năm 1957. Thầy kể về lần gặp Bác khi Bác thăm trường ở Moritzburg.",
-        de: "Archivfilm vom Besuch Hồ Chí Minhs in der DDR 1957. Er erzählte von der Begegnung bei dessen Besuch in Moritzburg.",
-      },
+      caption: cap(
+        "Phim tư liệu về chuyến thăm CHDC Đức của Bác Hồ năm 1957. Thầy kể về lần gặp Bác khi Bác thăm trường ở Moritzburg.",
+        "Archivfilm vom Besuch Hồ Chí Minhs in der DDR 1957. Er erzählte von der Begegnung bei dessen Besuch in Moritzburg.",
+      ),
       credit: { vi: "Phim: nguồn cần gia đình xác nhận", de: "Film: Quelle prüft die Familie" },
     },
     sheetKind: "pair",
@@ -334,6 +334,7 @@ export const stations: Station[] = [
     aside: {
       ratio: "265 / 400",
       maxW: 265,
+      caption: cap("Hai tấm ảnh trong vườn, thời học nghề ở Radebeul.", "Zwei Aufnahmen im Garten aus der Lehrzeit in Radebeul."),
       photos: [
         img("radebeul-1", 265, 400, "Trong vườn, thời học nghề ở Radebeul.", "Im Garten, während der Lehrzeit in Radebeul."),
         img("radebeul-2", 265, 400, "Một lúc vui đùa trong vườn.", "Ein heiterer Augenblick im Garten."),
