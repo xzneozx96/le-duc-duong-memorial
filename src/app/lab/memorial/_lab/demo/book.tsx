@@ -26,7 +26,7 @@ import {
 } from "./content";
 import { useViewer, type ViewerPhoto } from "./viewer";
 
-const s = classes("ld");
+const s = classes("lm");
 
 const RELATIONS: Relation[] = [
   "student",
@@ -69,6 +69,7 @@ function EntryItem({
       ref={article}
       className={s.entry}
       data-new={entry.justSent || undefined}
+      data-tribute={entry.id === "tribute" || undefined}
     >
       {entry.justSent && (
         <p className={s.sentLabel}>
@@ -586,24 +587,28 @@ export function Book({ t }: { t: Strings }) {
 
   return (
     <section id="book" className={s.book} aria-labelledby="book-h">
-      <div className={s.bookInner}>
-        <div className={s.bookIntro}>
-          <h2 id="book-h" className={s.sectionHead}>
+      <div className={s.bookBand}>
+        <div className={`${s.wrap} ${s.bookIntro}`}>
+          <h2 id="book-h" className={s.bookHead}>
             {t.bookHeading}
           </h2>
-          <p className={s.bookInvite}>{t.bookInvite}</p>
-          {!formOpen && (
-            <button
-              ref={openButton}
-              type="button"
-              className={`${s.primary} ${s.bookOpen}`}
-              onClick={() => setFormOpen(true)}
-            >
-              <PenLine aria-hidden size={24} strokeWidth={2} />
-              {t.bookOpen}
-            </button>
-          )}
+          <div className={s.bookAsk}>
+            <p className={s.bookInvite}>{t.bookInvite}</p>
+            {!formOpen && (
+              <button
+                ref={openButton}
+                type="button"
+                className={`${s.primary} ${s.bookOpen}`}
+                onClick={() => setFormOpen(true)}
+              >
+                <PenLine aria-hidden size={22} strokeWidth={2} />
+                {t.bookOpen}
+              </button>
+            )}
+          </div>
         </div>
+      </div>
+      <div className={s.bookInner}>
         <div className={s.bookMain}>
           <MemoryForm
             t={t}

@@ -1,8 +1,8 @@
 "use client";
 
-// The journey: a route map that weaves between his two homelands, then seven stations as
-// chapters. Each chapter hangs an enamel sign (Vietnamese over German) from the line, with its
-// years, a paragraph, and its photographs, which open the viewer.
+// The journey: seven stations on one bronze line. Việt Nam keeps one side of the line and
+// Germany the other, so the line crosses over each time he did. A small sun travels the line
+// as the reader scrolls, and the part behind it stays drawn.
 import {
   useEffect,
   useMemo,
@@ -22,28 +22,131 @@ import {
 } from "./content";
 import { useViewer, type ViewerPhoto } from "./viewer";
 
-const s = classes("ld");
+const s = classes("lm");
 
-/** True once the element's top has passed the middle of the screen; it stays true. */
-function useReached(ref: RefObject<HTMLElement | null>) {
-  const [reached, setReached] = useState(false);
+type Geometry = { w: number; h: number; d: string; ys: number[] };
+
+/** How far before a station the line leaves its side for the other one. */
+const CROSSING = 200;
+
+/** Measures the station marks and returns the line through them. */
+function useLine(body: RefObject<HTMLDivElement | null>) {
+  const [geo, setGeo] = useState<Geometry | null>(null);
   useEffect(() => {
-    const el = ref.current;
+    const el = body.current;
     if (!el) return;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setReached(true);
-          io.disconnect();
+    const measure = () => {
+      const box = el.getBoundingClientRect();
+      const pts = Array.from(el.querySelectorAll<HTMLElement>("[data-node]")).map((n) => {
+        const r = n.getBoundingClientRect();
+        return {
+          x: Math.round(r.left + r.width / 2 - box.left),
+          y: Math.round(r.top + r.height / 2 - box.top),
+        };
+      });
+      if (pts.length === 0) return;
+      const w = Math.round(box.width);
+      const h = Math.round(box.height);
+      let d = `M${pts[0].x} ${pts[0].y}`;
+      for (let i = 1; i < pts.length; i++) {
+        const a = pts[i - 1];
+        const b = pts[i];
+        if (a.x === b.x) {
+          d += ` L${b.x} ${b.y}`;
+        } else {
+          const span = Math.min(CROSSING, (b.y - a.y) * 0.6);
+          const from = b.y - span;
+          d += ` L${a.x} ${from} C${a.x} ${from + span / 2} ${b.x} ${b.y - span / 2} ${b.x} ${b.y}`;
         }
-      },
-      // The top margin counts everything above the screen as reached, for readers who jump down.
-      { rootMargin: "100000px 0px -50% 0px" },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, [ref]);
-  return reached;
+      }
+      d += ` L${pts[pts.length - 1].x} ${h}`;
+      const ys = pts.map((p) => p.y);
+      setGeo((old) => (old && old.d === d && old.w === w && old.h === h ? old : { w, h, d, ys }));
+    };
+    // The observer reports once when it starts, and again whenever the journey changes height.
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [body]);
+  return geo;
+}
+
+function Line({ body }: { body: RefObject<HTMLDivElement | null> }) {
+  const geo = useLine(body);
+  const drawn = useRef<SVGPathElement>(null);
+  const sun = useRef<SVGCircleElement>(null);
+  const furthest = useRef(0);
+
+  useEffect(() => {
+    const el = body.current;
+    const path = drawn.current;
+    if (!geo || !el || !path) return;
+    const total = path.getTotalLength();
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const marks = Array.from(el.querySelectorAll<HTMLElement>("[data-node]"));
+    const lengthAt = (y: number) => {
+      let lo = 0;
+      let hi = total;
+      for (let i = 0; i < 18; i++) {
+        const mid = (lo + hi) / 2;
+        if (path.getPointAtLength(mid).y < y) lo = mid;
+        else hi = mid;
+      }
+      return lo;
+    };
+    let frame = 0;
+    const paint = () => {
+      frame = 0;
+      const top = el.getBoundingClientRect().top;
+      const now = still ? geo.h : Math.min(geo.h, Math.max(0, window.innerHeight * 0.58 - top));
+      // The line never retracts: what he has travelled stays.
+      const tip = Math.max(furthest.current, now);
+      furthest.current = tip;
+      const length = tip >= geo.h ? total : lengthAt(tip);
+      path.style.strokeDasharray = `${length} ${total}`;
+      path.style.visibility = length > 0 ? "visible" : "hidden";
+      const dot = sun.current;
+      if (dot) {
+        const p = path.getPointAtLength(length);
+        dot.setAttribute("cx", String(p.x));
+        dot.setAttribute("cy", String(p.y));
+        dot.style.opacity = !still && length > 0 && length < total ? "1" : "0";
+      }
+      marks.forEach((mark, i) => {
+        const reached = geo.ys[i] <= tip + 1;
+        if ((mark.dataset.reached === "true") !== reached) {
+          if (reached) mark.dataset.reached = "true";
+          else delete mark.dataset.reached;
+        }
+      });
+    };
+    const schedule = () => {
+      if (!frame) frame = window.requestAnimationFrame(paint);
+    };
+    paint();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+    };
+  }, [geo, body]);
+
+  if (!geo) return null;
+  return (
+    <svg
+      className={s.line}
+      width={geo.w}
+      height={geo.h}
+      viewBox={`0 0 ${geo.w} ${geo.h}`}
+      aria-hidden
+    >
+      <path className={s.lineAhead} d={geo.d} fill="none" />
+      <path ref={drawn} className={s.lineDrawn} d={geo.d} fill="none" />
+      <circle ref={sun} className={s.sun} r="7" />
+    </svg>
+  );
 }
 
 function Frame({
@@ -77,17 +180,13 @@ function Frame({
           height={photo.h}
           alt=""
           loading="lazy"
-          style={
-            photo.pos ? ({ "--pos": photo.pos } as CSSProperties) : undefined
-          }
+          style={photo.pos ? ({ "--pos": photo.pos } as CSSProperties) : undefined}
         />
       </button>
       {showCaption && (
         <figcaption className={s.caption}>
           {photo.caption[lang]}
-          {photo.credit && (
-            <span className={s.credit}>{photo.credit[lang]}</span>
-          )}
+          {photo.credit && <span className={s.credit}>{photo.credit[lang]}</span>}
         </figcaption>
       )}
     </figure>
@@ -110,10 +209,7 @@ function Clip({
   }, [playing]);
   return (
     <figure className={s.clip}>
-      <div
-        className={s.clipFrame}
-        style={{ aspectRatio: `${clip.w} / ${clip.h}` }}
-      >
+      <div className={s.clipFrame} style={{ aspectRatio: `${clip.w} / ${clip.h}` }}>
         {playing ? (
           <video
             ref={video}
@@ -127,21 +223,13 @@ function Clip({
             preload="none"
           />
         ) : (
-          <button
-            type="button"
-            className={s.clipButton}
-            onClick={() => setPlaying(true)}
-          >
+          <button type="button" className={s.clipButton} onClick={() => setPlaying(true)}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={clip.poster}
-              width={clip.w}
-              height={clip.h}
-              alt=""
-              loading="lazy"
-            />
+            <img src={clip.poster} width={clip.w} height={clip.h} alt="" loading="lazy" />
             <span className={s.clipPill}>
-              <Play aria-hidden size={22} strokeWidth={2} fill="currentColor" />
+              <span className={s.playDisc}>
+                <Play aria-hidden size={20} strokeWidth={2} fill="currentColor" />
+              </span>
               {t.clipPlay}
             </span>
           </button>
@@ -154,67 +242,6 @@ function Clip({
 
 const PHONE_FIRST = 3;
 const WIDE_FIRST = 6;
-const UNIT = 100;
-
-/** The line map: Vietnam on one track, Germany on the other, the route crossing between them. */
-function RouteMap({ lang, t }: { lang: Lang; t: Strings }) {
-  const n = stations.length;
-  const across = stations
-    .map((st, i) => `${(i + 0.5) * UNIT},${st.land === "vn" ? 0 : UNIT}`)
-    .join(" ");
-  const down = stations
-    .map((st, i) => `${st.land === "vn" ? 0 : UNIT},${(i + 0.5) * UNIT}`)
-    .join(" ");
-  return (
-    <nav className={s.route} aria-label={t.journeyHeading}>
-      <p className={s.routeLand} data-land="vn" aria-hidden>
-        {t.lands.vn}
-      </p>
-      <p className={s.routeLand} data-land="de" aria-hidden>
-        {t.lands.de}
-      </p>
-      <div className={s.routeBody}>
-        <svg
-          className={s.routeAcross}
-          viewBox={`0 0 ${n * UNIT} ${UNIT}`}
-          preserveAspectRatio="none"
-          aria-hidden
-        >
-          <polyline
-            points={across}
-            fill="none"
-            vectorEffect="non-scaling-stroke"
-          />
-        </svg>
-        <svg
-          className={s.routeDown}
-          viewBox={`0 0 ${UNIT} ${n * UNIT}`}
-          preserveAspectRatio="none"
-          aria-hidden
-        >
-          <polyline
-            points={down}
-            fill="none"
-            vectorEffect="non-scaling-stroke"
-          />
-        </svg>
-        <ol className={s.routeStops}>
-          {stations.map((st) => (
-            <li key={st.id} data-land={st.land}>
-              <a href={`#station-${st.id}`}>
-                <span className={s.routeDot} aria-hidden />
-                <span className={s.routeLabel}>
-                  <span className={s.routeYears}>{st.years}</span>
-                  <span className={s.routeName}>{st[lang]}</span>
-                </span>
-              </a>
-            </li>
-          ))}
-        </ol>
-      </div>
-    </nav>
-  );
-}
 
 function Sheet({
   photos,
@@ -242,9 +269,7 @@ function Sheet({
     const todo = after.current;
     after.current = null;
     if (todo === "focus-new") {
-      const first = window.matchMedia("(min-width: 900px)").matches
-        ? WIDE_FIRST
-        : PHONE_FIRST;
+      const first = window.matchMedia("(min-width: 900px)").matches ? WIDE_FIRST : PHONE_FIRST;
       grid.current?.querySelectorAll("button")[first]?.focus();
     } else if (todo === "show-toggle") {
       toggle.current?.scrollIntoView({ block: "center" });
@@ -253,12 +278,7 @@ function Sheet({
 
   return (
     <div className={s.sheetWrap}>
-      <div
-        ref={grid}
-        className={s.sheet}
-        data-kind={kind}
-        data-collapsed={!open || undefined}
-      >
+      <div ref={grid} className={s.sheet} data-kind={kind} data-collapsed={!open || undefined}>
         {photos.map((p, i) => (
           <Frame
             key={p.src}
@@ -287,9 +307,7 @@ function Sheet({
             ) : (
               <>
                 <span className={s.onlyPhone}>{t.morePhotos(morePhone)}</span>
-                {moreWide > 0 && (
-                  <span className={s.onlyWide}>{t.morePhotos(moreWide)}</span>
-                )}
+                {moreWide > 0 && <span className={s.onlyWide}>{t.morePhotos(moreWide)}</span>}
               </>
             )}
           </button>
@@ -299,26 +317,10 @@ function Sheet({
   );
 }
 
-function StationBlock({
-  st,
-  index,
-  lang,
-  t,
-}: {
-  st: Station;
-  index: number;
-  lang: Lang;
-  t: Strings;
-}) {
-  const sign = useRef<HTMLHeadingElement>(null);
-  const reached = useReached(sign);
+function StationBlock({ st, lang, t }: { st: Station; lang: Lang; t: Strings }) {
   const group = useMemo<ViewerPhoto[]>(
     () =>
-      [
-        ...(st.aside?.photos ?? []),
-        ...(st.lead ? [st.lead.photo] : []),
-        ...st.sheet,
-      ].map((p) => ({
+      [...(st.aside?.photos ?? []), ...(st.lead ? [st.lead.photo] : []), ...st.sheet].map((p) => ({
         src: p.src,
         w: p.w,
         h: p.h,
@@ -328,42 +330,44 @@ function StationBlock({
     [st, lang],
   );
   const asideCount = st.aside?.photos.length ?? 0;
-  const hasMedia = Boolean(st.aside || st.clip);
 
   return (
     <section
       id={`station-${st.id}`}
       className={s.station}
-      data-reached={reached || undefined}
+      data-land={st.land}
       aria-labelledby={`sign-${st.id}`}
     >
-      <div className={s.stationHead} data-media={hasMedia || undefined}>
-        {/* where this stop lies on the line: stops behind, this stop, stops ahead */}
-        <div className={s.strip} aria-hidden>
-          {stations.map((other, i) => (
-            <i
-              key={other.id}
-              data-at={i < index ? "past" : i === index ? "here" : "ahead"}
-            />
-          ))}
-        </div>
-        <div className={s.signCol}>
-          <h3 ref={sign} id={`sign-${st.id}`} className={s.sign}>
-            <span lang="vi">{st.vi}</span>
-            <span lang="de">{st.de}</span>
-          </h3>
-          <p className={s.stopYears}>{st.years}</p>
-          {hasMedia && <p className={s.story}>{st.text[lang]}</p>}
-        </div>
-        {/* A stop with its own small pictures or the clip keeps the story under the sign and
-            gives them the other column; a stop without lets the story take that column. */}
-        <div className={s.storyCol}>
-          {!hasMedia && <p className={s.story}>{st.text[lang]}</p>}
+      <span className={s.node} data-node aria-hidden />
+      <p className={s.stopYears}>
+        <span className={s.stopLand}>{t.lands[st.land]}</span>
+        {st.years}
+      </p>
+      <div className={s.stationHead}>
+        <h3 id={`sign-${st.id}`} className={s.sign}>
+          <span lang="vi">{st.vi}</span>
+          <span lang="de">{st.de}</span>
+        </h3>
+        <p className={s.story}>{st.text[lang]}</p>
+      </div>
+      {(st.aside || st.clip) && (
+        <div className={s.stationFace}>
           {st.aside && (
-            <div className={s.aside} style={{ "--ar": st.aside.ratio, "--maxw": `${st.aside.maxW}px` } as CSSProperties}>
+            <div
+              className={s.aside}
+              style={{ "--ar": st.aside.ratio, "--maxw": `${st.aside.maxW}px` } as CSSProperties}
+            >
               <div className={s.asideRow}>
                 {st.aside.photos.map((p, i) => (
-                  <Frame key={p.src} photo={p} lang={lang} group={group} index={i} className={s.asideFigure} showCaption={!st.aside?.caption} />
+                  <Frame
+                    key={p.src}
+                    photo={p}
+                    lang={lang}
+                    group={group}
+                    index={i}
+                    className={s.asideFigure}
+                    showCaption={!st.aside?.caption}
+                  />
                 ))}
               </div>
               {st.aside.caption && <p className={s.caption}>{st.aside.caption[lang]}</p>}
@@ -371,15 +375,12 @@ function StationBlock({
           )}
           {st.clip && <Clip clip={st.clip} lang={lang} t={t} />}
         </div>
-      </div>
+      )}
       {st.lead && (
         <div
           className={s.lead}
           style={
-            {
-              "--wide-ratio": st.lead.wideRatio,
-              "--wide-pos": st.lead.widePos,
-            } as CSSProperties
+            { "--wide-ratio": st.lead.wideRatio, "--wide-pos": st.lead.widePos } as CSSProperties
           }
         >
           <Frame
@@ -406,17 +407,27 @@ function StationBlock({
 }
 
 export function Timeline({ lang, t }: { lang: Lang; t: Strings }) {
+  const body = useRef<HTMLDivElement>(null);
   return (
     <section id="journey" className={s.journey} aria-labelledby="journey-h">
-      <div className={s.journeyHead}>
-        <h2 id="journey-h" className={s.sectionHead}>
-          {t.journeyHeading}
-        </h2>
-        <RouteMap lang={lang} t={t} />
+      <div className={s.wrap}>
+        <div className={s.journeyHead}>
+          <h2 id="journey-h" className={s.h2}>
+            {t.journeyHeading}
+          </h2>
+          <p className={s.lands} aria-hidden>
+            <span>{t.lands.vn}</span>
+            <span>{t.lands.de}</span>
+          </p>
+        </div>
+        <div ref={body} className={s.route}>
+          <Line body={body} />
+          <span className={s.origin} data-node aria-hidden />
+          {stations.map((st) => (
+            <StationBlock key={st.id} st={st} lang={lang} t={t} />
+          ))}
+        </div>
       </div>
-      {stations.map((st, i) => (
-        <StationBlock key={st.id} st={st} index={i} lang={lang} t={t} />
-      ))}
     </section>
   );
 }

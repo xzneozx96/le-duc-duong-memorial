@@ -17,7 +17,7 @@ import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { classes } from "../cls";
 import type { Strings } from "./content";
 
-const s = classes("ld");
+const s = classes("lm");
 
 export type ViewerPhoto = {
   src: string;

@@ -1,4 +1,4 @@
-// Content for the client demo (/lab/memorial/demo), direction B.
+// Content for the client demo (/lab/memorial/demo).
 // UI strings are the "Voice and microcopy" table of EXPERIENCE.md. Station paragraphs come from
 // the life-story PDF timeline as samples; captions and visitor entries are samples too, and every
 // caption carries a visible sample mark. The family rewrites all of them.

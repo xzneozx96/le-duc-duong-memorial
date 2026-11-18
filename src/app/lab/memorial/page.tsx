@@ -3,8 +3,8 @@ import Link from "next/link";
 const routes = [
   {
     href: "/lab/memorial/demo",
-    title: "Demo · The whole page in direction B (for the family)",
-    note: "Every section of the one-page site in the night-train look, in Vietnamese and German: header, the two films, seven stations with their photos and the 58-second clip, the full-screen photo viewer, the Lưu bút with a working form (nothing is sent), and the sources. Paragraphs, captions and visitor entries are samples.",
+    title: "Demo · The whole page, third look (after the Farewell reference)",
+    note: "Every section of the one-page site in Vietnamese and German: Cormorant and Lora, warm off-whites and bronze. His portrait rises out of its studio backdrop; a bronze line with a small sun travels between Việt Nam and Germany as you read; the Lưu bút sits on a forest band with a working form (nothing is sent). New values, scoped to this route. Paragraphs, captions and visitor entries are samples. Replaces the night-train demo.",
   },
   {
     href: "/lab/memorial/a",
