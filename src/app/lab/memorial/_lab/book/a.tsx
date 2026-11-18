@@ -191,29 +191,27 @@ export function OptionA() {
   const index = openId ? Math.max(0, all.findIndex((e) => e.id === openId)) : -1;
   const entry = index >= 0 ? all[index] : undefined;
 
-  // Arrival: the heading rises and the envelopes are dealt into the carousel one after another.
-  useMotion(root, (mm, el) => {
-    mm.add(MOVE, () => {
-      const q = gsap.utils.selector(el);
-      gsap.from(q("[data-a-head] > *"), {
-        opacity: 0,
-        y: 24,
-        duration: 1,
-        stagger: 0.09,
-        ease: EASE.enter,
-        scrollTrigger: { trigger: el, start: "top 80%", once: true },
+  // Arrival: the heading is simply there; the envelopes are laid into the carousel one after
+  // another, a short quiet movement that shows the row can be browsed.
+  useMotion(
+    root,
+    (mm, el) => {
+      mm.add(MOVE, () => {
+        const q = gsap.utils.selector(el);
+        gsap.from(q("[data-envelope]"), {
+          opacity: 0,
+          y: 20,
+          duration: 1,
+          stagger: 0.06,
+          ease: EASE.enter,
+          clearProps: "transform,opacity",
+          scrollTrigger: { trigger: track.current, start: "top 85%", once: true },
+        });
       });
-      gsap.from(q("[data-envelope]"), {
-        opacity: 0,
-        y: 40,
-        duration: 0.9,
-        stagger: 0.07,
-        ease: EASE.enter,
-        clearProps: "transform,opacity",
-        scrollTrigger: { trigger: track.current, start: "top 85%", once: true },
-      });
-    });
-  });
+    },
+    [],
+    { idle: true },
+  );
 
   // ----- carousel -----
   const slides = () => Array.from(track.current?.querySelectorAll<HTMLElement>("[data-envelope]") ?? []);
@@ -387,7 +385,7 @@ export function OptionA() {
       if (i >= 0) go(i, false);
       const env = root.current?.querySelector(`[data-envelope="${e.id}"]`);
       const mark = env?.querySelector("[data-postmark]");
-      if (env && mark && moving()) gsap.from(mark, { scale: 1.9, opacity: 0, rotate: 18, duration: 0.45, delay: 0.3, ease: "back.out(2)" });
+      if (env && mark && moving()) gsap.from(mark, { scale: 1.35, opacity: 0, duration: 0.6, delay: 0.3, ease: EASE.enter, clearProps: "transform,opacity" });
       trigger.current = env?.querySelector("button") ?? trigger.current;
     });
   };

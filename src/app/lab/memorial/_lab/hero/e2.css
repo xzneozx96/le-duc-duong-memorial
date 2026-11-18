@@ -26,13 +26,41 @@
   inset: 0;
   background: linear-gradient(to bottom, rgba(244, 242, 239, 0) 38%, rgba(244, 242, 239, 0.85) 62%, var(--paper2) 80%);
 }
-.he2-mist {
+/* the photograph sits in three wrappers so the opening (CSS keyframes) and the scroll
+   hand-over (GSAP) never write the same property on the same element */
+.he2-stage,
+.he2-settle,
+.he2-focus {
   position: absolute;
   inset: 0;
-  background: var(--paper2);
+}
+.he2-stage {
+  will-change: transform;
+}
+.he2-settle {
+  transform-origin: 36% 42%;
+  will-change: transform;
+}
+.he2-focus {
+  will-change: opacity;
+}
+/* the room out of focus: blurred once, on its own layer, never animated */
+.he2-soft .he2-bgImg {
+  filter: blur(14px);
+  transform: scale(1.06);
+}
+.he2-sharp {
+  will-change: opacity;
+}
+/* the hand-over: the hero dims to the films' warm dark as it leaves */
+.he2-dusk {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: var(--dark);
   opacity: 0;
-  visibility: hidden;
   pointer-events: none;
+  will-change: opacity;
 }
 .he2-col {
   position: relative;
@@ -47,6 +75,7 @@
 /* his whole portrait, as large as the screen allows; the name plate overlaps the lower part of
    his suit, which fades into the paper */
 .he2-figure {
+  will-change: transform;
   height: min(86svh, 980px);
   aspect-ratio: 1024 / 1535;
   max-width: calc(100vw - 16px);
@@ -66,6 +95,7 @@
   mask-composite: intersect;
 }
 .he2-plate {
+  will-change: transform, opacity;
   margin-top: -6svh;
   position: relative;
   text-align: center;
@@ -91,6 +121,16 @@
   line-height: 1.12;
   letter-spacing: -0.01em;
   font-optical-sizing: auto;
+}
+/* each word rises out of its own mask; the mask reaches above the line for the stacked
+   Vietnamese marks and below it for the descenders, so nothing is ever clipped at rest */
+.he2-mask,
+.he2-honMask {
+  display: inline-block;
+  clip-path: inset(-0.55em -0.2em -0.3em -0.2em);
+}
+.he2-honMask {
+  display: block;
 }
 .he2-word {
   display: inline-block;
@@ -128,7 +168,8 @@
   border-radius: 999px;
   background: var(--sand);
   color: var(--dark);
-  animation: he2-drift 2.4s ease-in-out infinite;
+  /* three slow breaths once the opening is over, then still */
+  animation: he2-drift 2.4s ease-in-out 3.4s 3;
 }
 @keyframes he2-drift {
   0%, 100% { translate: 0 -2px; }
@@ -244,4 +285,66 @@
     max-width: 46ch;
     text-align: left;
   }
+}
+
+
+/* ---------- the opening ----------
+   One authored moment: he is there first, in focus, in front of a room that is still soft;
+   the focus then travels past him to the generations of students behind him, and his name
+   rises into place. Keyframes start with the first paint and run on the compositor
+   (transform and opacity only); `backwards` holds the first frame during each delay and lets
+   go at the end, so the finished page is the page as written, and GSAP's scroll styles on the
+   wrappers are never overridden. With reduced motion none of this exists. */
+@media (prefers-reduced-motion: no-preference) {
+  .he2-soft {
+    animation: he2-light 1.6s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  }
+  .he2-sharp {
+    animation: he2-pull 2.6s cubic-bezier(0.45, 0, 0.2, 1) 0.8s backwards;
+  }
+  .he2-settle {
+    animation: he2-settle 4.4s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  }
+  .he2-portrait {
+    animation: he2-arrive 1.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s backwards;
+  }
+  .he2-hon {
+    animation: he2-rise 1.4s cubic-bezier(0.16, 1, 0.3, 1) 1s backwards;
+  }
+  .he2-word {
+    animation: he2-rise 1.5s cubic-bezier(0.16, 1, 0.3, 1) 1.15s backwards;
+  }
+  .he2-name > .he2-mask:nth-of-type(2) .he2-word {
+    animation-delay: 1.27s;
+  }
+  .he2-name > .he2-mask:nth-of-type(3) .he2-word {
+    animation-delay: 1.39s;
+  }
+  .he2-rest {
+    animation: he2-follow 1.3s cubic-bezier(0.16, 1, 0.3, 1) 1.9s backwards;
+  }
+  .he2-rest:nth-of-type(2) {
+    animation-delay: 2.05s;
+  }
+  .he2-rest:nth-of-type(3) {
+    animation-delay: 2.2s;
+  }
+}
+@keyframes he2-light {
+  from { opacity: 0.4; }
+}
+@keyframes he2-pull {
+  from { opacity: 0; }
+}
+@keyframes he2-settle {
+  from { transform: scale(1.05); }
+}
+@keyframes he2-arrive {
+  from { opacity: 0; transform: translateY(2.5%); }
+}
+@keyframes he2-rise {
+  from { transform: translateY(150%); }
+}
+@keyframes he2-follow {
+  from { opacity: 0; transform: translateY(14px); }
 }

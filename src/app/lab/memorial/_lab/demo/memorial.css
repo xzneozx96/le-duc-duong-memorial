@@ -619,8 +619,10 @@ html:has(.lm-page) {
     scale 400ms var(--out),
     background-color 300ms ease;
 }
+/* Lucide's play triangle is already drawn about 1px right of its box's centre; half a pixel more
+   puts it between its box centre and its centroid, which reads as centred in the disc. */
 .lm-playDisc svg {
-  translate: 2px 0;
+  translate: 0.5px 0;
 }
 @media (hover: hover) and (pointer: fine) {
   .lm-filmButton:hover .lm-filmMask img {
@@ -1069,6 +1071,52 @@ html:has(.lm-page) {
 }
 .lm-galleryMore .lm-ghost {
   color: var(--ink);
+}
+
+/* the line at the end of a station that hands the reader on to the next one */
+.lm-nextLine {
+  max-width: 26em;
+  margin-top: 56px;
+  padding-top: 18px;
+  border-top: 1.5px solid var(--tan);
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(23px, 2.2vw, 28px);
+  line-height: 1.4;
+  color: var(--forest);
+  text-wrap: pretty;
+}
+/* the two 2020 interviews inside the 1988–2026 station */
+.lm-filmsInline {
+  margin-top: 72px;
+}
+.lm-filmsInlineHead {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(30px, 3vw, 40px);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+.lm-filmsInline .lm-filmRow {
+  margin-top: 36px;
+  gap: 28px;
+}
+.lm-filmsInline .lm-filmTitle {
+  font-size: clamp(22px, 2vw, 28px);
+}
+@media (min-width: 700px) {
+  .lm-filmsInline .lm-filmRow {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+  .lm-filmsInline .lm-film[data-index="1"] {
+    margin-top: 0;
+  }
+  .lm-filmsInline .lm-film[data-index="1"] .lm-filmButton {
+    aspect-ratio: 4 / 5;
+  }
 }
 
 /* the end of the line */

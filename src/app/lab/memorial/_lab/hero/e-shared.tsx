@@ -17,7 +17,7 @@ export const HERO = {
   born: "01.05.1942",
   died: "11.11.2026",
   /** what he is remembered for; his life story: almost every generation going to Germany then passed through his classes */
-  legacy: "Người thầy của nhiều thế hệ lưu học sinh Việt Nam sang Đức, Trường Đại học Ngoại ngữ Hà Nội, 1970–1988.",
+  legacy: "Gần hai mươi năm miệt mài bên bục giảng tại Trường Đại học Ngoại ngữ Hà Nội (1970–1988), thầy đã trao gửi tri thức và vun đắp nền tảng tiếng Đức cho nhiều thế hệ lưu học sinh Việt Nam, đồng hành cùng họ trên những bước đầu tiên của hành trình đến với nước Đức.",
   portrait: { src: "/demo/portrait-cutout.webp", w: 1024, h: 1535, alt: "Chân dung Nhà giáo Lê Đức Dương" },
 };
 
@@ -35,18 +35,24 @@ export function Root({ className, children }: { className?: string; children: Re
 }
 
 /** The name split into words (never letters: the stacked Vietnamese marks must stay whole). */
-export function NameWords({ wordClass }: { wordClass?: string }) {
+export function NameWords({ wordClass, maskClass }: { wordClass?: string; maskClass?: string }) {
   const words = HERO.name.normalize("NFC").split(" ");
   return (
     <>
-      {words.map((w, i) => (
-        <Fragment key={w}>
+      {words.map((w, i) => {
+        const word = (
           <span className={wordClass} data-word>
             {w}
           </span>
-          {i < words.length - 1 ? " " : null}
-        </Fragment>
-      ))}
+        );
+        return (
+          <Fragment key={w}>
+            {/* an optional mask per word, for a reveal that rises out of the line */}
+            {maskClass ? <span className={maskClass}>{word}</span> : word}
+            {i < words.length - 1 ? " " : null}
+          </Fragment>
+        );
+      })}
     </>
   );
 }

@@ -14,6 +14,8 @@ function register() {
   if (registered) return;
   gsap.registerPlugin(ScrollTrigger, SplitText);
   registered = true;
+  // lab only: lets the headless frame-sampling scripts count the live triggers
+  (window as unknown as { __st?: typeof ScrollTrigger }).__st = ScrollTrigger;
 }
 
 export { gsap, ScrollTrigger, SplitText };
@@ -25,18 +27,36 @@ export const MOVE_WIDE = "(prefers-reduced-motion: no-preference) and (min-width
 /** Arrivals decelerate; scrubs stay linear so the page follows the hand. */
 export const EASE = { enter: "expo.out", soft: "power3.out", roll: "power3.inOut" };
 
+/** `idle`: set the effect up once the browser is idle (or after `timeout` ms at the latest),
+ *  so the triggers of sections below the fold are not measured in the same task as hydration,
+ *  while the hero's opening is playing. Use it only for sections that start below the fold:
+ *  their at-rest look is the page as written, so a late setup shows nothing changing. */
 export function useMotion(
   scope: RefObject<HTMLElement | null>,
   setup: (mm: gsap.MatchMedia, el: HTMLElement) => void,
   deps: DependencyList = [],
+  { idle = false, timeout = 2500 }: { idle?: boolean; timeout?: number } = {},
 ) {
   useEffect(() => {
     const el = scope.current;
     if (!el) return;
     register();
-    const mm = gsap.matchMedia(el);
-    setup(mm, el);
-    return () => mm.revert();
+    let mm: gsap.MatchMedia | undefined;
+    const start = () => {
+      mm = gsap.matchMedia(el);
+      setup(mm, el);
+    };
+    if (!idle) {
+      start();
+      return () => mm?.revert();
+    }
+    const ric = window.requestIdleCallback ?? ((cb: () => void) => window.setTimeout(cb, 600));
+    const cic = window.cancelIdleCallback ?? window.clearTimeout;
+    const handle = ric(start, { timeout });
+    return () => {
+      cic(handle);
+      mm?.revert();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps);
 }

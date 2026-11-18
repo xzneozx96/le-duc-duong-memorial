@@ -35,6 +35,8 @@ export type Station = {
   clip?: { poster: string; src: string; w: number; h: number; caption: Two; credit?: Two };
   /** the last sentence of the story, set large as his own account */
   pull?: Two;
+  /** one line at the end of the station that leads the reader on to the next one */
+  next?: Two;
   /** the other photos: "pair" two to a row, "wall" at their own proportions */
   sheet: Photo[];
   sheetKind?: "pair" | "wall";
@@ -95,13 +97,13 @@ export const ui = {
     intro: "Đi tàu sang Đức năm 1955, dạy tiếng Đức ở Thanh Xuân 1970–1988.",
     jumpLabel: "Các phần của trang",
     jump: { film: "Thước phim", journey: "Cuộc đời", book: "Lưu bút" },
-    filmHeading: "Thước phim cuộc đời",
-    filmLine: "Hai cuộc trò chuyện ghi lại năm 2020 trong podcast «Sống chung với Corona» của TS. Trương Hồng Quang, nơi thầy kể lại hành trình từ chuyến tàu năm 1955 đến những năm đứng lớp tiếng Đức.",
+    filmHeading: "Hai buổi trò chuyện năm 2020",
+    filmLine: "Năm 2020, thầy kể lại cuộc đời mình trong hai buổi trò chuyện với TS. Trương Hồng Quang, cho podcast «Sống chung với Corona»: từ chuyến tàu năm 1955 đến những năm đứng lớp tiếng Đức.",
     filmPlay: "Bấm để xem",
     filmNote: "Phim mở từ YouTube khi bạn bấm xem.",
     filmPhotos: "Ảnh trên hai phim: thầy nói chuyện trong các buổi gặp mặt học trò cũ (chú thích mẫu).",
-    journeyHeading: "Một đời gieo chữ",
-    journeyLine: "Hành trình của một nhà giáo giữa hai miền đất, Việt Nam và nước Đức, từ cậu bé làng quê Hà Nam đến người thầy của nhiều thế hệ lưu học sinh.",
+    journeyHeading: "Từ cậu học trò đến người thầy",
+    journeyLine: "Từ sân ga Hàng Cỏ năm 1955, trên những chuyến tàu ngược xuôi qua năm tháng, lặng lẽ đưa một đời người đi qua hai miền quê hương.",
     pullCite: "Lời thầy kể, podcast «Sống chung với Corona», 2020",
     lands: { vn: "Việt Nam", de: "Đức" },
     farewell: { died: "Thầy mất ngày 11.11.2026.", funeral: "Lễ tang ngày 27.11.2026." },
@@ -120,7 +122,7 @@ export const ui = {
     bookPrev: "Lưu bút trước",
     bookNext: "Lưu bút sau",
     bookCount: (i: number, n: number) => `${i} / ${n}`,
-    bookInvite: "Học trò, đồng nghiệp và bạn bè của thầy, xin gửi lại đôi dòng tưởng nhớ. Mỗi lời lưu bút là một phần ký ức về thầy, được giữ lại cho các thế hệ sau. Bạn không cần tài khoản.",
+    bookInvite: "Những lớp học ở Thanh Xuân, những lần gặp lại ở Đức: phần còn lại của câu chuyện nằm trong ký ức của học trò, đồng nghiệp và bạn bè. Xin gửi lại đôi dòng tưởng nhớ thầy, để giữ lại cho các thế hệ sau. Bạn không cần tài khoản.",
     bookOpen: "Viết lưu bút",
     formClose: "Đóng biểu mẫu",
     formCloseNote: "(những gì bạn đã viết vẫn được giữ)",
@@ -190,12 +192,12 @@ export const ui = {
     jumpLabel: "Abschnitte der Seite",
     jump: { film: "Film", journey: "Lebensweg", book: "Gästebuch" },
     filmHeading: "Zwei Gespräche aus dem Jahr 2020",
-    filmLine: "Im Podcast «Sống chung với Corona» von Trương Hồng Quang erzählt er aus seinem Leben.",
+    filmLine: "2020 erzählte er sein Leben in zwei Gesprächen mit Dr. Trương Hồng Quang für den Podcast «Sống chung với Corona»: vom Zug des Jahres 1955 bis zu den Jahren als Deutschlehrer.",
     filmPlay: "Film ansehen",
     filmNote: "Der Film lädt erst von YouTube, wenn Sie ihn starten.",
     filmPhotos: "Fotos auf den Filmen: Er spricht bei Treffen mit früheren Schülern (Beispieltext).",
-    journeyHeading: "Sein Lebensweg",
-    journeyLine: "Der Weg eines Lehrers zwischen Vietnam und Deutschland.",
+    journeyHeading: "Vom Schüler zum Lehrer",
+    journeyLine: "Vom Bahnhof Hàng Cỏ im Jahr 1955 an trugen die Züge, hin und her durch die Jahre, still ein Leben durch zwei Heimaten.",
     pullCite: "Wie er erzählte, Podcast «Sống chung với Corona», 2020",
     lands: { vn: "Vietnam", de: "Deutschland" },
     farewell: { died: "Er ist am 11.11.2026 gestorben.", funeral: "Die Trauerfeier ist am 27.11.2026." },
@@ -215,7 +217,7 @@ export const ui = {
     bookNext: "Nächster Eintrag",
     bookCount: (i: number, n: number) => `${i} / ${n}`,
     bookInvite:
-      "Wer mit ihm gelernt, gearbeitet oder gelebt hat, kann sich hier ins Gästebuch eintragen. Ein Konto ist nicht nötig.",
+      "Der Unterricht in Thanh Xuân, die Wiedersehen in Deutschland: Der Rest seiner Geschichte liegt in den Erinnerungen seiner Schüler, Kollegen und Freunde. Wer mit ihm gelernt, gearbeitet oder gelebt hat, kann sich hier eintragen. Ein Konto ist nicht nötig.",
     bookOpen: "Ins Gästebuch schreiben",
     formClose: "Formular schließen",
     formCloseNote: "(Ihr Text bleibt erhalten)",
@@ -301,6 +303,10 @@ export const stations: Station[] = [
       vi: "Thầy sinh ngày 01.05.1942 và lớn lên ở vùng quê Hà Nam. Cuối tháng 8.1955, sau ba tháng tập trung ở trường Chu Văn An, thầy cùng đoàn 150 em nhỏ lên tàu ở ga Hàng Cỏ.",
       de: "Er wurde am 01.05.1942 geboren und wuchs auf dem Land in Hà Nam auf. Ende August 1955 stieg er nach drei Monaten an der Chu-Văn-An-Schule mit einer Gruppe von 150 Kindern am Bahnhof Hàng Cỏ in den Zug.",
     },
+    next: {
+      vi: "Hơn ba tuần sau, đoàn tàu đến nước Đức.",
+      de: "Nach mehr als drei Wochen erreichte der Zug Deutschland.",
+    },
     sheet: [],
   },
   {
@@ -311,8 +317,8 @@ export const stations: Station[] = [
     vi: "Moritzburg, CHDC Đức",
     de: "Moritzburg, DDR",
     text: {
-      vi: "Ngày 23.9.1955, đoàn đến CHDC Đức và vào Käthe-Kollwitz-Heim ở Moritzburg. Các em học tiếng Đức từ con số không, mọi môn đều học thẳng bằng tiếng Đức. Thầy kể rằng năm 1957 Bác Hồ đến thăm trường.",
-      de: "Am 23.9.1955 kam die Gruppe in der DDR an und zog ins Käthe-Kollwitz-Heim in Moritzburg. Die Kinder lernten Deutsch von null an; alle Fächer wurden direkt auf Deutsch unterrichtet. Er erzählte, dass Hồ Chí Minh die Schule 1957 besuchte.",
+      vi: "Ngày 23.9.1955, đoàn đến CHDC Đức và vào Käthe-Kollwitz-Heim ở Moritzburg. Các em học tiếng Đức từ con số không, qua hình ảnh, không có phiên dịch. Thầy kể thầy cô người Đức rất nghiêm, nhưng đêm đêm vẫn đi đắp chăn cho từng em, và năm 1957 Bác Hồ đến thăm trường.",
+      de: "Am 23.9.1955 kam die Gruppe in der DDR an und zog ins Käthe-Kollwitz-Heim in Moritzburg. Die Kinder lernten Deutsch von null an, über Bilder und ohne Dolmetscher. Er erzählte, die deutschen Erzieher seien sehr streng gewesen, hätten aber jede Nacht nachgesehen, ob alle gut zugedeckt waren, und 1957 habe Hồ Chí Minh die Schule besucht.",
     },
     lead: {
       photo: img("moritzburg-1", 1532, 1021, "Các em xếp hàng đi trước nhà trường ở Moritzburg.", "Die Kinder ziehen in Reihen am Schulhaus in Moritzburg vorbei.", "62% 50%"),
@@ -331,6 +337,10 @@ export const stations: Station[] = [
       ),
     },
     sheetKind: "pair",
+    next: {
+      vi: "Bốn năm sau, cả trường lên tàu về nước, nhưng thầy chưa ở nhà được lâu.",
+      de: "Nach vier Jahren fuhr die ganze Schule zurück nach Vietnam, doch er blieb nicht lange zu Hause.",
+    },
     sheet: [
       img("moritzburg-3", 895, 680, "Ảnh chụp chung trong tuyết trước nhà trường.", "Gruppenfoto im Schnee vor dem Schulhaus.", "50% 55%"),
       {
@@ -360,6 +370,10 @@ export const stations: Station[] = [
         img("radebeul-2", 265, 400, "Một lúc vui đùa trong vườn.", "Ein heiterer Augenblick im Garten."),
       ],
     },
+    next: {
+      vi: "Năm 1962, thầy về nước với một nghề trong tay.",
+      de: "1962 kehrte er mit einem Beruf in der Hand nach Vietnam zurück.",
+    },
     sheet: [],
   },
   {
@@ -370,8 +384,12 @@ export const stations: Station[] = [
     vi: "Hà Nội, Việt Nam",
     de: "Hanoi, Vietnam",
     text: {
-      vi: "Về nước, ban ngày thầy làm ở Viện Đo lường, ban đêm học bổ túc văn hóa và tốt nghiệp lớp 10.",
-      de: "Zurück in Hanoi arbeitete er tagsüber am Institut für Messwesen, lernte nachts weiter und schloss die 10. Klasse ab.",
+      vi: "Về nước, ban ngày thầy làm ở Viện Đo lường, ban đêm học bổ túc văn hóa và tốt nghiệp lớp 10. Thời ấy ít người biết tiếng Đức, nên thầy sớm được gọi đi phiên dịch cho các chuyên gia Đức. Nghề phiên dịch của thầy bắt đầu từ đó.",
+      de: "Zurück in Hanoi arbeitete er tagsüber am Institut für Messwesen, lernte nachts weiter und schloss die 10. Klasse ab. Damals sprachen nur wenige Deutsch, und so wurde er bald als Dolmetscher für deutsche Fachleute geholt. Damit begann seine Arbeit als Dolmetscher.",
+    },
+    next: {
+      vi: "Năm 1965, thầy lên tàu sang Đức lần thứ ba.",
+      de: "1965 fuhr er zum dritten Mal nach Deutschland.",
     },
     sheet: [],
   },
@@ -391,6 +409,10 @@ export const stations: Station[] = [
       maxW: 440,
       photos: [img("magdeburg-1", 900, 1600, "Thầy thời sinh viên ở Magdeburg.", "Als Student in Magdeburg.", "50% 0%")],
     },
+    next: {
+      vi: "Năm 1970, thầy về nước với tấm bằng kỹ sư, nhưng không có việc nào đúng ngành đợi sẵn.",
+      de: "1970 kehrte er als Ingenieur zurück, doch eine Stelle in seinem Fach gab es nicht.",
+    },
     sheet: [],
   },
   {
@@ -401,14 +423,18 @@ export const stations: Station[] = [
     vi: "Thanh Xuân, Hà Nội",
     de: "Thanh Xuân, Hanoi",
     text: {
-      vi: "Thầy dạy tiếng Đức ở trường Đại học Ngoại ngữ và đi phiên dịch. Năm 1975–1976, thầy học thêm sư phạm tiếng Đức một năm ở Leipzig.",
-      de: "Er unterrichtete Deutsch an der Fremdsprachenhochschule und dolmetschte. 1975–1976 studierte er ein Jahr Deutschdidaktik in Leipzig.",
+      vi: "Trường Đại học Ngoại ngữ ở Thanh Xuân đang thiếu giáo viên tiếng Đức, và Bộ hỏi thầy có muốn dạy không. Cậu bé từng học tiếng Đức từ con số không ở Moritzburg nay đứng lớp dạy tiếng Đức, đồng thời đi phiên dịch. Năm 1975–1976, thầy học thêm sư phạm tiếng Đức một năm ở Leipzig.",
+      de: "Der Fremdsprachenhochschule in Thanh Xuân fehlten Deutschlehrer, und das Ministerium fragte ihn, ob er unterrichten wolle. Der Junge, der in Moritzburg von null an Deutsch gelernt hatte, stand nun selbst vor der Klasse und dolmetschte daneben. 1975–1976 studierte er ein Jahr Deutschdidaktik in Leipzig.",
     },
     pull: {
-      vi: "Thầy kể mình là giáo viên rất nghiêm khắc, và gần như mọi thế hệ lưu học sinh đi Đức thời ấy đều qua lớp thầy.",
-      de: "Er erzählte, er sei ein sehr strenger Lehrer gewesen, und fast jeder Jahrgang, der damals zum Studium in die DDR ging, sei durch seine Klasse gegangen.",
+      vi: "Tôi là giáo viên rất nghiêm khắc, và gần như mọi thế hệ lưu học sinh đi Đức thời ấy đều qua lớp tôi.",
+      de: "Ich war ein sehr strenger Lehrer, und fast jeder Jahrgang, der damals zum Studium in die DDR ging, ist durch meine Klasse gegangen.",
     },
     sheetKind: "pair",
+    next: {
+      vi: "Ngày 22.12.1988, thầy lên đường sang Đức, lần này để ở lại.",
+      de: "Am 22.12.1988 brach er nach Deutschland auf, diesmal, um zu bleiben.",
+    },
     sheet: [
       img("thanhxuan-1", 1024, 768, "Thầy cùng gia đình.", "Mit seiner Familie.", "50% 40%"),
       img("thanhxuan-2", 720, 535, "Một tấm ảnh chụp chung thời ấy.", "Ein Gruppenfoto aus jener Zeit."),
@@ -422,8 +448,8 @@ export const stations: Station[] = [
     vi: "Nước Đức",
     de: "Deutschland",
     text: {
-      vi: "Ngày 22.12.1988, thầy trở lại Đức. Năm 2005, nhân 50 năm ngày sang Đức, thầy tự về thăm Moritzburg, và giúp đoàn bạn cũ từ Việt Nam tìm mộ ba người bạn ở nghĩa trang Dresden. Năm 2015, thầy cùng chị Võ Cẩm Trang trả lời phỏng vấn tờ Spiegel.",
-      de: "Am 22.12.1988 kehrte er in die DDR zurück. 2005, zum 50. Jahrestag der Ankunft, fuhr er selbst nach Moritzburg und half den alten Freunden aus Vietnam, die Gräber von drei Kameraden auf dem Dresdner Friedhof zu finden. 2015 gab er gemeinsam mit Võ Cẩm Trang dem Spiegel ein Interview.",
+      vi: "Ở Đức, thầy thường đưa bạn cũ từ Việt Nam về thăm trường xưa. Năm 2005, nhân 50 năm ngày sang Đức, thầy tự về thăm Moritzburg, và giúp đoàn bạn cũ từ Việt Nam tìm mộ ba người bạn ở nghĩa trang Dresden. Năm 2015, thầy cùng chị Võ Cẩm Trang trả lời phỏng vấn tờ Spiegel. Những năm sau này là những lần gặp lại học trò cũ, là gia đình và những chú chó của thầy.",
+      de: "In Deutschland führte er oft alte Freunde aus Vietnam zu ihrer früheren Schule. 2005, zum 50. Jahrestag der Ankunft, fuhr er selbst nach Moritzburg und half den alten Freunden aus Vietnam, die Gräber von drei Kameraden auf dem Dresdner Friedhof zu finden. 2015 gab er gemeinsam mit Võ Cẩm Trang dem Spiegel ein Interview. Die späten Jahre gehörten den Wiedersehen mit früheren Schülern, der Familie und seinen Hunden.",
     },
     lead: {
       photo: img("germany-1", 1280, 960, "Gặp mặt học trò cũ ở Moritzburg.", "Treffen mit früheren Schülern in Moritzburg."),
@@ -431,6 +457,10 @@ export const stations: Station[] = [
       widePos: "50% 96%",
     },
     sheetKind: "wall",
+    next: {
+      vi: "Buổi trò chuyện thứ ba, kể về những năm sau 1988, không còn kịp ghi.",
+      de: "Das dritte Gespräch, über die Jahre nach 1988, kam nicht mehr zustande.",
+    },
     sheet: [
       img("germany-2", 960, 642, "Trên thuyền ở Spreewald.", "Auf dem Kahn im Spreewald."),
       img("germany-3", 768, 1024, "Trước nhà, cùng chú chó.", "Vor dem Haus, mit dem Hund.", "50% 8%"),

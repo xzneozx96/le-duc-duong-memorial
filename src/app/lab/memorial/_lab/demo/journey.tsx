@@ -5,7 +5,7 @@
 // reaches it. The years of the station in view stay beside the line and roll on from the last
 // station when it arrives. Each station carries a small tag for its country. The line ends with
 // the family's photo of him walking away down a tree-lined street, and comes to rest below it.
-import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { Play, MapPin } from "lucide-react";
 import { classes } from "../cls";
 import { farewellPhoto, stations, type Lang, type Photo, type Station, type Strings } from "./content";
@@ -253,7 +253,7 @@ function Media({ st, lang, t, group }: { st: Station; lang: Lang; t: Strings; gr
 
 /* ---------- stations on the line ---------- */
 
-function StationBlock({ st, prevYear, lang, t }: { st: Station; prevYear: string; lang: Lang; t: Strings }) {
+function StationBlock({ st, prevYear, lang, t, extra }: { st: Station; prevYear: string; lang: Lang; t: Strings; extra?: ReactNode }) {
   const group = useGroup(st, lang);
   const start = st.years.split("–")[0];
   return (
@@ -288,6 +288,12 @@ function StationBlock({ st, prevYear, lang, t }: { st: Station; prevYear: string
           </figure>
         )}
         <Media st={st} lang={lang} t={t} group={group} />
+        {extra}
+        {st.next && (
+          <p className={s.nextLine} lang={lang} data-reveal>
+            {st.next[lang]}
+          </p>
+        )}
       </div>
     </section>
   );
@@ -309,13 +315,17 @@ function Farewell({ lang, t }: { lang: Lang; t: Strings }) {
         <h3 id="sign-farewell" className={s.farewellLine} lang={lang} data-reveal>
           {t.title}
         </h3>
+        <p className={s.farewellNote} data-reveal>
+          {t.farewell.died} {t.farewell.funeral}
+        </p>
         <Frame photo={farewellPhoto} lang={lang} group={group} index={0} className={s.farewellPhoto} />
       </div>
     </section>
   );
 }
 
-export function Journey({ lang, t }: { lang: Lang; t: Strings }) {
+/** `films` goes into the 1988–2026 station, after its photos. */
+export function Journey({ lang, t, films }: { lang: Lang; t: Strings; films?: ReactNode }) {
   const root = useRef<HTMLElement>(null);
 
   useMotion(root, (mm, el) => {
@@ -368,53 +378,30 @@ export function Journey({ lang, t }: { lang: Lang; t: Strings }) {
         });
       });
 
-      // Words arrive once per station, in reading order; nothing is held back after that.
-      q(`.${s.station}`).forEach((station) => {
-        const items = station.querySelectorAll("[data-reveal]");
-        gsap.from(items, {
-          opacity: 0,
-          y: 34,
-          duration: 1.1,
-          ease: EASE.enter,
-          stagger: 0.12,
-          scrollTrigger: { trigger: station, start: "top 78%", once: true },
-        });
-        const tag = station.querySelector(`.${s.tag}`);
-        if (tag)
-          gsap.from(tag, { opacity: 0, x: -14, duration: 0.9, ease: EASE.enter, scrollTrigger: { trigger: station, start: "top 78%", once: true } });
-      });
-
-      // Photographs: the mask opens once; the print drifts while it passes.
-      q("[data-frame]").forEach((fig) => {
-        const mask = fig.querySelector<HTMLElement>("[data-mask]");
-        const img = fig.querySelector<HTMLElement>("[data-drift]");
-        if (!mask || !img) return;
-        const last = fig.classList.contains(s.farewellPhoto);
+      // The words and photographs of each station are simply there: the line, its markers and
+      // the rolling years carry the motion of this section. Only his farewell photograph,
+      // the last thing on the line, opens once, slowly, as the line reaches it.
+      const farewell = q(`.${s.farewellPhoto} [data-mask]`)[0];
+      if (farewell)
         gsap.fromTo(
-          mask,
-          { clipPath: last ? "inset(0% 0% 100% 0%)" : "inset(100% 0% 0% 0%)" },
+          farewell,
+          { opacity: 0, y: 28 },
           {
-            clipPath: "inset(0% 0% 0% 0%)",
-            duration: last ? 2.6 : 1.5,
-            ease: last ? "power2.inOut" : "expo.inOut",
-            scrollTrigger: { trigger: fig, start: last ? "top 80%" : "top 90%", once: true },
+            opacity: 1,
+            y: 0,
+            duration: 2.2,
+            ease: EASE.enter,
+            clearProps: "transform,opacity",
+            scrollTrigger: { trigger: farewell, start: "top 82%", once: true },
           },
         );
-        // Small originals are never enlarged, so they do not drift.
-        if (fig.closest(`.${s.aside}`)) return;
-        gsap.fromTo(
-          img,
-          { yPercent: -5, scale: 1.12 },
-          { yPercent: 5, scale: 1.12, ease: "none", scrollTrigger: { trigger: fig, start: "top bottom", end: "bottom top", scrub: true } },
-        );
-      });
 
       return () => {
         delete el.dataset.moving;
         q(`.${s.station}`).forEach((st) => delete st.dataset.reached);
       };
     });
-  });
+  }, [], { idle: true });
 
   return (
     <section ref={root} id="journey" className={s.journey} aria-labelledby="journey-h">
@@ -430,7 +417,14 @@ export function Journey({ lang, t }: { lang: Lang; t: Strings }) {
             <div className={s.lineFill} />
           </div>
           {stations.map((st, i) => (
-            <StationBlock key={st.id} st={st} prevYear={i > 0 ? stations[i - 1].years.split("–")[0] : ""} lang={lang} t={t} />
+            <StationBlock
+              key={st.id}
+              st={st}
+              prevYear={i > 0 ? stations[i - 1].years.split("–")[0] : ""}
+              lang={lang}
+              t={t}
+              extra={st.id === "germany" ? films : undefined}
+            />
           ))}
           <Farewell lang={lang} t={t} />
         </div>
