@@ -1,117 +1,132 @@
 ---
 version: alpha
 name: Một ánh Dương còn mãi
-description: Memorial page for thầy Lê Đức Dương. Paper, ink, mounted prints, two-language station boards and a memory book. Drafted from lab direction A on 2026-11-18, not yet approved.
+description: Memorial page for thầy Lê Đức Dương. Direction B, the night train. A warm near-black ground, archive photos as film frames, white enamel station signs hung from one rail, and the Lưu bút on a raised dark surface.
 status: proposed
 colors:
-  paper: "#F5EFE3"            # page background, warm off-white
-  paper-raised: "#FFFCF6"     # print frames, the pinned tribute, the open form
-  field: "#FFFFFF"            # inside text inputs and the textarea
-  hidden-surface: "#EDE6D8"   # admin page only: a hidden post
-  ink: "#2A2522"              # all body text, headings, primary button, sign plates
-  ink-muted: "#5E554C"        # captions, meta lines, hints, the rail
-  amber-ink: "#8F5300"        # the title (Vietnamese or German), nothing else
-  edge: "#7A6F64"             # input and button borders, admin row edges (graphics and edges only, never text)
-  hairline: "#D8CFC1"         # decorative print edge and section rules (never the only boundary of a control)
-  error: "#A3261B"            # error text and its icon
-  success: "#2F6B3A"          # success text and its icon
-  viewer-backdrop: "#14110F"  # full-screen photo viewer
-  on-ink: "#F5EFE3"           # text on ink plates and on the viewer
-  on-ink-muted: "#C9BFB2"     # caption text in the viewer
+  ground: "#161412"           # page background
+  surface: "#221F1B"          # the Lưu bút section, the form, admin rows
+  well: "#0C0B0A"             # behind photos while they load, film facades, the viewer
+  hidden-surface: "#2E2A25"   # admin only: a hidden entry
+  text: "#EFE8DC"             # all reading text; never pure white
+  muted: "#B9AFA0"            # captions, meta, hints, years in the header
+  amber: "#F2B347"            # the title and actions only (spec Constraints, Q6): never running text, years or headings
+  on-amber: "#161412"         # labels on amber fills, 9.9:1
+  enamel: "#EFE8DC"           # station signs, the active language, focus rings
+  on-enamel: "#161412"        # letters on enamel
+  edge: "#8C8274"             # rail, ticks, brackets, input and button borders (graphics only, never text)
+  rule: "#3A352F"             # decorative section and entry rules
+  keyline: "#4A443C"          # 1 px line around film frames
+  error: "#FF9C85"            # error text and its icon
+  success: "#9BD3A6"          # success text and its icon
 typography:
   display-name:
-    fontFamily: Literata
-    fontSize: 40px
-    fontWeight: 600
-    lineHeight: 1.2
+    fontFamily: Archivo Narrow
+    fontSize: 52px
+    fontWeight: 700
+    lineHeight: 1.1
+    textTransform: uppercase
   display-name-wide:
-    fontFamily: Literata
-    fontSize: 60px
-    fontWeight: 600
-    lineHeight: 1.15
+    fontFamily: Archivo Narrow
+    fontSize: 96px
+    fontWeight: 700
+    lineHeight: 1.05
+    textTransform: uppercase
   title:
-    fontFamily: Literata
+    fontFamily: Archivo Narrow
     fontSize: 30px
     fontWeight: 500
-    lineHeight: 1.3
+    lineHeight: 1.2
   title-wide:
-    fontFamily: Literata
-    fontSize: 40px
+    fontFamily: Archivo Narrow
+    fontSize: 44px
     fontWeight: 500
-    lineHeight: 1.3
+    lineHeight: 1.2
   years:
-    fontFamily: Be Vietnam Pro
-    fontSize: 22px
+    fontFamily: Archivo Narrow
+    fontSize: 20px
     fontWeight: 500
-    lineHeight: 1.3
-    letterSpacing: 0.02em
+    lineHeight: 1.2
+    letterSpacing: 0.2em
     fontFeature: "tnum"
   heading-section:
-    fontFamily: Literata
-    fontSize: 32px
-    fontWeight: 600
-    lineHeight: 1.25
+    fontFamily: Archivo Narrow
+    fontSize: 36px
+    fontWeight: 700
+    lineHeight: 1.15
+    textTransform: uppercase
   heading-section-wide:
-    fontFamily: Literata
-    fontSize: 42px
-    fontWeight: 600
-    lineHeight: 1.2
+    fontFamily: Archivo Narrow
+    fontSize: 52px
+    fontWeight: 700
+    lineHeight: 1.1
+    textTransform: uppercase
   sign-primary:
-    fontFamily: Be Vietnam Pro
-    fontSize: 24px
-    fontWeight: 600
-    lineHeight: 1.3
+    fontFamily: Archivo Narrow
+    fontSize: 30px
+    fontWeight: 700
+    lineHeight: 1.1
+    textTransform: uppercase
   sign-secondary:
-    fontFamily: Be Vietnam Pro
-    fontSize: 22px
-    fontWeight: 400
-    lineHeight: 1.3
-  sign-years:
-    fontFamily: Be Vietnam Pro
+    fontFamily: Archivo Narrow
     fontSize: 20px
     fontWeight: 500
-    lineHeight: 1.3
-    fontFeature: "tnum"
-  heading-post:
-    fontFamily: Literata
+    lineHeight: 1.2
+  sign-years:
+    fontFamily: Archivo Narrow
     fontSize: 22px
     fontWeight: 600
-    lineHeight: 1.35
+    lineHeight: 1.2
+    letterSpacing: 0.18em
+    fontFeature: "tnum"
+  heading-entry:
+    fontFamily: Archivo Narrow
+    fontSize: 26px
+    fontWeight: 600
+    lineHeight: 1.2
+  film-title:
+    fontFamily: Spectral
+    fontSize: 24px
+    fontWeight: 400
+    lineHeight: 1.3
   body-lg:
-    fontFamily: Literata
+    fontFamily: Spectral
     fontSize: 22px
     fontWeight: 400
-    lineHeight: 1.55
+    lineHeight: 1.6
   body:
-    fontFamily: Literata
+    fontFamily: Spectral
     fontSize: 20px
     fontWeight: 400
-    lineHeight: 1.65
+    lineHeight: 1.7
   caption:
-    fontFamily: Literata
+    fontFamily: Spectral
     fontSize: 18px
     fontWeight: 400
     lineHeight: 1.5
   label:
-    fontFamily: Be Vietnam Pro
+    fontFamily: Archivo Narrow
+    fontSize: 18px
+    fontWeight: 600
+    lineHeight: 1.2
+    letterSpacing: 0.06em
+    textTransform: uppercase
+  meta:
+    fontFamily: Archivo Narrow
+    fontSize: 18px
+    fontWeight: 400
+    lineHeight: 1.4
+    letterSpacing: 0.02em
+    fontFeature: "tnum"
+  credit:
+    fontFamily: Archivo Narrow
     fontSize: 18px
     fontWeight: 500
     lineHeight: 1.4
-  label-strong:
-    fontFamily: Be Vietnam Pro
-    fontSize: 18px
-    fontWeight: 600
-    lineHeight: 1.4
-  meta:
-    fontFamily: Be Vietnam Pro
-    fontSize: 18px
-    fontWeight: 400
-    lineHeight: 1.45
-    fontFeature: "tnum"
+    letterSpacing: 0.04em
 rounded:
   none: 0px
-  print: 2px
-  control: 6px
+  sign: 4px
   full: 9999px
 spacing:
   "1": 4px
@@ -125,232 +140,236 @@ spacing:
   "9": 96px
   page-x: 20px
   page-x-wide: 48px
-  rail-gutter: 44px
-  rail-gutter-wide: 80px
-  measure: 40rem
-  wide: 65rem
+  section-y: 48px
+  section-y-wide: 72px
+  station-gap: 72px
+  station-gap-wide: 112px
+  rail-column: 28px
+  rail-gap: 18px
+  stop-measure: 760px
+  content-max: 1200px
   breakpoint-wide: 900px
   target-min: 48px
   target-primary: 56px
 components:
-  print:
-    backgroundColor: "{colors.paper-raised}"
-    rounded: "{rounded.print}"
-    padding: 10px
-  print-wide:
-    padding: 14px
   station-sign:
-    backgroundColor: "{colors.ink}"
-    textColor: "{colors.on-ink}"
-    rounded: "{rounded.control}"
-    padding: 16px
+    backgroundColor: "{colors.enamel}"
+    textColor: "{colors.on-enamel}"
+    rounded: "{rounded.sign}"
+    padding: 12px 20px 14px
   button-primary:
-    backgroundColor: "{colors.ink}"
-    textColor: "{colors.on-ink}"
-    typography: "{typography.label-strong}"
-    rounded: "{rounded.control}"
-    height: 56px
-    padding: 24px
-  button-secondary:
-    backgroundColor: "{colors.paper}"
-    textColor: "{colors.ink}"
+    backgroundColor: "{colors.amber}"
+    textColor: "{colors.on-amber}"
     typography: "{typography.label}"
-    rounded: "{rounded.control}"
+    rounded: "{rounded.none}"
+    height: 56px
+    padding: 26px
+  button-ghost:
+    backgroundColor: "transparent"
+    textColor: "{colors.text}"
+    typography: "{typography.label}"
+    rounded: "{rounded.none}"
     height: 48px
-    padding: 20px
+    padding: 18px
   input:
-    backgroundColor: "{colors.field}"
-    textColor: "{colors.ink}"
+    backgroundColor: "{colors.ground}"
+    textColor: "{colors.text}"
     typography: "{typography.body}"
-    rounded: "{rounded.control}"
+    rounded: "{rounded.none}"
     height: 56px
     padding: 14px
-  lang-switch-option:
-    typography: "{typography.label}"
-    height: 48px
-    padding: 16px
+  film-facade:
+    backgroundColor: "{colors.well}"
+    textColor: "{colors.text}"
   viewer:
-    backgroundColor: "{colors.viewer-backdrop}"
-    textColor: "{colors.on-ink}"
+    backgroundColor: "{colors.well}"
+    textColor: "{colors.text}"
 motion:
   easing:
     out: "cubic-bezier(0.23, 1, 0.32, 1)"       # UI enter and exit
     in-out: "cubic-bezier(0.77, 0, 0.175, 1)"   # movement on screen
-    enter: "cubic-bezier(0.16, 1, 0.3, 1)"      # a new memory arriving
-    colour: "ease"                              # hover, marker fill, row surface
+    enter: "cubic-bezier(0.16, 1, 0.3, 1)"      # a new entry arriving
+    colour: "ease"                              # hover, bracket light, row surface
   duration:
     press: 120ms          # button press scale
     quick: 180ms          # hover colour, admin row surface, switch fill
+    cut-out: 200ms        # viewer open, first half: the page fades to the well colour
+    cut-in: 250ms         # viewer open, second half: the photo fades in
     exit: 200ms           # viewer close
-    overlay: 300ms        # viewer open
-    arrive: 400ms         # a new post appearing on the wall
-    marker: 600ms         # a station marker filling as the reader reaches it
+    arrive: 400ms         # a new Lưu bút entry appearing
+    bracket: 600ms        # a station's bracket lights as the reader reaches it
   story:
-    transition: 400ms
-    focal: 600ms          # the station marker fill is the page's one authored moment
+    focal: 600ms          # the bracket light is the page's one authored moment
     beats: {}
-  stagger: { ui: 0ms, story: 0ms }   # nothing on this site staggers
-  reduced: "fewer and gentler: opacity and colour stay, every movement and scale goes, smooth scrolling goes"
+  stagger: { ui: 0ms, story: 0ms }
+  reduced: "fewer and gentler: opacity and colour stay, every movement and scale goes, the viewer cut becomes one 150 ms fade, smooth scrolling goes"
 omitted:
-  - section: dark theme
-    reason: "One light theme. The paper and print idea depends on it, and readers' devices default to light. The photo viewer is the only dark surface."
+  - section: light theme
+    reason: "Direction B is dark by the family's choice. There is no light mode at launch; see the older-eyes rules under Colors."
+  - section: elevation
+    reason: "Nothing casts a shadow. Depth comes from the ground, surface and well values and from the enamel signs."
 ---
 
 # DESIGN.md: memorial page for thầy Lê Đức Dương
 
-Status: proposed on 2026-11-18 by the ux lens of item 001, revised the same day against the newer design references. The repo had no design system, so this is a first draft for the family to approve at the design gate. It is written from direction A of the direction lab (`ux.md`, Lab), ahead of the lab build because the launch is 8 days away. If the family picks B or C, or the lab shows a value that does not work, this file is rewritten from the values the chosen lab route actually uses. Its home is `DESIGN.md` at the repo root. It sits in the item's `design/` folder because the ux-designer may not write outside it; the design orchestrator moves it after the gate.
+Status: proposed, rewritten on 2026-11-18 from lab direction B, "the night train", which the human picked from the round-1 lab. Values come from the lab as built and checked in the browser at 375 and 1280 px (`src/app/lab/memorial/_lab/direction-b.tsx` and `b.css`, commit b03dca2), with the corrections marked "changed from the lab" below. The repo had no design system before. Its home is `DESIGN.md` at the repo root; it sits in the item's `design/` folder because the ux-designer may not write outside it, and the design orchestrator moves it after the gate.
 
 ## Overview
 
-A family album with a memory book at the back. The page is paper with dark ink, a book serif, and photos mounted as prints with their captions. His life runs down the page as a railway line, with a two-language board at each station, because his story starts with the 1955 train from Hàng Cỏ, which took 150 children to the GDR, and runs between two homelands. The memory wall is a book called "Lưu bút" / "Gästebuch": Lưu bút is the book Vietnamese students write in for classmates and teachers at the end of their school years, and his former students are most of its writers. The station boards are the one memorable element. Everything around them stays plain.
+His life seen from a night train. The black-and-white photos of 1955 to 1970 run edge to edge like film frames, and each place of his life is a white enamel station sign hung from one rail, its Vietnamese name above its German name. The amber title and the amber buttons are the only warm light on the page. The Lưu bút sits at the end on a slightly raised dark surface, where his students write to him.
 
-Readers are his students, colleagues and friends, mostly in their 60s and 70s, in Vietnam and Germany, many on phones. So the type is large, every control has a text label, and nothing moves on its own.
+Readers are mostly 60 to 75, in Vietnam and Germany, many on phones. Dark pages are harder for some older eyes, so this file sets rules for light text on dark (Colors) that are stricter than AC-6 asks.
 
-The page should read like a family album, not a funeral notice. Many photos show a laughing man with his dogs, family and alumni. A dark, black-framed memorial look would fight those photos. The brainstorm rejected it for that reason, and rejected the dark navy AI mockups.
-
-Paper ground, ink, a large serif, prints with captions, the railway and amber on the title only are pinned by the frozen spec (Constraints) and the brainstorm. A warm paper ground with a serif is also the most common AI default for family subjects (`visual-slop.md`, `cream-palette`). Because the ground is pinned, the page has to earn its specificity elsewhere: the two-language station boards, real captions in the mounts, the memory book, and the 1955 train in the intro.
+The page must not read as a dark mourning page. What keeps it from that: warm light text instead of white, the bright amber title and actions, colour photos left in colour, the laughing reunion photos of the Germany station at full width, and no black frames, candles or crosses.
 
 ## Direction contract
 
-The contract of lab direction A, proposed. Round 1 now has three directions with different looks (`ux.md`, Lab), and A gained oxblood station plates (#6E2A22, 8.8:1 on paper), drawn photo corners, Literata italic captions and a sticky 5 and 7 column album grid at 1280 px. If the family picks A, this file is updated with those values from the lab route; if B or C, the whole file is rewritten from that route and the spec's paper pin is amended first.
-
-- **THESIS.** His life is a train journey between two homelands, and the people he taught write in one shared memory book. The page refuses the category default: a centred portrait in an oval, candles, doves, script type, and guestbook cards in a grid.
-- **OWN-WORLD.** Warm paper and dark ink, Literata for every word of story and memory, Be Vietnam Pro only on station boards, years and controls. Flat ink station boards with a Vietnamese line over a German line. Photos mounted as prints with a caption inside the mount. One amber-ink line, the title. The memory wall, "Lưu bút" / "Gästebuch", is one long page of a book, entries ruled by hairlines, no boxes.
-- **STORY.** The visitor recognises his face and name first, understands that his life ran from Hà Nam through the GDR to Germany, sees the people and places in photos, then writes into the book and sees the entry there at once.
-- **FIRST VIEWPORT.** Phone: the language switch top right; his portrait print centred at about 240 px wide; his name at 40 px; 1942–2026; the title in amber-ink; two lines of intro; the three jump links, the third of which opens the book. Wide: portrait print 360 px on the left, the same column of text on the right, top-aligned. Memory test: "his photo on paper like an album, and a line that said where he went in 1955".
-- **FORM.** Candidates 1 (the family photo album) and 2 (the condolence book that Vietnamese and German funerals both keep), joined.
-- **FINISH.** Reviewed by the design-reviewer, chosen by the family, and this file rewritten from the chosen lab option's actual values.
+- **THESIS.** His life is a night journey between two homelands, told in film frames and station signs. The page refuses the category default: a centred portrait in an oval, candles, doves, script type, and guestbook cards in a grid.
+- **OWN-WORLD.** A warm near-black ground, warm light text, bright amber on the title and on everything you can press. Archivo Narrow in the condensed letters of a platform sign for his name, the signs and every control; Spectral for everything people read. White enamel signs with a dark inner border. Photos edge to edge with a thin keyline, no mounts.
+- **STORY.** The visitor sees his face filling half the screen and his name in tall capitals, understands that his life ran from Hà Nam through the GDR to Germany station by station, sees the people and places as film frames, then writes in the Lưu bút and sees the entry there at once.
+- **FIRST VIEWPORT.** Phone: his portrait edge to edge at 4:5, then the language switch, the years, his name in 52 px capitals, the amber title, two lines of intro and three jump links. Wide: the portrait fills the left 45% of the first screen from top to bottom; the same text column sits on the right, centred vertically. Memory test: "his face in the dark and his name in tall white letters, like a station at night".
+- **FORM.** Candidate 8, the film archive, with the railway carried by candidate 3's station signs.
+- **FINISH.** Reviewed by the design-reviewer, chosen by the family (2026-11-18), and this file written from the chosen lab route's values. Done when the design gate approves it.
 
 ## Colors
 
-All ratios were measured on 2026-11-18 with the WCAG 2.x formula in a short Python script.
+All ratios measured on 2026-11-18 with the WCAG 2.x formula.
 
 | Token | Hex | Role | Contrast |
 |---|---|---|---|
-| paper | #F5EFE3 | Page background | |
-| paper-raised | #FFFCF6 | Print frames, the pinned tribute, the open form | |
-| field | #FFFFFF | Inside inputs | |
-| hidden-surface | #EDE6D8 | A hidden post on the admin page | |
-| ink | #2A2522 | Body text, headings, primary button, sign plates | 13.2:1 on paper, 14.8:1 on paper-raised, 12.2:1 on hidden-surface |
-| ink-muted | #5E554C | Captions, meta, hints, the rail | 6.4:1 on paper, 7.1:1 on paper-raised, 5.9:1 on hidden-surface |
-| amber-ink | #8F5300 | The title only | 5.4:1 on paper |
-| edge | #7A6F64 | Borders of inputs, buttons, admin rows, rail sleepers | 4.3:1 on paper, 4.9:1 on field, 4.0:1 on hidden-surface (UI edges need 3:1) |
-| hairline | #D8CFC1 | Decorative edges and rules | Decoration only |
-| error | #A3261B | Error text and icon | 6.4:1 on paper, 7.4:1 on field |
-| success | #2F6B3A | Success text and icon | 5.6:1 on paper |
-| on-ink | #F5EFE3 | Text on ink and on the viewer | 13.2:1 on ink, 16.4:1 on viewer-backdrop |
-| on-ink-muted | #C9BFB2 | Captions in the viewer, disabled viewer controls | 10.4:1 on viewer-backdrop |
+| ground | #161412 | Page background | |
+| surface | #221F1B | Lưu bút section, form, admin rows | |
+| well | #0C0B0A | Behind loading photos, film facades, the viewer | |
+| hidden-surface | #2E2A25 | A hidden entry on the admin page | |
+| text | #EFE8DC | All reading text | 15.1:1 on ground, 13.5:1 on surface, 16.2:1 on well, 11.7:1 on hidden-surface |
+| muted | #B9AFA0 | Captions, meta, hints, header years | 8.5:1 on ground, 7.6:1 on surface, 9.1:1 on well, 6.6:1 on hidden-surface |
+| amber | #F2B347 | The title, and actions: primary button, clip play pill, film play controls, text buttons, the lit rail bracket | 9.9:1 on ground, 8.8:1 on surface, 10.6:1 on well |
+| on-amber | #161412 | Labels on amber fills | 9.9:1 on amber |
+| enamel, on-enamel | #EFE8DC, #161412 | Signs, active language | 15.1:1 |
+| edge | #8C8274 | Rail, ticks, brackets, borders of inputs and buttons | 4.9:1 on ground, 4.3:1 on surface, 3.8:1 on hidden-surface (UI edges need 3:1) |
+| rule, keyline | #3A352F, #4A443C | Section and entry rules, the line around frames | Decoration only (1.5:1 and 1.9:1) |
+| error | #FF9C85 | Error text and icon | 9.1:1 on ground, 8.1:1 on surface |
+| success | #9BD3A6 | Success text and icon | 10.7:1 on ground, 9.6:1 on surface |
 
-Disabled controls keep readable text (AC-6 covers all text): on paper, ink-muted text on a hidden-surface fill, 5.9:1; in the viewer, on-ink-muted text with no border, 10.4:1. Opacity is never used to dim text.
+**Light text on dark, for older eyes.** AC-6 asks 4.5:1. These rules go further, because light strokes on a dark ground look thinner and can halo for readers with astigmatism or cataracts:
 
-Rules:
+- **No pure white.** Reading text is #EFE8DC. A ceiling of 16:1 for running text; #FFFFFF on the ground would be 18.5:1 and is not used.
+- **No light weights.** Spectral 400 is the lightest weight on the page; Archivo Narrow 500 the lightest for labels. Nothing at 300.
+- **Size and spacing.** Body 20 px with line height 1.7, measure at most 70 characters (the 760 px stop column). Captions 18 px with line height 1.5.
+- **Secondary text at 7:1 or more**, not just 4.5:1 (muted is 7.6 to 9.1).
+- **No italic for reading text** (changed from the lab, which set captions in italic). Spectral italic at 18 px light-on-dark is the hardest text on the page to read.
+- **No text over photos.** Captions sit under frames.
+- **Bright fields stay small.** Enamel is for signs and the active language, amber fills for buttons and play pills. No large white panels next to reading text.
 
-- **Amber is for the title alone.** A bright amber fails 4.5:1 on paper, and AC-6 asks 4.5:1 for all text. The amber that passes reads as a dark bronze-amber. The family sees the real swatch before approving.
-- **edge and hairline never colour text.** edge is under 4.5:1 on paper. It is for borders, rail sleepers and icons beside words only.
-- **No colour carries meaning alone.** Errors have an icon and words. A hidden post on the admin page has the word "Đã ẩn" / "Ausgeblendet" and a different surface.
-- **No raw hex in components.** Components read these tokens as CSS custom properties (`--color-paper` and so on).
-- Text selection uses ink on hidden-surface. The caret is ink.
+Other rules:
+
+- **Amber marks the title and things you can press** (spec Constraints, the human's answer to Q6, 2026-11-18): the title in either language, the primary button, the clip's play pill, the film play controls, text buttons such as "Đọc hết bài", and the rail bracket once lit. Labels on amber fills are on-amber #161412 at 9.9:1 (measured); amber text on ground, surface and well is 9.9:1, 8.8:1 and 10.6:1. Never on running text, years, headings, captions or meta. Changed from the lab: the station years, the film episode labels and the jump-link underlines leave amber.
+- **edge, rule and keyline never colour text.**
+- **No colour carries meaning alone.** Errors have an icon and words; a hidden admin row has the word "Đang ẩn" / "Ausgeblendet" and a different surface.
+- **No raw hex in components** (changed from the lab, which has #3a352f, #4a443c, #0c0b0a and #000 inline; they are now rule, keyline and well).
+- Text selection: on-enamel on enamel. The caret is text.
 
 ## Typography
 
-Two families, both free under the SIL Open Font License, both on Google Fonts, both self-hosted through `next/font`, so no browser request goes to Google.
+Two families, both free (SIL Open Font License), both from Google Fonts, both self-hosted through `next/font` with the subsets `latin`, `latin-ext` and `vietnamese`.
 
-- **Literata** (variable, roman only; the italic file was checked but is not used) for names, headings, body, captions and posts. It is a book face drawn for long reading on screens, with a large x-height that stays legible at 20 px.
-- **Be Vietnam Pro** for station boards, years, labels, buttons and meta lines. Vietnamese designers drew it, and its plain shapes suit railway station boards.
+- **Archivo Narrow** (500, 600, 700) for his name, the title, section headings, station signs, years, labels, buttons and meta. Its condensed letters are those of a platform sign.
+- **Spectral** (400, 500) for the intro, station text, captions, film titles, Lưu bút entries and form input.
 
-Glyph coverage was measured on 2026-11-18 with fontTools on the Google Fonts files `Literata[opsz,wght].ttf`, `Literata-Italic[opsz,wght].ttf`, `BeVietnamPro-Regular.ttf`, `-Medium.ttf` and `-SemiBold.ttf`. Each has all 134 Vietnamese letters (every vowel with every tone mark in both cases, plus đ and Đ), ä ö ü Ä Ö Ü ß ẞ, the quotes „ “ ” ‚ ‘ ’ « », the en dash and the ellipsis. None is missing. The `next/font` call must load the subsets `latin`, `latin-ext` and `vietnamese`, or the Vietnamese letters fall back to a system font and AC-5 fails.
-
-Scale. Phone values apply from 0 px. The wide values apply from `breakpoint-wide` (900 px).
+Glyph coverage was measured on 2026-11-18 with fontTools on `ArchivoNarrow[wght].ttf`, `Spectral-Regular.ttf` and `Spectral-Medium.ttf`: all 134 Vietnamese letters in both cases with đ and Đ, ä ö ü Ä Ö Ü ß ẞ, „ “ ” ‚ ‘ ’ « », the en dash and the ellipsis. None is missing.
 
 | Token | Use | Phone | Wide |
 |---|---|---|---|
-| display-name | His name in the header | 40 px Literata 600 | 60 px |
-| title | "Một ánh Dương còn mãi" on the Vietnamese page, "Ein Sonnenstrahl, der bleibt" on the German page (draft), amber-ink | 30 px Literata 500, roman | 40 px |
-| years | 1942–2026 under the name | 22 px Be Vietnam Pro 500, tabular | 26 px |
-| heading-section | Section headings | 32 px Literata 600 | 42 px |
-| sign-primary | Vietnamese line of a station board | 24 px Be Vietnam Pro 600 | 28 px |
-| sign-secondary | German line of a station board | 22 px Be Vietnam Pro 400 | 24 px |
-| sign-years | Years above a station board | 20 px Be Vietnam Pro 500, tabular | 20 px |
-| heading-post | Name on a wall post, video titles | 22 px Literata 600 | 24 px |
-| body-lg | The two-line intro | 22 px Literata | 24 px |
-| body | Paragraphs, messages, input text | 20 px Literata, line height 1.65 | 20 px |
-| caption | Print captions | 18 px Literata | 18 px |
-| label, label-strong | Buttons, form labels, language switch, nav links | 18 px Be Vietnam Pro 500 or 600 | 18 px |
-| meta | Post meta, credits, hints, counters, privacy note, errors | 18 px Be Vietnam Pro 400 | 18 px |
+| display-name | His name, capitals | 52 px Archivo Narrow 700, line height 1.1 | 96 px, 1.05 |
+| title | "Một ánh Dương còn mãi" / "Ein Sonnenstrahl, der bleibt", amber, mixed case | 30 px Archivo Narrow 500 | 44 px |
+| years | 1942–2026 in the header, muted | 20 px Archivo Narrow 500, tracking 0.2em, tabular | 20 px |
+| heading-section | Section headings, capitals | 36 px Archivo Narrow 700, 1.15 | 52 px, 1.1 |
+| sign-primary | Vietnamese line of a sign, capitals | 30 px Archivo Narrow 700, 1.1 | 30 px |
+| sign-secondary | German line of a sign, mixed case | 20 px Archivo Narrow 500 | 20 px |
+| sign-years | Years under a sign, text colour | 22 px Archivo Narrow 600, tracking 0.18em, tabular | 22 px |
+| heading-entry | Name on a Lưu bút entry | 26 px Archivo Narrow 600 | 26 px |
+| film-title | Film titles on the facades | 24 px Spectral 400 | 24 px |
+| body-lg | The two-line intro | 22 px Spectral 400, 1.6 | 24 px |
+| body | Station text, entries, input | 20 px Spectral 400, 1.7 | 20 px |
+| caption | Photo captions, roman | 18 px Spectral 400, 1.5, muted | 18 px |
+| label | Buttons, jump links, language switch, capitals | 18 px Archivo Narrow 600, tracking 0.06em | 18 px |
+| meta | Entry meta, hints, counters, privacy note, errors | 18 px Archivo Narrow 400, tracking 0.02em | 18 px |
+| credit | Press credit under a caption | 18 px Archivo Narrow 500, text colour | 18 px |
 
 Rules:
 
-- **18 px is the floor for every word on the page,** including credits, counters, hints and errors. AC-6 asks 18 px for body text, and this audience has to read all of it.
-- **No all caps anywhere.** Vietnamese stacked marks (Ầ, Ẫ, Ộ) collide above capitals, and all caps is harder to read.
-- Line height is at least 1.15 on display lines and 1.3 on other headings, so stacked marks never touch the line above. Headings use `text-wrap: balance`, paragraphs `text-wrap: pretty`.
-- Body measure is `measure` (40 rem, about 65 characters of Literata at 20 px).
-- Years and dates use tabular figures. Dates are written 20.11.2026 in both languages.
-- Quotes follow the language: “…” in Vietnamese, „…“ in German. The ellipsis is one character.
-- `font-display: swap` with the metric-matched fallback `next/font` generates, so header text never waits for a font file (AC-26).
+- **18 px is the floor for every word** (AC-6), including credits, counters, hints and errors.
+- **Capitals are part of the sign world** the family picked: his name, section headings, the Vietnamese sign line and labels. Never on sentences longer than a heading, never on reading text, never on the German sign line.
+- **Line height for capitals with Vietnamese marks** is at least 1.05 at display size and 1.1 elsewhere (changed from the lab's 0.98 on the name). Stacked marks over capitals (Ấ, Ứ, Ộ) need the room when a name wraps to two lines.
+- **Section headings are real headings** at 36 to 52 px (changed from the lab, which set them at 18 px in tracked capitals, where they read as small labels and the tracking was 0.24em). Tracking above 0.06em is kept only on digits (years).
+- Body measure at most 70 characters. Headings use `text-wrap: balance`, paragraphs `text-wrap: pretty`.
+- Years and dates use tabular figures; dates are written 20.11.2026 in both languages.
+- Quotes follow the language: “…” in Vietnamese, „…“ in German.
+- `font-display: swap` with the metric-matched fallbacks `next/font` generates (AC-26).
 
 ## Layout
 
-- One column, centred. Text sits in `measure`. Photo grids, the pair of films and the admin list may widen to `wide` (65 rem).
-- Page side padding is `page-x` on phones and `page-x-wide` from 900 px.
-- Space above a section heading: `spacing.8` on phones, `spacing.9` from 900 px. Between blocks inside a section, `spacing.5`. More space above a heading than below it.
-- The timeline reserves a left gutter for the railway: `rail-gutter` on phones, `rail-gutter-wide` from 900 px. Station content sits right of it.
-- Nothing scrolls sideways at 320, 375 or 1280 px. User text wraps with `overflow-wrap: anywhere`.
-- Targets: `target-min` (48 px) for every control, `target-primary` (56 px) for the main buttons (open the form, send, viewer controls). At least 8 px between targets.
-- One breakpoint, `breakpoint-wide` at 900 px.
-
-## Motion
-
-The tokens are in the front matter. Every motion answers something the reader did, except the station marker fill, which answers the reader's own scroll. Nothing moves on page load, nothing hides content at rest, and nothing blocks a control while it moves.
-
-| Motion | What it says | Spec | Reduced motion |
-|---|---|---|---|
-| Station marker fills | "You have reached this station" | Marker fill from paper to ink over `marker` with `colour` easing when the board crosses the middle of the screen; stays filled; scrolling back up does not unfill | Fill changes at once, no transition |
-| Viewer opens | The photo came from that print | Backdrop opacity 0 to 1 and photo `scale(0.97)` to 1 with opacity, over `overlay` with `out` | Opacity only, `quick` |
-| Viewer closes | Back to the page | Opacity to 0 over `exit` with `out`, no scale | Opacity only, `quick` |
-| Next or previous photo | | None. Keyboard-initiated and repeated, so the photo swaps at once. A touch swipe follows the finger 1:1 and settles over `exit` with `out` | Swipe still follows the finger; no settle movement |
-| New post arrives | Your entry is in the book | The new entry fades in and rises 8 px over `arrive` with `enter`; it keeps a hidden-surface tint and a "Vừa đăng" / "Gerade eingetragen" label until reload | Opacity only, `arrive`; tint and label stay |
-| Form opens | | None. The form appears in place and focus moves to Name | None |
-| Language switch | | Page text swaps at once (a crossfade would dim every line). The pressed option's fill changes over `quick` | Fill changes at once |
-| Button press | The press registered | `scale(0.98)` over `press` with `out`, pointer and touch only | Colour change only |
-| Hover | | Border and text colour over `quick` with `colour`, only under `(hover: hover) and (pointer: fine)` | Same |
-| Admin hide or show | The row changed state | Row surface colour over `quick` | At once |
-| Jump links | Where you went | `scroll-behavior: smooth` | Instant jump |
-
-Animated properties are only `opacity`, `transform` and `background-color`. No `transition: all`. No bounce, no stagger, no scroll-linked movement.
-
-## Elevation and depth
-
-Prints are the only raised things. A print has a soft offset shadow, `0 1px 2px` plus `0 8px 18px -8px`, both in ink at low opacity (12% and 28%). Nothing else has a shadow: not posts, not the form, not buttons. Posts are separated by space and a hairline rule, like letters in a folder, not boxed as cards.
+- **Phone, 375 px.** The header portrait edge to edge at 4:5, text below with `page-x`. Films stacked. Each station: its lead photo edge to edge at 4:3, its caption, then the stop row (rail column 28 px, gap 18 px, then the sign, years, text and the clip), then the other photos one per row, first 3 shown.
+- **Wide, from 900 px.** The header is two columns: the portrait 45% wide, edge to edge from the top to the bottom of the first screen; the text column centred vertically with 64 px padding. Films side by side in `content-max`. Each station: the lead photo across the full width at 21:9, the stop row in `stop-measure` (760 px) centred, the other photos as a contact sheet of three columns in `content-max`, first 6 shown.
+- Every container is centred (`margin-inline: auto`). Nothing scrolls sideways at 320, 375 or 1280 px (the page uses `overflow-x: clip`).
+- Vertical rhythm: `section-y` (48, 72 wide) around sections; `station-gap` (72, 112 wide) between stations. More space above a heading than below it.
+- Targets: 48 px minimum, 56 px for the primary buttons and the viewer controls, 8 px apart.
 
 ## Shapes
 
-- Prints: `rounded.print` (2 px), like photo paper.
-- Controls and station boards: `rounded.control` (6 px).
-- The language switch pill and the station markers: `rounded.full`.
+- Signs: `rounded.sign` (4 px), with a 3 px enamel and 2 px ground inner border, drawn flat (no bevel, no gradient, no shine).
+- Everything else is square: frames, buttons, inputs, facades.
 
 ## Components
 
-**Print.** A photo mounted on `paper-raised` with the `print` padding, a 1 px hairline edge and the print shadow. On the timeline, the caption sits inside the frame under the photo in `caption`, ink-muted, and a press photo adds a credit line in `meta`, always visible on the page ("Ảnh: TTXVN/VietnamPlus" / "Foto: TTXVN/VietnamPlus"). Visitor photos on posts are small prints with no caption, because the form asks for none. The header portrait is a print with no caption and is not a button. Every other print's photo area is one button that opens the viewer, named by its caption, or on posts by "Ảnh {i} của {name}" / "Foto {i} von {name}". Prints are never tilted.
+**Station sign.** An enamel plate (`station-sign`), its Vietnamese name in `sign-primary` with `lang="vi"` over its German name in `sign-secondary` with `lang="de"`, inside a 3 px enamel and 2 px ground inner border. The order never changes with the page language (AC-8). It is the station's `<h3>`. The years sit under it in `sign-years`, text colour.
 
-**Station board.** A flat ink plate (no bevel, no faked enamel or metal) with `on-ink` text and two lines: the Vietnamese name in `sign-primary` with `lang="vi"`, a hairline rule, the German name in `sign-secondary` with `lang="de"`. The order never changes with the page language, so the sign reads the same for everyone, like a real two-language sign. The years sit above the sign in `sign-years`, ink-muted.
+**Rail, ticks and bracket.** In the 28 px rail column, decorative and hidden from assistive technology: one 3 px rail in edge at 12 px from the left, ticks 16 px wide and 2 px thick every 24 px, and a 22 × 2 px bracket from the rail to the sign, 26 px from the top of the stop row. The bracket starts in edge and lights to amber when the reader reaches the station (Motion). Inline SVG is preferred; the lab's single SVG tick tile plus one gradient line is accepted, because it draws linework, not a stripe.
 
-**Rail.** One inline SVG in the left gutter, drawn as linework, decorative and hidden from assistive technology: two 2 px rails in ink-muted with sleepers in edge every 14 px (not a CSS stripe gradient). Each station has a marker on the rail, a 22 px circle with a 4 px ink ring, level with its board. A marker is hollow (paper fill) until the reader has reached that station, then filled ink (see Motion). The last station has a double ring, so the end of the line reads without colour.
+**Film frame.** A photo edge to edge with no mount: lead frames at 4:3 (phone) or 21:9 (wide), `object-fit: cover`; contact-sheet frames at 3:2 with a 1 px keyline outline. The well colour shows while loading. The caption sits under the frame in `caption`, muted; a press photo adds a credit line in `credit`, text colour, always visible. The frame is a button that opens the viewer, named by its caption. Archive photos stay black and white and colour photos stay in colour; the header portrait alone has a light grade (saturation 0.85, contrast 1.05). No grain, no sprocket holes.
 
-**Buttons.** Primary: ink fill, on-ink label-strong, 56 px high. Secondary: paper fill, 2 px edge border, ink label, 48 px high. Every button has a text label; an icon may sit beside it, never alone. Hover turns the border ink. Disabled: hidden-surface fill, ink-muted label, edge border dashed, `aria-disabled`, never lowered opacity (5.9:1 measured). Busy keeps its width and changes its label ("Đang đăng…").
+**Contact sheet.** The station's other photos in a grid (one column on phones, three from 900 px), first 3 or 6 shown, the rest behind a ghost button "Xem thêm {n} ảnh" / "{n} weitere Fotos zeigen".
 
-**Focus.** Every focusable element shows a 3 px ink outline at 3 px offset on paper surfaces, and a 3 px on-ink outline on the viewer and on ink plates. Only on `:focus-visible`. Never removed.
+**Film facade.** A 16:9 `well` plate with a 1 px rule border, the episode label in `label` muted (changed from amber, which is for actions), the title in `film-title`, and an amber play control with on-amber `label`, an icon and "Phát video" / "Video abspielen", 48 px tall. Pressing it loads the YouTube player (youtube-nocookie) in the same frame.
 
-**Language switch.** Two options in a pill with a 2 px edge border, "Tiếng Việt" and "Deutsch", each written in its own language with its own `lang`. The current one is filled ink with on-ink text and has `aria-pressed="true"`. No flags.
+**Clip.** The 58-second clip as a poster in a `well` frame with a 1 px rule border; the play control is an amber pill with on-amber `label`, 48 px tall, bottom left. Native controls after the press.
 
-**Inputs.** `field` fill, 2 px edge border, `rounded.control`, 56 px high, text in `body`. Label above in `label`, hint under the label in `meta` ink-muted, error under the field in `meta` error with an icon. An invalid field also gets a 2 px error border. The relationship is a group of five 48 px radio rows, not a select.
+**Buttons.** Primary: amber fill, on-amber `label` (9.9:1), 56 px, square. Ghost: transparent, 1 px edge border, text-colour `label`, 48 px. Text button ("Đọc hết bài", "Thử lại", "Đóng biểu mẫu"): amber `label` with no fill, 48 px tall. Every button has words; an icon may sit beside them. Hover: ghost buttons turn their border to text colour, text buttons gain a 2 px amber underline, and the primary gains a 2 px text-colour outline at 2 px offset. Disabled: muted label on hidden-surface fill, dashed edge border, `aria-disabled`; no opacity change. Busy: the label changes, the width stays.
 
-**Video facade.** An ink plate in a 16:9 frame with the video title in `heading-post` on-ink, a 72 px round play button and the line "Phát từ YouTube" / "Wird von YouTube abgespielt" in `meta`. Pressing it swaps in the YouTube player (youtube-nocookie.com) in the same frame.
+**Focus.** A 3 px enamel outline at 3 px offset on every focusable element, `:focus-visible` only. On the amber primary button and the enamel signs the ring sits on the ground beside them at 3 px offset and reads at 15.1:1 against the ground.
 
-**Viewer.** Full screen on `viewer-backdrop`. The photo is fitted whole, never cropped. Caption in `caption` on-ink-muted, credit in `meta` on-ink. Controls in label-strong with icons: "Đóng", "Ảnh trước", "Ảnh sau", and a counter "Ảnh 3 / 8".
+**Language switch.** Two buttons, "Tiếng Việt" and "Deutsch", in `label`, each in its own language with its own `lang`, 48 px, 1 px edge border. The active one is enamel with on-enamel text and `aria-pressed="true"`. No flags.
 
-**Memory book and entry.** The wall is one continuous `paper-raised` page with a hairline edge, like an open book; entries are not separate boxes. Each entry: name in `heading-post`, a meta line in `meta` ink-muted (relationship, class, year, date), the message in `body` with the visitor's line breaks kept, then its photos as small prints. Entries are separated by a hairline rule and `spacing.6`. The tribute is the first entry, with no extra badge. A just-posted entry carries a hidden-surface tint and the label "Vừa gửi" / "Gerade eingetragen" until reload.
+**Jump links.** Three links in `label`, 48 px tall, each with a 2 px edge underline that turns text colour on hover. They are navigation, not actions, so they stay out of amber (changed from the lab).
+
+**Lưu bút.** The whole section sits on `surface` with a 1 px rule on top. The heading in `heading-section`, the invitation in `body`, the primary button "Viết lưu bút" / "Ins Gästebuch schreiben", then the entries in a list, each separated by a 1 px rule and 28 px of space. Each entry: the name in `heading-entry`, the meta in `meta` muted on its own lines (relationship, class and year on one line; the date on the next; commas, no middle dots, changed from the lab), the message in `body` with the visitor's line breaks kept, then its photos as small frames. The tribute is the first entry with no badge. A just-sent entry has a `hidden-surface` fill and the label "Vừa gửi" / "Gerade eingetragen" until reload.
+
+**Form.** On `surface`. Inputs: `ground` fill, 2 px edge border (4.3:1 against the surface), square, 56 px, text in `body`. Label above in `label` but mixed case (labels are read, not signed), hint under the label in `meta` muted, message under the field in `meta` error with an icon; an invalid field also gets a 2 px error border. The relationship is five 48 px radio rows. The privacy note in `meta` text colour beside the send button.
+
+**Viewer.** Full screen on `well`. The photo is fitted whole. Caption in `caption` muted, credit in `credit`. Controls are ghost buttons at 56 px with words and icons: "Đóng", "Ảnh trước", "Ảnh sau", and a counter "Ảnh 3/8" in `meta`.
+
+**Admin rows.** On `surface`, a 1 px rule between rows; a hidden row on `hidden-surface` with the status word. Same buttons and focus as the public page.
 
 **Icons.** Lucide, 2 px stroke, 24 px beside 18 px labels, always next to words.
+
+## Motion
+
+Tokens are in the front matter. Every motion answers something the reader did, except the bracket light, which answers their scroll. Nothing moves on page load, nothing hides content at rest, nothing blocks a control.
+
+| Motion | What it says | Spec | Reduced motion |
+|---|---|---|---|
+| Bracket lights | "You have reached this station" | The bracket's colour goes from edge to amber over `bracket` with `colour` easing when the sign crosses the middle of the screen; it stays lit | Colour changes at once |
+| Viewer opens, the cut | The film cuts to the photo | The page fades to `well` over `cut-out` with `out`, then the photo fades in over `cut-in` with `out`; no scale (450 ms in all, inside the 500 ms dialog budget) | One 150 ms opacity fade |
+| Viewer closes | Back to the page | Opacity to 0 over `exit` with `out` | 150 ms fade |
+| Next or previous photo | | None by keyboard or button; a touch swipe follows the finger and settles over `exit` | Swipe follows the finger; no settle |
+| New Lưu bút entry | Your entry is in | Fades in and rises 8 px over `arrive` with `enter`; keeps its fill and label until reload | Opacity only |
+| Form opens, language switch, read more, more photos | | None; at once | None |
+| Button press | Pressed | `scale(0.98)` over `press`, pointer and touch only | Colour only |
+| Hover | | Border, underline and outline colour over `quick`, only under `(hover: hover) and (pointer: fine)` | Same |
+| Admin hide or show | The row changed | Surface colour over `quick` | At once |
+| Jump links | | `scroll-behavior: smooth` | Instant |
+
+Only `opacity`, `transform`, `color`, `border-color`, `outline-color` and `background-color` animate. No `transition: all`, no bounce, no stagger, no glow.
 
 ## Voice
 
@@ -364,33 +383,38 @@ House words: thầy, trạm (station), lưu bút / Gästebuch, viết lưu bút 
 Never: ceremonial set phrases from funeral notices, virtue words about the site or the family, praise of him that no source gives
 ```
 
-- **Vietnamese.** He is "thầy" throughout. Readers are addressed as little as possible. Where an address is needed the text uses "bạn" (the human's choice, 2026-11-18), kept respectful with "xin" in every request and no casual phrasing. Unconfirmed memories are written "thầy kể…".
-- **German.** He is "Lê Đức Dương" or "er". Readers are addressed as "Sie". Unconfirmed memories are written "er erzählte…". A German speaker checks every German string before launch.
-- Errors say what happened and what to do, and do not apologise. Buttons name their action, and the result uses the same verb ("Đăng" leads to "Đã đăng", "Veröffentlichen" to "veröffentlicht").
+- **Vietnamese.** He is "thầy" throughout. The reader is "bạn" (the human's choice), always with "xin" in requests. Unconfirmed memories are written "thầy kể…".
+- **German.** He is "Lê Đức Dương" or "er". The reader is "Sie". Unconfirmed memories are written "er erzählte…". A German speaker checks every German string before launch.
+- Errors say what happened and what to do, and do not apologise. One verb per action through the flow.
 - Site text never states his exact role in the German section as fact.
 
 ## Tailwind mapping
 
-The app is scaffolded with Tailwind CSS (v4) and its own component library on top (the human, 2026-11-18). The tokens map one to one onto Tailwind theme variables in the global stylesheet's `@theme` block, so utilities carry the token names and no raw values:
+The app uses Tailwind CSS (v4) with its own component library on top (the human, 2026-11-18). Two build facts from the lab (commit b03dca2) shape how the tokens reach components:
 
-- Colours: `--color-paper`, `--color-paper-raised`, `--color-field`, `--color-hidden-surface`, `--color-ink`, `--color-ink-muted`, `--color-amber-ink`, `--color-edge`, `--color-hairline`, `--color-error`, `--color-success`, `--color-viewer-backdrop`, `--color-on-ink`, `--color-on-ink-muted` (gives `bg-paper`, `text-ink`, `border-edge` and so on).
-- Fonts: `--font-serif` is Literata and `--font-sans` is Be Vietnam Pro, both from the `next/font` CSS variables.
-- Type: one `--text-<token>` per typography token with its `--line-height` and `--font-weight` companions (for example `--text-body: 20px`, `--text-body--line-height: 1.65`); the `-wide` sizes apply at the `wide` breakpoint.
-- Breakpoint: `--breakpoint-wide: 900px`; the default Tailwind breakpoints are cleared so only this one exists.
-- Radius: `--radius-print`, `--radius-control`. Shadow: `--shadow-print`. Spacing: keep Tailwind's 4 px base. Steps 1 to 4 of this scale are Tailwind's `1` to `4`; steps 5 to 9 (24, 32, 48, 64, 96 px) are Tailwind's `6`, `8`, `12`, `16` and `24`, and components use only those numbers. The named steps are variables: `--spacing-page-x`, `--spacing-rail-gutter`, `--container-measure`, `--container-wide`.
+- **Every `.css` file goes through the Tailwind loader** in this app's `next.config`, so CSS modules lose their class names. The lab therefore uses plain stylesheets with a direction prefix (`lb-`). Product components use Tailwind utilities generated from the `@theme` block below, not CSS modules.
+- **The lab route's layout did not apply its fonts**, so each lab page sets the font variables itself. In the product, the root layout puts the `next/font` variables on `<html>` once, and `@theme` reads them.
+
+The `@theme` block in the global stylesheet maps the tokens one to one, so utilities carry the token names and no raw values:
+
+- Colours: `--color-ground`, `--color-surface`, `--color-well`, `--color-hidden-surface`, `--color-text`, `--color-muted`, `--color-amber`, `--color-on-amber`, `--color-enamel`, `--color-on-enamel`, `--color-edge`, `--color-rule`, `--color-keyline`, `--color-error`, `--color-success` (giving `bg-ground`, `text-muted`, `border-edge` and so on). Tailwind's default palette is cleared, so a raw `text-white` or `bg-black` cannot slip in.
+- Fonts: `--font-narrow` from Archivo Narrow's `next/font` variable and `--font-serif` from Spectral's.
+- Type: one `--text-<token>` per typography token with its `--line-height`, `--letter-spacing` and `--font-weight` companions (for example `--text-body: 20px`, `--text-body--line-height: 1.7`); the `-wide` sizes apply at the `wide` breakpoint. Capitals come from the `uppercase` utility on the tokens marked uppercase only.
+- Breakpoint: `--breakpoint-wide: 900px`; the default breakpoints are cleared.
+- Radius: `--radius-sign: 4px`; everything else uses `rounded-none`.
+- Spacing: Tailwind's 4 px base. Steps 1 to 4 of this scale are Tailwind's `1` to `4`; steps 5 to 9 (24, 32, 48, 64, 96 px) are Tailwind's `6`, `8`, `12`, `16` and `24`, and components use only those numbers. The named steps are variables: `--spacing-page-x`, `--spacing-rail-column`, `--spacing-rail-gap`, `--container-stop`, `--container-content`.
 - Motion: `--ease-out`, `--ease-in-out`, `--ease-enter` and `--duration-*` custom properties for the durations above.
-
-The components of the app's library (Print, StationBoard, Button, Input, RadioRows, PhotoViewer and the rest in `EXPERIENCE.md`) read only these utilities.
 
 ## Do's and don'ts
 
-- Do keep amber on the title only, in either language.
-- Do show a caption under every timeline print, and a credit under every press photo, on the page itself.
-- Do give every control a text label and at least 48 px of height.
-- Don't use clock or autumn-leaf motifs, black mourning frames, or the dark navy look of the AI mockups.
-- Don't animate anything the reader did not start. No scroll reveals, no parallax, no autoplay.
-- Don't use all caps, eyebrow labels above headings, or text under 18 px. Data that arrives in capitals (a video title) is shown as given.
-- Don't set display text in italic. The title is roman.
-- Don't fake materials: no bevels, embossing, paper textures or tape on prints.
-- Don't wrap posts or sections in shadowed cards. Only prints are raised.
-- Don't use flags for languages.
+- Do keep amber on the title and on actions; never on running text, years, headings, captions or meta.
+- Do keep reading text at #EFE8DC, 20 px, weight 400, line height 1.7.
+- Do show a caption under every timeline photo and a credit under every press photo.
+- Do give every control words and at least 48 px of height.
+- Don't use pure white, light weights, italic reading text or text over photos.
+- Don't use black mourning frames, candles, crosses, doves, clock or leaf motifs, or the dark navy look of the AI mockups.
+- Don't fake materials: no film grain, sprocket holes, enamel shine or chipped paint.
+- Don't add glows or coloured shadows on the dark ground.
+- Don't animate anything the reader did not start; no scroll reveals, no parallax, no autoplay.
+- Don't set sentences in capitals or track reading text.
+- Don't use middle dots in entry meta; use commas and line breaks.

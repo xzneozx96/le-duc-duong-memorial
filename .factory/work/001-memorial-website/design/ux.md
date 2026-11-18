@@ -8,12 +8,12 @@ Revised 2026-11-18 against the newer ux references (art direction, motion, UI co
 
 | Id | Decision | Criteria | Door | ADR |
 |---|---|---|---|---|
-| U1 | One light visual system drafted from lab direction A inside the spec's pins: paper #F5EFE3, ink #2A2522, amber-ink #8F5300 on the title only, Literata (roman) and Be Vietnam Pro self-hosted, prints in mounts, flat station boards, SVG rail; rewritten from whichever direction the family picks | AC-2, AC-5, AC-6, AC-8 | two-way | none |
-| U2 | 18 px floor for every word on the page, body 20 px, all text measured at 4.5:1 or more, disabled controls included | AC-6 | two-way | none |
+| U1 | (changed) The visual system is direction B, the night train, picked by the human on 2026-11-18: ground #161412, text #EFE8DC, amber #F2B347 on the title and actions (Q6), white enamel signs, Archivo Narrow and Spectral, film frames, the Lưu bút on surface #221F1B; DESIGN.md is rewritten from the lab as built (b03dca2) with marked corrections | AC-2, AC-5, AC-6, AC-8 | two-way | none |
+| U2 | (changed) 18 px floor for every word, body 20 px at line height 1.7, all text at 4.5:1 or more, plus the light-on-dark rules of U20 | AC-6 | two-way | none |
 | U3 | The language switch swaps text without reloading, stores the choice in a cookie the server reads for the first paint, and updates `<html lang>` | AC-3 | two-way | none |
 | U4 | Station boards always show the Vietnamese line first and the German line second, each with its own `lang` | AC-8 | two-way | none |
-| U5 | Every timeline print shows its caption and every press photo its credit on the page; entry photos get accessible names instead; phones one column, wide three | AC-8, AC-10, AC-17, AC-23 | two-way | none |
-| U6 | A station shows its first 3 prints (phone) or 6 (wide), the rest behind "Xem thêm {n} ảnh" | AC-8, AC-26 | two-way | none |
+| U5 | (changed) Every timeline photo is a film frame edge to edge with its caption and any press credit under it; entry photos get accessible names; no mounts | AC-8, AC-10, AC-17, AC-23 | two-way | none |
+| U6 | (changed) Each station shows one lead frame, then a contact sheet of the rest (one column on phones, three wide), first 3 or 6, the others behind "Xem thêm {n} ảnh" | AC-8, AC-26 | two-way | none |
 | U7 | The book reads: invitation, a "Viết lưu bút" button that opens the form in place, the tribute as first entry, then visitor entries newest first | AC-12, AC-25 | two-way | none |
 | U8 | Form checks run on send, in the page's language, with `noValidate`, no `maxlength`, lengths on NFC text; refused files listed by name with the reason and the 5 MB limit | AC-13, AC-14 | two-way | none |
 | U9 | The photo viewer is a modal dialog with text-labelled controls, arrow keys and Escape, and one history entry so phone Back closes it | AC-10, AC-17 | two-way | none |
@@ -22,13 +22,17 @@ Revised 2026-11-18 against the newer ux references (art direction, motion, UI co
 | U12 | Admin lists every entry newest first with a status word, one Hide or Show again button, a count line with real zeros, errors inside the row, no confirm and no story motion | AC-18, AC-19, AC-20, AC-21 | two-way | none |
 | U13 | Three jump links under the intro, no sticky bar | AC-1 | two-way | none |
 | U14 | The relationship label shows in the page's language; everything the visitor typed shows as typed | AC-4, AC-17, AC-25 | two-way | none |
-| U15 | The memory wall is named "Lưu bút" / "Gästebuch" and drawn as one continuous book page; the form opens with "Viết lưu bút" / "Ins Gästebuch schreiben" and sends with "Gửi lưu bút" / "Eintragen" (the human's answer) | AC-12, AC-17, AC-25 | two-way | none |
+| U15 | (changed) The memory wall is "Lưu bút" / "Gästebuch" on the raised dark surface band; the form opens with "Viết lưu bút" / "Ins Gästebuch schreiben" and sends with "Gửi lưu bút" / "Eintragen" | AC-12, AC-17, AC-25 | two-way | none |
 | U16 | All Vietnamese and German strings rewritten to the ui-copy rules: each error names the field, the limit and the fix, one verb per action through the flow | AC-13, AC-14, AC-15, AC-16 | two-way | none |
-| U17 | Motion: one colour-only focal moment (station markers fill as reached), short viewer and new-entry feedback, nothing on load, reduced motion keeps opacity and colour only; tokens in DESIGN.md | AC-8, AC-10, AC-12 | two-way | none |
+| U17 | (changed) Motion: the station bracket lights as reached (the one authored moment), the viewer opens as a 450 ms film cut and closes in 200 ms, a new entry fades in and stays marked, nothing on load; reduced motion keeps opacity and colour only | AC-8, AC-10, AC-12 | two-way | none |
 | U18 | Worst-case rules per field: names wrap, messages keep line breaks and clamp at 8 lines, URLs not linked, markup literal, German plurals, decimal comma in sizes | AC-5, AC-13, AC-17 | two-way | none |
 | U19 | The German page shows its own title, "Ein Sonnenstrahl, der bleibt" (draft for the German speaker), in amber-ink; the Vietnamese page keeps "Một ánh Dương còn mãi" (the human\'s answer) | AC-2, AC-3 | two-way | none |
+| U20 | (new) Light text on dark for older eyes: no pure white (16:1 ceiling for running text), no weight under 400, body 20 px at 1.7, secondary text at 7:1 or more, no italic reading text, no text over photos, bright enamel only on signs and the active language | AC-6 | two-way | none |
+| U21 | (new) Amber marks the title and actions (primary button, clip play pill, film play controls, text buttons, the lit bracket), with #161412 labels on amber at 9.9:1; never running text, years, headings, captions or meta | AC-2, AC-6 | two-way | none |
 
-No UX decision here is hard to reverse, so there is no ADR draft.
+No UX decision here is hard to reverse, so there is no ADR draft. U1 is the largest: switching back to A after build would mean re-theming every component, about a day, but no change to behaviour or data.
+
+Unchanged by the switch to B: U3, U4, U7, U8, U9, U10, U11, U12 (its rows now use the dark surfaces), U13, U14, U16, U18, U19.
 
 ## Revision
 
@@ -43,6 +47,8 @@ What the newer references changed, by reference:
 - **variants.md.** The first pass's timeline options (left rail against a centred zigzag) are dropped: the zigzag is the category template, and both varied only layout. The direction round now carries the real choice, on different axes.
 - **critique.md.** Render passes and the fix-the-top-three loop need captures, and there are none (no routes yet). The seven passes ran on the files (Self-review below).
 - **Persona names.** The first pass gave the family member an invented name. That is replaced by "a family member".
+
+- **Direction picked (2026-11-18).** The human picked B from the round-1 lab, which the main session built and committed (b03dca2). `DESIGN.md` is rewritten from `src/app/lab/memorial/_lab/b.css` and `direction-b.tsx`, with corrections the docs require. Since Q6 (amber allowed on actions) six remain: amber off the station years (and off the film episode labels and jump-link underlines, which are not actions), section headings at 36 to 52 px instead of 18 px tracked capitals, name line height 1.1 instead of 0.98, roman captions instead of italic, commas instead of middle dots in entry meta, tokens instead of four inline hex values, and a disabled style with no opacity.
 
 ## Art direction
 
@@ -70,15 +76,16 @@ What the newer references changed, by reference:
 
 Seven families (paper and photos, ritual, transport, school, correspondence, cinema and archive, editorial print). Candidates 8 and 9 were added when the human asked for three truly different looks; round 1 now builds 1 and 2 (A), 8 (B) and 9 (C). Candidates 3 and 4 (the timetable and the lesson book) are set aside, because they changed structure but not the look. Candidates 5 to 7 are turned down: 5 makes its border stripe the whole idea, 6 pulls the page toward mourning, 7 breaks the pinned paper ground and fakes a material.
 
-**Colour strategy.** One per direction: A restrained (paper, ink, oxblood plates, amber title); B restrained on a dark ground (warm light text, white signs, one bright amber); C committed (ochre carries the rail and bands, green carries the Lưu bút field). Scene: older readers on phones at home in the evening and at the funeral reception in daylight, both of which favour a light page with high-contrast ink.
+**Colour strategy.** Picked: B, restrained on a dark ground. Round 1 had one per direction: A restrained (paper, ink, oxblood plates, amber title); B restrained on a dark ground (warm light text, white signs, one bright amber); C committed (ochre carries the rail and bands, green carries the Lưu bút field). Scene: older readers on phones at home in the evening and at the funeral reception in daylight, both of which favour a light page with high-contrast ink.
 
 ## Lab
 
-Not built. The repo has no app and no lab folder, so Q4 asks first. When the human says yes and the scaffold exists, the mockup-maker builds in this shape:
+Round 1 is built and committed (b03dca2) at `src/app/lab/memorial/`, with direction stylesheets and components in `_lab/`. Round 2 builds in the same place and shape:
 
-- Routes under `app/lab/memorial/`, components in `app/lab/memorial/_components/`, an index page listing each route with its note.
+- Routes under `src/app/lab/memorial/`, components in `_lab/`, an index page listing each route with its note.
+- Stylesheets: plain CSS with the `lb-` prefix, because this app pipes every `.css` file through the Tailwind loader and CSS modules lose their class names. Fonts: each lab page applies the font variables from `_lab/fonts.ts` itself, because the lab layout's fonts did not apply.
 - Guard: each lab page calls `notFound()` when `process.env.NODE_ENV === "production"` and `LAB_ENABLED` is not set. Metadata `robots: { index: false, follow: false }`.
-- Values: each direction's values live in a wrapper with local CSS variables inside its own lab folder (`_directions/a|b|c/`), named new on the page. Direction A starts from the `DESIGN.md` tokens plus its round-1 additions; B and C use only the values in their sections below. Fonts are loaded in `app/lab/memorial/layout.tsx` with `next/font/google`, subsets latin, latin-ext, vietnamese.
+- Values: only the `DESIGN.md` tokens (direction B), as CSS custom properties on the `lb-page` wrapper; no inline hex.
 - Content: real text in both languages from `EXPERIENCE.md` (Voice and microcopy), the real portrait and 8 to 10 copies of photos from `images/` in `public/lab/` (originals untouched), captions marked "chú thích mẫu" / "Beispieltext" because the family has not captioned them, and the tribute from `documents/Tri ân.docx` exactly as written. The worst-case fixture in `EXPERIENCE.md` is the one dataset for the book and the admin.
 - Widths: each screen in an `<iframe>` of the same route at 375 px and at 1280 px (a narrow div in a wide window would still match the 900 px media query). The timeline and the form also at 320 px with 200% text, and the form with the software keyboard open on a phone.
 - Each page: a VI and DE toggle, the list of what stays fixed across directions at the top, and a note per option (what it tries, trade-offs including what it removed, recommended or not).
@@ -152,15 +159,17 @@ The first round-1 build had five faults. Each direction must avoid all of them, 
 
 Each direction also needs the `next/font` subsets latin, latin-ext and vietnamese for its two faces, the title in its language with `lang`, and every word at 18 px or more at both widths.
 
-### Round 2: states, in the picked direction
+### Round 2: states, in direction B
 
-1. **Tokens and glyphs** (`/lab/memorial/tokens`). Swatches with the measured ratios from `DESIGN.md`, the disabled styles, every type token with "Lê Đức Dương, ằ ẫ ệ ộ ữ ợ Đ, ä ö ü Ä Ö Ü ß ẞ, „Grüße“", the title at real size.
-2. **Header and film** (`/lab/memorial/top`). Both languages; the German page with each of the three German title drafts from Q1; one facade switched to the player; the portrait failed.
-3. **Timeline** (`/lab/memorial/timeline`). Hà Nam with no photos; Moritzburg with the clip before and after play and a press credit; Thanh Xuân with 12 prints collapsed and expanded; Nước Đức with 26 prints and a long German paragraph; one print failed; markers hollow, filled and the double-ringed end.
-4. **Viewer** (`/lab/memorial/viewer`). A black-and-white portrait photo, a wide colour photo with a press credit, a long caption, an entry photo captioned with its writer's name, the 4000×200 panorama and the 1080×2400 screenshot, first and last photo, a failed photo; phone and wide layouts.
-5. **Book, options A and B** (`/lab/memorial/book?option=a|b`). The worst-case fixture; tribute clamped and expanded; the empty book with the tribute only and with nothing; "Xem thêm" idle, loading, failed; a just-posted entry with its tint and label.
-6. **Form** (`/lab/memorial/form`). Closed; open and pristine with the privacy note; every field message with the summary; a 6,000-character message marked with the count to cut; refusals (a PDF and a 7.2 MB photo among three good ones); sending with "Đang gửi ảnh 2/3…"; offline; server error; success.
-7. **Admin** (`/lab/memorial/admin`). Login; wrong password with tries left; locked with the retry time; the list with visible and hidden entries, the two "Nguyễn Văn Hùng" rows and the count line; counts at 0; a failed hide; an expired session.
+Build on the round-1 B page, with the corrections in `DESIGN.md` applied first (amber off years, episode labels and jump-link underlines, real section headings, name line height, roman captions, commas in meta, tokens for every colour, disabled style). Every screen at 375 and 1280 px in an iframe, in VI and DE; the timeline and form also at 320 px with 200% text; the form also with the phone keyboard open. Each route lists what stays fixed at the top. Captures per `agents/mockup-maker.md`, including the motion frames below, normal and reduced.
+
+1. **Tokens and glyphs** (`/lab/memorial/tokens`). Every colour swatch on ground, surface, well and hidden-surface with its measured ratio; the light-on-dark rules shown side by side with what they forbid (pure white, 300 weight, italic caption) so the family can see why; every type token with "LÊ ĐỨC DƯƠNG, Lê Đức Dương, ằ ẫ ệ ộ ữ ợ Đ, ä ö ü Ä Ö Ü ß ẞ, „Grüße“", the capitals on two lines to prove the 1.1 line height; the title in both languages at real size; the focus ring on ground, surface, an enamel button and a sign.
+2. **Header and film** (`/lab/memorial/top`). The portrait edge to edge (phone) and 45% full height (wide); the German page with each of the three German title drafts (Q1); one facade switched to the player; the portrait failed to load (the well colour with the alt text).
+3. **Timeline** (`/lab/memorial/timeline`). Hà Nam with no photos (sign, years, text only, no empty frame); Moritzburg with the lead frame, the clip before and after play, a press credit; Thanh Xuân with 12 photos, the contact sheet collapsed and expanded; Nước Đức with 26 colour reunion photos and a long German paragraph; one frame failed; brackets unlit and lit; the sign "RADEBEUL VÀ DRESDEN, CHDC ĐỨC" / "Radebeul und Dresden, DDR" wrapping at 320 px. Motion frames: a bracket lighting.
+4. **Viewer** (`/lab/memorial/viewer`). A black-and-white archive photo, a colour photo with a press credit, a long caption, an entry photo captioned with its writer's name and date, the 4000×200 panorama and the 1080×2400 screenshot, the first and last photo, a failed photo; phone bottom bar and wide side buttons. Motion frames: the cut in, the close.
+5. **Lưu bút, options A and B** (`/lab/memorial/book?option=a|b`). The worst-case fixture from `EXPERIENCE.md` on the surface band; the tribute clamped and expanded; empty with the tribute only and with nothing; "Xem thêm" idle, loading, failed; a just-sent entry with its hidden-surface fill and "Vừa gửi" label. Motion frames: the entry arriving.
+6. **Form** (`/lab/memorial/form`). On the surface: closed; open and pristine with the privacy note; every field message with the summary; a 6,000-character message marked with the count to cut; refusals (a PDF and a 7.2 MB photo among three good ones); sending with "Đang gửi ảnh 2/3…"; offline; server error; success. This is the screen where the light-on-dark rules matter most; the family should read it on their own phones.
+7. **Admin** (`/lab/memorial/admin`). Dark tokens; login; wrong password with tries left; locked with the retry time; the list with visible and hidden rows (hidden-surface with the word "Đang ẩn"), the two "Nguyễn Văn Hùng" rows and the count line; counts at 0; a failed hide; an expired session.
 
 ## Self-review
 
@@ -172,7 +181,7 @@ The seven passes on the files, before any capture. Scores are the designer's own
 4. Generic-pattern risk, 6: the pinned paper-and-serif ground is the most common default for this subject. The boards, real captions, the book and the 1955 train carry the specificity, but until a capture shows them, this stays the weakest pass. Mode named per surface.
 5. Design-system alignment, 8: every value is a token in the proposed `DESIGN.md`; every component is named new; no standalone HTML.
 6. Responsive and accessibility, 9: 375 and 1280 decisions, 320 px and 200% text, 48 and 56 px targets, keyboard path and focus after every action, reduced motion defined.
-7. Unresolved decisions, 9: Q1 and Q3 answered by the human; Q2, Q4 and Q5 open, each with a recommendation and a cost.
+7. Unresolved decisions, 9: Q1, Q3, Q5 and Q6 answered and Q4 settled; Q2 open, each with a recommendation and a cost.
 
 ## Touches
 
@@ -182,17 +191,18 @@ The seven passes on the files, before any capture. Scores are the designer's own
 ## Questions
 
 - **Q1 German title (answered 2026-11-18: translate it).** The German page shows a German title; the Vietnamese page keeps "Một ánh Dương còn mãi". Dương means sun, so the drafts keep as much of the sun as German allows. Draft: "Ein Sonnenstrahl, der bleibt". Alternatives: "Ein Licht, das bleibt" (simpler, loses the sun) and "Seine Sonne geht nicht unter" (keeps the sun, and reads as an idiom for something that lasts). All three go to the German speaker for a check before launch. Note for the orchestrator: AC-2 names only the Vietnamese title, so its manual test case should check the German title on the German page.
-- **Q2 Approve the visual system and record the pins.** `DESIGN.md` is a first draft. The paper ground, serif and amber come from the frozen spec and the brainstorm, but no design record holds them yet, so a reviewer would flag the paper ground as a common default. The title colour that passes 4.5:1 is #8F5300, a dark bronze-amber. (Recommended) Approve the pins and the amber-ink as drafted, and record them at the gate. Other option: ask for a brighter amber, which passes only as large text at 3:1 and so breaks AC-6. Lab: `/lab/memorial/tokens`. Cost if wrong: about half a day of re-theming before build.
+- **Q2 Approve DESIGN.md for direction B.** `DESIGN.md` is now written from the B lab with six marked corrections and the light-on-dark rules. (Recommended) Approve it at the design gate, so it becomes the record the build and the reviewer follow. Other option: approve the B lab exactly as built, keeping its uppercase 18 px section heads, italic captions and wider amber, which keeps the lab as the reference but conflicts with the spec on amber and with the readability rules. Lab: `/lab/memorial/tokens` once built. Cost if wrong: a few hours of token and type changes before build.
 - **Q3 Vietnamese address (answered 2026-11-18: "bạn").** Every Vietnamese string that addresses the reader uses "bạn", with "xin" in each request so it stays respectful for readers aged 60 to 75.
-- **Q4 Lab routes in the app.** The repo has no lab folder. (Recommended) Add `app/lab/memorial/` once architecture's scaffold exists, with `notFound()` in production unless `LAB_ENABLED` is set and `noindex`, and remove it after launch. Other option: skip mockups and review the first build directly, which saves about a day but puts every visual call on the build. Cost if wrong: about a day either way.
-- **Q5 Which direction.** (Recommended) A, the family album: closest to the brainstorm and the safest to read at 60 to 75, now with oxblood plates, photo corners and a sticky album grid on wide screens. Other options: B, the night train (dark, cinematic, built on the archive photos; the boldest, with a glare risk for older eyes), or C, Hà Nội daylight (white, ochre and large type, built on the colour photos; risks a cheerful template look). The quiet exit is also open: a plain, well-made memorial page with no railway or album idea. Lab: `/lab/memorial/direction?d=a|b|c`. Cost if wrong: about a day of re-theming before build. If B or C is picked, the spec Constraints line pinning paper, ink and serif must be amended first.
+- **Q4 Lab routes in the app (settled).** The lab exists at `src/app/lab/memorial/` (b03dca2). It must stay unreachable in production (`notFound()` unless `LAB_ENABLED`, `noindex`) and be removed or kept per the build plan after launch.
+- **Q5 Which direction (answered 2026-11-18: B, the night train).** Picked from the round-1 lab. The spec Constraints line now names B (edited by the orchestrator). `DESIGN.md` is written from it.
+- **Q6 Amber beyond the title (answered 2026-11-18: amber on actions too).** Amber #F2B347 is allowed on the title and on actions: the primary button, the clip's play pill, the film play controls, text buttons such as "Đọc hết bài", and the rail bracket when lit. Never on running text, years or headings. Labels on amber are #161412, measured at 9.9:1. The spec Constraints line is updated (by the orchestrator).
 
 ## Concerns
 
-- **Spec Constraints and directions B and C.** The spec Constraints pin "warm off-white paper, dark ink, a large serif". B (dark ground, condensed sans for display) and C (white ground, grotesque and Lexend, no serif) break that line. If the human picks B or C, the spec's Constraints line must be amended through the spec process before build. I have not edited `spec.md`.
+- **Older eyes on a dark page.** B is the boldest direction and the hardest to read for some readers aged 60 to 75 (astigmatism, cataracts). The rules in `DESIGN.md` Colors reduce the risk; they do not remove it. The family should read the form and a long entry on their own phones before launch. A light reading mode is not designed; adding one later means a second set of colour tokens.
+- **The lab deviates from the docs in six places** (listed under Revision). Round 2 applies the corrections first; until then the round-1 lab is not the reference for amber on years, heading size, name line height, captions or entry meta.
 
 - **DESIGN.md location.** The brief asks for `DESIGN.md` at the repo root, but a hook blocks the ux-designer outside `design/`. It is at `design/DESIGN.md`; the orchestrator needs to move it after the gate.
-- **DESIGN.md ahead of the lab.** `DESIGN.md` still holds the first-pass A values. Round 1 now gives A oxblood plates, photo corners, italic captions and a sticky grid on wide screens. Whichever direction is picked, `DESIGN.md` is rewritten from that lab route's actual values.
 - **The critique loop has not run.** There are no captures, so the render passes and the fix-the-top-three loop are left for the mockup-maker on its own captures. Pass 4 (generic-pattern risk) is the one to watch.
 - **5 MB and phone photos.** Many recent Android phones save photos over 5 MB. The refusal message gives a way to shrink a photo, but some visitors will still give up. AC-14 fixes the limit, so this is noted, not changed.
 - **"Gästebuch".** "Lưu bút" is the human's name for the book. "Gästebuch" is the closest German guestbook word; the German speaker may prefer "Kondolenzbuch", which fits the funeral but not the weeks after.

@@ -134,7 +134,9 @@ export function DirectionB() {
                 </p>
                 <p className={s.meta}>
                   {t.relation[e.relation]}
-                  {"cls" in e && e.cls ? ` · ${e.cls}, ${e.year}` : ""} · {t.sentOn(e.date)}
+                  {"cls" in e && e.cls ? `, ${e.cls}, ${e.year}` : ""}
+                  <br />
+                  {t.sentOn(e.date)}
                 </p>
                 <EntryText paragraphs={e.paragraphs} lang={e.lang} pageLang={lang} clampAt={2} buttonClassName={s.textButton} />
               </li>

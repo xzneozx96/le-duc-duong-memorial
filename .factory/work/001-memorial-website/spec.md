@@ -89,7 +89,7 @@
 ## Constraints
 
 - **Always.** Follow the content rules in `CLAUDE.md`: write unconfirmed memories as his own account, do not state his exact role in the German section as fact, show a visible credit on every press photo and use it only with permission, and use fonts that render all Vietnamese and German characters.
-- **Always.** The visual direction in `.factory/brainstorm/2026-11-18-father-memorial-website/intent.md` ("Chosen direction"): warm off-white paper, dark ink, a large serif, photos framed as prints with captions, a railway line for the timeline, amber only on the title.
+- **Always.** Visual direction B, "the night train" (picked by the human on 2026-11-18 from the round-1 lab, replacing the brainstorm's paper-and-ink direction): a near-black warm ground with warm light text, the archive photos as film frames, white enamel station signs hung from one rail, Archivo Narrow for name, signs and controls, Spectral for reading text, amber on the title and on actions (buttons, play controls, the lit rail brackets), never on running text. Defined in `design/ux.md` (Round 1, Direction B) and `DESIGN.md`.
 - **Never.** Use the two AI-made mockup images the user showed during the brainstorm (not kept in the repo, dark navy with notebook rings and a castle scene) as a design reference. Show search-result photos with no caption as historical photos of him.
 - **Never.** Ask visitors for an email, phone number or other private contact.
 - **Never.** Give the admin page a permanent Delete button. The family only hides and shows posts. A removal request is handled by hand (clarified 2026-11-18).
@@ -128,6 +128,8 @@
 - Q: Which videos does the film section show, and who supplies them? → A: Two YouTube interviews, hardcoded now (otEfBuw2AoE and K4gtri_cHB8, titles as in AC-7). An admin dashboard for uploading videos comes later.
 - Q: Show the tribute exactly as written, or with spelling fixed? → A: Exactly as written.
 - Q: Keep the QR code for the funeral programme? → A: Drop it. Nobody asked for it outside the brainstorm.
+- Q: Which visual direction, from the round-1 lab (A family album, B night train, C Hà Nội daylight)? → A: B, the night train (2026-11-18, during design). The Constraints line on the visual direction now names B. Intent and criteria are unchanged.
+- Q: May amber go beyond the title in direction B? → A: Yes, on actions too (buttons, play controls, lit rail brackets). Constraints updated, 2026-11-18.
 
 ## Source
 
