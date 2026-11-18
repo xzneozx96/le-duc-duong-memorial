@@ -23,6 +23,8 @@ export type Station = {
   /** which country the station is in, shown as a small tag */
   land: "vn" | "de";
   years: string;
+  /** the chapter title of this part of his life (documentary heading) */
+  chapter: Two;
   vi: string;
   de: string;
   text: Two;
@@ -87,17 +89,20 @@ export const ui = {
   vi: {
     labBar: "Bản thử: chú thích ảnh là mẫu, gia đình sẽ viết lại.",
     labHome: "Về trang lab",
-    portraitAlt: "Chân dung thầy Lê Đức Dương",
+    portraitAlt: "Chân dung Nhà giáo Lê Đức Dương",
+    honorific: "Nhà giáo",
     title: "Một ánh Dương còn mãi",
     intro: "Đi tàu sang Đức năm 1955, dạy tiếng Đức ở Thanh Xuân 1970–1988.",
     jumpLabel: "Các phần của trang",
-    jump: { film: "Phim", journey: "Hành trình", book: "Lưu bút" },
-    filmHeading: "Hai buổi trò chuyện năm 2020",
-    filmLine: "Trong podcast «Sống chung với Corona» của Trương Hồng Quang, thầy kể về cuộc đời mình.",
+    jump: { film: "Thước phim", journey: "Cuộc đời", book: "Lưu bút" },
+    filmHeading: "Thước phim cuộc đời",
+    filmLine: "Hai cuộc trò chuyện ghi lại năm 2020 trong podcast «Sống chung với Corona» của TS. Trương Hồng Quang, nơi thầy kể lại hành trình từ chuyến tàu năm 1955 đến những năm đứng lớp tiếng Đức.",
     filmPlay: "Xem phim",
     filmNote: "Phim mở từ YouTube khi bạn bấm xem.",
     filmPhotos: "Ảnh trên hai phim: thầy nói chuyện trong các buổi gặp mặt học trò cũ (chú thích mẫu).",
-    journeyHeading: "Hành trình của thầy",
+    journeyHeading: "Một đời gieo chữ",
+    journeyLine: "Hành trình của một nhà giáo giữa hai miền đất, Việt Nam và nước Đức, từ cậu bé làng quê Hà Nam đến người thầy của nhiều thế hệ lưu học sinh.",
+    pullCite: "Lời thầy kể, podcast «Sống chung với Corona», 2020",
     lands: { vn: "Việt Nam", de: "Đức" },
     farewell: { died: "Thầy mất ngày 11.11.2026.", funeral: "Lễ tang ngày 27.11.2026." },
     morePhotos: (n: number) => `Xem thêm ${n} ảnh`,
@@ -110,7 +115,7 @@ export const ui = {
       count: (i: number, n: number) => `Ảnh ${i}/${n}`,
     },
     bookHeading: "Lưu bút",
-    bookInvite: "Ai từng học, làm việc hay sống cùng thầy đều có thể viết lưu bút ở đây. Bạn không cần tài khoản.",
+    bookInvite: "Học trò, đồng nghiệp và bạn bè của thầy, xin gửi lại đôi dòng tưởng nhớ. Mỗi lời lưu bút là một phần ký ức về thầy, được giữ lại cho các thế hệ sau. Bạn không cần tài khoản.",
     bookOpen: "Viết lưu bút",
     formClose: "Đóng biểu mẫu",
     formCloseNote: "(những gì bạn đã viết vẫn được giữ)",
@@ -158,7 +163,7 @@ export const ui = {
         `“${file}” nặng ${size(bytes)} MB, quá mức 5 MB nên chưa được thêm. Các ảnh khác vẫn giữ nguyên. Cách làm nhỏ ảnh: bạn gửi ảnh qua Zalo hoặc WhatsApp cho chính mình rồi lưu bản nhận được, bản này thường nhỏ hơn 5 MB.`,
     },
     footerHeading: "Tư liệu & nguồn",
-    family: (email: string) => `Trang do gia đình thầy Lê Đức Dương lập năm 2026. Liên hệ: ${email}`,
+    family: (email: string) => `Trang tưởng niệm Nhà giáo Lê Đức Dương, do gia đình thực hiện năm 2026. Liên hệ: ${email}`,
     toTop: "Lên đầu trang",
     newTab: "(mở trong thẻ mới)",
     sources: [
@@ -175,6 +180,7 @@ export const ui = {
     labHome: "Zur Lab-Übersicht",
     portraitAlt: "Porträt von Lê Đức Dương",
     title: "Ein Sonnenstrahl, der bleibt",
+    honorific: "Lehrer",
     intro: "1955 mit dem Zug in die DDR, 1970 bis 1988 Deutschlehrer in Hanoi.",
     jumpLabel: "Abschnitte der Seite",
     jump: { film: "Film", journey: "Lebensweg", book: "Gästebuch" },
@@ -184,6 +190,8 @@ export const ui = {
     filmNote: "Der Film lädt erst von YouTube, wenn Sie ihn starten.",
     filmPhotos: "Fotos auf den Filmen: Er spricht bei Treffen mit früheren Schülern (Beispieltext).",
     journeyHeading: "Sein Lebensweg",
+    journeyLine: "Der Weg eines Lehrers zwischen Vietnam und Deutschland.",
+    pullCite: "Wie er erzählte, Podcast «Sống chung với Corona», 2020",
     lands: { vn: "Vietnam", de: "Deutschland" },
     farewell: { died: "Er ist am 11.11.2026 gestorben.", funeral: "Die Trauerfeier ist am 27.11.2026." },
     morePhotos: (n: number) => (n === 1 ? "1 weiteres Foto zeigen" : `${n} weitere Fotos zeigen`),
@@ -274,6 +282,7 @@ export const sourceLinks = [
 export const stations: Station[] = [
   {
     id: "ha-nam",
+    chapter: { vi: "Tuổi thơ và chuyến tàu năm 1955", de: "Kindheit und der Zug von 1955" },
     land: "vn",
     years: "1942–1955",
     vi: "Hà Nam, Việt Nam",
@@ -286,6 +295,7 @@ export const stations: Station[] = [
   },
   {
     id: "moritzburg",
+    chapter: { vi: "Học tiếng Đức từ con số không", de: "Deutsch von null an" },
     land: "de",
     years: "1955–1959",
     vi: "Moritzburg, CHDC Đức",
@@ -323,6 +333,7 @@ export const stations: Station[] = [
   },
   {
     id: "radebeul",
+    chapter: { vi: "Những năm học nghề", de: "Die Lehrjahre" },
     land: "de",
     years: "1959–1962",
     vi: "Radebeul và Dresden, CHDC Đức",
@@ -344,6 +355,7 @@ export const stations: Station[] = [
   },
   {
     id: "ha-noi",
+    chapter: { vi: "Ban ngày đi làm, ban đêm đi học", de: "Tagsüber Arbeit, nachts Schule" },
     land: "vn",
     years: "1962–1965",
     vi: "Hà Nội, Việt Nam",
@@ -356,6 +368,7 @@ export const stations: Station[] = [
   },
   {
     id: "magdeburg",
+    chapter: { vi: "Giảng đường Magdeburg", de: "Studium in Magdeburg" },
     land: "de",
     years: "1965–1970",
     vi: "Magdeburg, CHDC Đức",
@@ -373,6 +386,7 @@ export const stations: Station[] = [
   },
   {
     id: "thanh-xuan",
+    chapter: { vi: "Mười tám năm đứng lớp", de: "Achtzehn Jahre vor der Klasse" },
     land: "vn",
     years: "1970–1988",
     vi: "Thanh Xuân, Hà Nội",
@@ -393,6 +407,7 @@ export const stations: Station[] = [
   },
   {
     id: "germany",
+    chapter: { vi: "Trở lại nước Đức", de: "Zurück in Deutschland" },
     land: "de",
     years: "1988–2026",
     vi: "Nước Đức",

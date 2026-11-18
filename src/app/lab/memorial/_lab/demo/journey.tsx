@@ -267,18 +267,24 @@ function StationBlock({ st, prevYear, lang, t }: { st: Station; prevYear: string
       <span className={s.node} aria-hidden data-node />
       <div className={s.stationBody}>
         <h3 id={`sign-${st.id}`} className={s.place} data-reveal>
-          <span lang="vi">{st.vi}</span>
-          <span className={s.placeAlt} lang="de">
-            {st.de}
+          <span lang={lang}>{st.chapter[lang]}</span>
+          <span className={s.placeAlt} lang={lang}>
+            {lang === "vi" ? st.vi : st.de}
           </span>
         </h3>
         <p className={s.story} data-reveal>
           {st.text[lang]}
         </p>
         {st.pull && (
-          <blockquote className={s.pull} data-reveal>
-            <p>{st.pull[lang]}</p>
-          </blockquote>
+          <figure className={s.pull} data-reveal>
+            <span className={s.pullMark} aria-hidden>
+              “
+            </span>
+            <blockquote>
+              <p>{st.pull[lang]}</p>
+            </blockquote>
+            <figcaption className={s.pullCite}>{t.pullCite}</figcaption>
+          </figure>
         )}
         <Media st={st} lang={lang} t={t} group={group} />
       </div>
@@ -415,6 +421,7 @@ export function Journey({ lang, t }: { lang: Lang; t: Strings }) {
         <h2 id="journey-h" className={`${s.h2} ${s.journeyHead}`}>
           {t.journeyHeading}
         </h2>
+        <p className={`${s.lede} ${s.journeyLede}`}>{t.journeyLine}</p>
         <div className={s.line}>
           <div className={s.lineTrack} aria-hidden>
             <div className={s.lineFill} />

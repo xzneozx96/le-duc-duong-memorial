@@ -3,7 +3,7 @@ import { labGuard } from "@/components/lab/lab-guard";
 import { DemoPage } from "../_lab/demo/demo-page";
 
 export const metadata: Metadata = {
-  title: "Lê Đức Dương · Một ánh Dương còn mãi (bản thử)",
+  title: "Nhà giáo Lê Đức Dương · Một ánh Dương còn mãi (bản thử)",
   robots: { index: false, follow: false },
 };
 

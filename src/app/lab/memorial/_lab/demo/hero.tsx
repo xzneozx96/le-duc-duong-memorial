@@ -7,7 +7,6 @@
 import { useRef } from "react";
 import { ArrowDown } from "lucide-react";
 import { classes } from "../cls";
-import { LangSwitch } from "../parts";
 import { person, type Lang, type Strings } from "./content";
 import { EASE, MOVE, gsap, useMotion } from "./motion";
 
@@ -27,15 +26,7 @@ function Word({ text, className }: { text: string; className: string }) {
   );
 }
 
-export function Hero({
-  lang,
-  setLang,
-  t,
-}: {
-  lang: Lang;
-  setLang: (l: Lang) => void;
-  t: Strings;
-}) {
+export function Hero({ lang, t }: { lang: Lang; t: Strings }) {
   const root = useRef<HTMLElement>(null);
 
   useMotion(root, (mm, el) => {
@@ -67,12 +58,13 @@ export function Hero({
 
   return (
     <header ref={root} className={s.hero}>
-      <div className={s.heroTop}>
-        <LangSwitch lang={lang} onChange={setLang} className={s.langSwitch} activeClassName={s.langActive} />
-      </div>
-
       <h1 className={s.name} lang="vi">
-        <span className={s.srOnly}>{person.name}</span>
+        <span className={s.srOnly}>
+          {t.honorific} {person.name}
+        </span>
+        <span className={s.honorific} aria-hidden data-intro>
+          {t.honorific}
+        </span>
         <Word text="Lê Đức" className={s.nameA} /> <Word text="Dương" className={s.nameB} />
       </h1>
       <p className={s.heroTitle} lang={lang} data-intro>
@@ -98,9 +90,6 @@ export function Hero({
           <span>{person.born}</span>
           <span aria-hidden className={s.heroDash} />
           <span>{person.died}</span>
-        </p>
-        <p className={s.intro} data-intro>
-          {t.intro}
         </p>
         <nav className={s.jumps} aria-label={t.jumpLabel} data-intro>
           <a href="#book" className={s.jumpMain}>

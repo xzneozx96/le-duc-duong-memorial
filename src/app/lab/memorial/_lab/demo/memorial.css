@@ -1828,3 +1828,93 @@ html:has(.lm-page) {
   }
 }
 
+
+/* ---------- revision 2026-11-18: honorific, quote block, timeline lede ---------- */
+.lm-honorific {
+  display: block;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: max(0.24em, 24px);
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  color: var(--forest);
+  margin-bottom: 0.08em;
+}
+@media (min-width: 1100px) {
+  .lm-name .lm-honorific {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: end;
+    align-self: end;
+    margin: 0 0 -0.1em;
+    font-size: 0.24em;
+  }
+  .lm-name .lm-nameA,
+  .lm-name .lm-nameB {
+    grid-row: 2;
+  }
+}
+
+.lm-journeyLede {
+  max-width: 34em;
+  margin-top: 18px;
+}
+
+.lm-pull {
+  position: relative;
+  margin-top: 48px;
+  max-width: 36em;
+  padding: 44px 40px 32px 48px;
+  border-top: 0;
+  border-left: 4px solid var(--bronze);
+  border-radius: 0 6px 6px 0;
+  background: var(--mist);
+}
+.lm-pullMark {
+  position: absolute;
+  top: -6px;
+  left: 30px;
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 104px;
+  line-height: 1;
+  color: var(--bronze);
+  pointer-events: none;
+}
+.lm-pull blockquote {
+  margin: 0;
+}
+.lm-pull p {
+  position: relative;
+  font-size: clamp(26px, 2.6vw, 38px);
+  line-height: 1.3;
+}
+.lm-pullCite {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 22px;
+  font-family: var(--sans);
+  font-size: 18px;
+  line-height: 1.4;
+  color: var(--forest);
+}
+.lm-pullCite::before {
+  content: "";
+  flex: none;
+  width: 36px;
+  height: 1.5px;
+  background: var(--bronze);
+}
+@media (max-width: 699px) {
+  .lm-pull {
+    padding: 40px 22px 26px 28px;
+  }
+  .lm-pullMark {
+    left: 14px;
+    font-size: 88px;
+  }
+}
+.lm-jumps a {
+  white-space: nowrap;
+}

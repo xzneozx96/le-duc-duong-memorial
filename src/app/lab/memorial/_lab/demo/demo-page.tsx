@@ -8,13 +8,11 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowUp, ArrowUpRight, Play } from "lucide-react";
 import { classes } from "../cls";
-import { LangSwitch } from "../parts";
 import { Book } from "./book";
 import { FAMILY_EMAIL, films, sourceLinks, ui, type Lang, type Strings } from "./content";
 import { demoFontVars } from "./fonts";
 import { Hero } from "./hero";
 import { Journey } from "./journey";
-import { useDemoLang } from "./lang";
 import { EASE, MOVE, gsap, useMotion, useRefreshOnResize } from "./motion";
 import { ViewerProvider } from "./viewer";
 import "./memorial.css";
@@ -129,7 +127,8 @@ function Films({ lang, t }: { lang: Lang; t: Strings }) {
 }
 
 export function DemoPage() {
-  const [lang, setLang] = useDemoLang();
+  // Vietnamese only for now; the German strings stay in content.ts for later.
+  const lang: Lang = "vi";
   const t = ui[lang];
   const main = useRef<HTMLElement>(null);
   useRefreshOnResize(main);
@@ -142,7 +141,7 @@ export function DemoPage() {
           <Link href="/lab/memorial">{t.labHome}</Link>
         </aside>
 
-        <Hero lang={lang} setLang={setLang} t={t} />
+        <Hero lang={lang} t={t} />
 
         <main ref={main}>
           <Films lang={lang} t={t} />
@@ -167,7 +166,6 @@ export function DemoPage() {
             <div className={s.footerEnd}>
               <p className={s.family}>{t.family(FAMILY_EMAIL)}</p>
               <div className={s.footerRow}>
-                <LangSwitch lang={lang} onChange={setLang} className={s.langSwitch} activeClassName={s.langActive} />
                 <a href="#top" className={s.toTop}>
                   <ArrowUp aria-hidden size={20} strokeWidth={2.25} />
                   {t.toTop}
