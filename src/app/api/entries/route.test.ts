@@ -186,6 +186,34 @@ describe("POST /api/entries", () => {
   });
 });
 
+describe("POST /api/entries with a requestId", () => {
+  const RID = "5a6b7c8d-1111-4222-8333-444455556666";
+
+  it("answers 201 the first time and 200 with the same entry on a re-send", async () => {
+    const first = await POST(post({ ...valid, requestId: RID }));
+    const again = await POST(post({ ...valid, requestId: RID }));
+    expect(first.status).toBe(201);
+    expect(again.status).toBe(200);
+    const [a, b] = [await first.json(), await again.json()];
+    expect(b).toEqual(a);
+    expect(JSON.stringify(a)).not.toContain(RID);
+    expect(await db.select().from(entries)).toHaveLength(1);
+  });
+
+  it("answers 200, not 400, when the re-send lists photos that are now attached", async () => {
+    const p = await stagePhoto(db);
+    const body = { ...valid, requestId: RID, photos: [{ id: p }] };
+    expect((await POST(post(body))).status).toBe(201);
+    expect((await POST(post(body))).status).toBe(200);
+  });
+
+  it("answers 422 for a malformed requestId", async () => {
+    const res = await POST(post({ ...valid, requestId: "nope" }));
+    expect(res.status).toBe(422);
+    expect(await res.json()).toEqual({ errors: { requestId: "invalid" } });
+  });
+});
+
 describe("GET /api/entries", () => {
   it("lists visible entries newest first as JSON", async () => {
     await POST(post({ ...valid, name: "first" }));

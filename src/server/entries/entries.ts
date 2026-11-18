@@ -23,7 +23,7 @@ export type PublicEntry = {
   photos: PublicPhoto[];
 };
 export type CreateResult =
-  | { ok: true; entry: PublicEntry }
+  | { ok: true; created: boolean; entry: PublicEntry }
   | { ok: false; errors: { photos: "invalid" } };
 
 const toPublicPhoto = (p: PhotoRow): PublicPhoto => ({
@@ -48,8 +48,30 @@ const toPublicEntry = (e: EntryRow, ps: PhotoRow[]): PublicEntry => ({
 
 class BadPhotos extends Error {}
 
-/** Inserts the entry and attaches its staged photos in one transaction, or writes nothing. */
+const isUniqueViolation = (e: unknown) =>
+  (e as { code?: string; cause?: { code?: string } } | null)?.code === "23505" ||
+  (e as { cause?: { code?: string } } | null)?.cause?.code === "23505";
+
+async function findByRequestId(db: Db, requestId: string): Promise<PublicEntry | null> {
+  const [row] = await db.select().from(entries).where(eq(entries.requestId, requestId));
+  if (!row) return null;
+  const ps = await db.select().from(photos).where(eq(photos.entryId, row.id)).orderBy(asc(photos.position));
+  return toPublicEntry(row, ps);
+}
+
+/**
+ * Inserts the entry and attaches its staged photos in one transaction, or writes nothing.
+ *
+ * Idempotent on `requestId`: a repeat returns the first entry (created: false) and writes nothing,
+ * whatever the repeat's content or photo list. Two concurrent posts with the same id are settled
+ * by the unique constraint: the loser's insert fails and it re-reads the winner's entry.
+ */
 export async function createEntry(db: Db, input: EntryInput): Promise<CreateResult> {
+  const { requestId } = input;
+  if (requestId) {
+    const existing = await findByRequestId(db, requestId);
+    if (existing) return { ok: true, created: false, entry: existing };
+  }
   try {
     return await db.transaction(async (tx) => {
       const [entry] = await tx
@@ -60,6 +82,7 @@ export async function createEntry(db: Db, input: EntryInput): Promise<CreateResu
           cls: input.cls,
           year: input.year,
           message: input.message,
+          requestId,
         })
         .returning();
       const attached: PhotoRow[] = [];
@@ -73,10 +96,14 @@ export async function createEntry(db: Db, input: EntryInput): Promise<CreateResu
         if (!row) throw new BadPhotos();
         attached.push(row);
       }
-      return { ok: true as const, entry: toPublicEntry(entry, attached) };
+      return { ok: true as const, created: true, entry: toPublicEntry(entry, attached) };
     });
   } catch (e) {
     if (e instanceof BadPhotos) return { ok: false, errors: { photos: "invalid" } };
+    if (requestId && isUniqueViolation(e)) {
+      const existing = await findByRequestId(db, requestId);
+      if (existing) return { ok: true, created: false, entry: existing };
+    }
     throw e;
   }
 }

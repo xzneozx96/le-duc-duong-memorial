@@ -12,7 +12,7 @@ beforeAll(async () => {
 afterAll(closeTestDb);
 beforeEach(() => resetTables(db));
 
-const base = { name: "Nguyễn Văn A", relation: "student" as const, cls: null, year: null, message: "Thầy ơi", photos: [] };
+const base = { name: "Nguyễn Văn A", relation: "student" as const, cls: null, year: null, message: "Thầy ơi", photos: [], requestId: null };
 
 describe("createEntry", () => {
   it("stores an entry with no photos and returns it in the public shape", async () => {
@@ -69,6 +69,66 @@ describe("createEntry", () => {
     const rows = await db.select().from(photos);
     expect(rows.find((p) => p.id === a)?.caption).toBe("mine");
     expect(rows.find((p) => p.id === b)?.entryId).toBeNull();
+  });
+});
+
+describe("createEntry with a requestId", () => {
+  const RID = "5a6b7c8d-1111-4222-8333-444455556666";
+
+  it("creates the first time and returns the original entry, writing nothing, on a repeat", async () => {
+    const first = await createEntry(db, { ...base, requestId: RID });
+    const again = await createEntry(db, { ...base, requestId: RID });
+    expect(first).toMatchObject({ ok: true, created: true });
+    expect(again).toMatchObject({ ok: true, created: false });
+    expect(again.ok && again.entry).toEqual(first.ok && first.entry);
+    expect(await db.select().from(entries)).toHaveLength(1);
+  });
+
+  it("returns the original even when the repeat has different content", async () => {
+    const first = await createEntry(db, { ...base, requestId: RID });
+    const again = await createEntry(db, { ...base, name: "Someone else", message: "changed", requestId: RID });
+    expect(again.ok && again.entry.name).toBe("Nguyễn Văn A");
+    expect(again.ok && again.entry.id).toBe(first.ok && first.entry.id);
+    expect(await db.select().from(entries)).toHaveLength(1);
+  });
+
+  it("returns the original with its photos after they were attached, not a photos error", async () => {
+    const a = await stagePhoto(db);
+    const input = { ...base, requestId: RID, photos: [{ id: a, caption: "c" }] };
+    const first = await createEntry(db, input);
+    const again = await createEntry(db, input);
+    expect(again).toMatchObject({ ok: true, created: false });
+    expect(again.ok && again.entry.photos.map((p) => p.id)).toEqual([a]);
+    expect(again.ok && again.entry).toEqual(first.ok && first.entry);
+  });
+
+  it("leaves photos untouched on a repeat that lists other staged photos", async () => {
+    const first = await createEntry(db, { ...base, requestId: RID });
+    const b = await stagePhoto(db);
+    const again = await createEntry(db, { ...base, requestId: RID, photos: [{ id: b, caption: null }] });
+    expect(again).toMatchObject({ ok: true, created: false });
+    expect(again.ok && again.entry.photos).toEqual([]);
+    expect((await db.select().from(photos))[0].entryId).toBeNull();
+    expect(first.ok).toBe(true);
+  });
+
+  it("gives one row for concurrent posts with the same requestId", async () => {
+    const results = await Promise.all(Array.from({ length: 8 }, () => createEntry(db, { ...base, requestId: RID })));
+    expect(results.every((r) => r.ok)).toBe(true);
+    expect(results.filter((r) => r.ok && r.created)).toHaveLength(1);
+    expect(new Set(results.map((r) => r.ok && r.entry.id)).size).toBe(1);
+    expect(await db.select().from(entries)).toHaveLength(1);
+  });
+
+  it("never exposes the requestId, and posts without one are always new", async () => {
+    const r = await createEntry(db, { ...base, requestId: RID });
+    expect(JSON.stringify(r)).not.toContain(RID);
+    expect(JSON.stringify(await listVisibleEntries(db))).not.toContain(RID);
+    const a = await createEntry(db, base);
+    const b = await createEntry(db, base);
+    expect(a).toMatchObject({ ok: true, created: true });
+    expect(b).toMatchObject({ ok: true, created: true });
+    expect(await db.select().from(entries)).toHaveLength(3);
   });
 });
 

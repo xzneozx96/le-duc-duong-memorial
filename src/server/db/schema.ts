@@ -20,6 +20,8 @@ export const entries = pgTable(
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
     hidden: boolean("hidden").notNull().default(false),
     hiddenNote: text("hidden_note"),
+    /** client-chosen idempotency key: a re-sent post with the same id returns the first entry */
+    requestId: uuid("request_id").unique(),
   },
   (t) => [index("entries_visible_created_idx").on(t.hidden, t.createdAt)],
 );

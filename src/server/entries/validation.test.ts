@@ -15,7 +15,7 @@ describe("parseEntryInput", () => {
     const r = parseEntryInput(valid);
     expect(r).toEqual({
       ok: true,
-      value: { ...valid, cls: null, year: null, photos: [] },
+      value: { ...valid, cls: null, year: null, photos: [], requestId: null },
     });
   });
 
@@ -74,7 +74,7 @@ describe("parseEntryInput", () => {
     const r = parseEntryInput({ ...valid, name: "  An  ", cls: "   ", year: "", message: "\n hi \n" });
     expect(r).toEqual({
       ok: true,
-      value: { name: "An", relation: "student", cls: null, year: null, message: "hi", photos: [] },
+      value: { name: "An", relation: "student", cls: null, year: null, message: "hi", photos: [], requestId: null },
     });
   });
 
@@ -123,7 +123,7 @@ describe("parseEntryInput", () => {
       ok: true,
       value: {
         name: "An", relation: "student", cls: "D3", year: "1978",
-        message: "line1\nline\t2", photos: [{ id: PHOTO, caption: "cap" }],
+        message: "line1\nline\t2", photos: [{ id: PHOTO, caption: "cap" }], requestId: null,
       },
     });
   });
@@ -137,5 +137,14 @@ describe("parseEntryInput", () => {
     expect(errorsOf({ ...valid, name: "\u0000\u0001" })).toEqual({ name: "required" });
     expect(errorsOf({ ...valid, message: "\u0000 \u0000" })).toEqual({ message: "required" });
     expect(parseEntryInput({ ...valid, cls: "\u0000", name: "a\u0000".repeat(100) })).toMatchObject({ ok: true, value: { cls: null } });
+  });
+
+  it("keeps a valid requestId (lower-cased), treats a blank one as none, and refuses a malformed one", () => {
+    const r = parseEntryInput({ ...valid, requestId: PHOTO.toUpperCase() });
+    expect(r.ok && r.value.requestId).toBe(PHOTO);
+    const blank = parseEntryInput({ ...valid, requestId: "" });
+    expect(blank.ok && blank.value.requestId).toBeNull();
+    expect(errorsOf({ ...valid, requestId: "nope" })).toEqual({ requestId: "invalid" });
+    expect(errorsOf({ ...valid, requestId: 7 })).toEqual({ requestId: "invalid" });
   });
 });

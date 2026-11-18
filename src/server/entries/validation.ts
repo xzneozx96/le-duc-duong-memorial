@@ -15,6 +15,7 @@ export type EntryInput = {
   year: string | null;
   message: string;
   photos: { id: string; caption: string | null }[];
+  requestId: string | null;
 };
 
 export type ParseResult =
@@ -105,6 +106,15 @@ const photos = z.unknown().transform((value, ctx) => {
   return out;
 });
 
+const requestId = z.unknown().transform((value, ctx) => {
+  const s = clean(value);
+  if (s === BAD || (s !== null && !UUID.test(s))) {
+    ctx.addIssue({ code: "custom", message: "invalid" });
+    return z.NEVER;
+  }
+  return s === null ? null : s.toLowerCase();
+});
+
 const schema = z.object({
   name: text(LIMITS.name, true),
   relation,
@@ -112,6 +122,7 @@ const schema = z.object({
   year: text(LIMITS.year, false),
   message: text(LIMITS.message, true, true),
   photos,
+  requestId,
 });
 
 export function parseEntryInput(raw: unknown): ParseResult {
@@ -124,6 +135,7 @@ export function parseEntryInput(raw: unknown): ParseResult {
     year: body.year ?? null,
     message: body.message ?? null,
     photos: body.photos ?? null,
+    requestId: body.requestId ?? null,
   });
   if (result.success) return { ok: true, value: result.data as EntryInput };
   const errors: Record<string, FieldCode> = {};

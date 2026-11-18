@@ -7,13 +7,16 @@ import {
   sampleEntries,
   tributeEntry,
   ui,
-  type Entry,
+  type Entry as BaseEntry,
   type Relation,
   type Strings,
 } from "../demo/content";
 
 export { FAMILY_EMAIL, FIRST_BATCH, LIMITS, sampleEntries, tributeEntry };
-export type { Entry, Relation, Strings };
+export type { Relation, Strings };
+
+/** The demo's entry, with an optional small copy of each photo (real letters carry one). */
+export type Entry = Omit<BaseEntry, "photos"> & { photos?: (NonNullable<BaseEntry["photos"]>[number] & { thumb?: string })[] };
 
 export const t: Strings = ui.vi;
 

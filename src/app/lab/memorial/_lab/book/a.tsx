@@ -63,7 +63,7 @@ function Envelope({
         <span className={s.stamp} aria-hidden>
           {photo ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={photo.src} alt="" width={photo.w} height={photo.h} loading="lazy" />
+            <img src={photo.thumb ?? photo.src} alt="" width={photo.w} height={photo.h} loading="lazy" />
           ) : (
             <span className={s.stampInitial}>{lastWord(entry.name).charAt(0)}</span>
           )}
@@ -413,6 +413,11 @@ export function OptionA() {
       </div>
 
       <StatusLine posted={book.posted} className={s.status} />
+      {book.loadFailed && (
+        <p role="status" className={k.hint} style={{ textAlign: "center" }}>
+          {t.form.loadFailed}
+        </p>
+      )}
 
       <div className={s.carousel} role="region" aria-roledescription="carousel" aria-label="Những lá thư gửi thầy">
         <ol ref={track} className={s.track} tabIndex={0} onScroll={measure} onKeyDown={onTrackKey}>

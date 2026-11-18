@@ -3,9 +3,10 @@
 // Shared pieces of the Lưu bút options: the lab frame, the book's state, a letter's text exactly
 // as typed, its photos (each opens the viewer), the "Vừa gửi" mark and the status line.
 import Link from "next/link";
-import { useCallback, useMemo, useState, type CSSProperties, type ReactNode } from "react";
+import { useCallback, useEffect, useMemo, useState, type CSSProperties, type ReactNode } from "react";
 import { ArrowLeft, Check } from "lucide-react";
 import { classes } from "../cls";
+import { fetchEntries } from "./api";
 import { isTribute, paragraphs, t, tributeEntry, tributeParts, visitorEntries, type Entry } from "./data";
 import { bookFontVars } from "./fonts";
 import { useViewer, ViewerProvider, type ViewerPhoto } from "./viewer";
@@ -67,12 +68,30 @@ export function BookEmbed({ children }: { children: ReactNode }) {
   );
 }
 
-/** The book's state: the tribute, letters sent in this visit (newest first), the samples. */
+/** The six invented letters, for previewing a full wall in dev only. */
+const SAMPLES = process.env.NEXT_PUBLIC_SAMPLE_ENTRIES === "1";
+
+/** The book's state: the tribute, letters sent in this visit (newest first), then the letters the
+ *  server holds (newest first). Samples only when NEXT_PUBLIC_SAMPLE_ENTRIES=1. */
 export function useBook() {
   const [sent, setSent] = useState<Entry[]>([]);
+  const [loaded, setLoaded] = useState<Entry[]>([]);
+  const [loadFailed, setLoadFailed] = useState(false);
   const [posted, setPosted] = useState(false);
   const [shown, setShown] = useState(BATCH);
-  const allVisitors = useMemo(() => [...sent, ...visitorEntries], [sent]);
+  useEffect(() => {
+    const ctl = new AbortController();
+    void fetchEntries(ctl.signal).then((r) => {
+      if (ctl.signal.aborted) return;
+      if (r.ok) setLoaded(r.entries);
+      else setLoadFailed(true);
+    });
+    return () => ctl.abort();
+  }, []);
+  const allVisitors = useMemo(() => {
+    const ids = new Set(sent.map((e) => e.id));
+    return [...sent, ...loaded.filter((e) => !ids.has(e.id)), ...(SAMPLES ? visitorEntries : [])];
+  }, [sent, loaded]);
   const visitors = allVisitors.slice(0, shown + sent.length);
   const hidden = Math.max(0, allVisitors.length - visitors.length);
   const add = useCallback((e: Entry) => {
@@ -80,7 +99,7 @@ export function useBook() {
     setPosted(true);
   }, []);
   const more = useCallback(() => setShown((n) => n + BATCH), []);
-  return { tribute: tributeEntry, visitors, all: [tributeEntry, ...visitors], add, posted, hidden, more };
+  return { tribute: tributeEntry, visitors, all: [tributeEntry, ...visitors], add, posted, hidden, more, loadFailed };
 }
 
 /** A letter's text exactly as typed: one <p> per paragraph, single line breaks kept. The tribute's

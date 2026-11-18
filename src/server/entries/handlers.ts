@@ -58,7 +58,7 @@ export function makeHandlers(deps: { getDb: () => Db; limiter: RateLimiter }) {
         if (!parsed.ok) return json({ errors: parsed.errors }, 422);
         const result = await createEntry(deps.getDb(), parsed.value);
         if (!result.ok) return json({ errors: result.errors }, 400);
-        return json(result.entry, 201);
+        return json(result.entry, result.created ? 201 : 200);
       } catch (e) {
         return serverError(e);
       }
