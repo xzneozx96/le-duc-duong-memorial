@@ -17,7 +17,7 @@ const options = [
   {
     id: "e2",
     name: "Sương sớm Moritzburg · morning mist at Moritzburg",
-    note: "Light and quiet. A group photo from his own collection (picked by the owner), graded into a sepia mist. His whole portrait stands large on the left on desktop with his name, titles and dates beside him; on a phone the portrait sits above the name. The mist clears on arrival; on scroll it closes over him.",
+    note: "Light and quiet. A group photo from his own collection (picked by the owner), graded into a sepia mist. His whole portrait stands large on the left on desktop with his name, dates and one line about his students beside him; on a phone the portrait sits above the name. The mist clears on arrival; on scroll it closes over him.",
   },
   {
     id: "e3",

@@ -137,40 +137,9 @@
   outline-offset: 4px;
 }
 
-/* his titles: one row with quiet separators, then the line of what he is remembered for */
-.hes-titleList {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  column-gap: 0;
-  row-gap: 2px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  font-weight: 600;
-  color: inherit;
-}
-.hes-titleList li {
-  white-space: nowrap;
-}
-.hes-titleList li + li::before {
-  content: "·";
-  margin: 0 0.5em;
-  color: var(--bronze);
-  font-weight: 400;
-}
-/* on a phone the titles stack, one per line, with no separators to strand at a line start */
-@media (max-width: 600px) {
-  .hes-titleList {
-    flex-direction: column;
-    align-items: inherit;
-  }
-  .hes-titleList li + li::before {
-    content: none;
-  }
-}
+/* the line of what he is remembered for */
 .hes-legacy {
-  margin: 6px 0 0;
+  margin: 0;
   font-size: 0.9em;
   font-style: italic;
   text-wrap: balance;
