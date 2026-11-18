@@ -3,8 +3,9 @@
 // The Lưu bút: invitation, the form behind "Viết lưu bút" (it opens in place), the tribute of
 // Cao Hữu Ngạn first, then visitor entries newest first. The form works in the browser only:
 // nothing is sent anywhere, and a new entry lives until the page reloads.
-// v4 look: an open notebook on the evening ground. Entries are ruled pages, two to a spread on
-// wide screens, and each spread opens from its spine as it arrives.
+// Look: a framed panel after the Farewell theme's "family owned" block (a white page inside a
+// wide sand frame, a misty photo in one corner, a centred kicker, heading and ornament), with the
+// entries as a horizontal row of testimonial cards that snap, with previous and next buttons.
 import {
   useEffect,
   useId,
@@ -14,7 +15,7 @@ import {
   type CSSProperties,
   type FormEvent,
 } from "react";
-import { Check, CircleAlert, ImagePlus, PenLine } from "lucide-react";
+import { BookOpen, Check, ChevronLeft, ChevronRight, CircleAlert, ImagePlus, PenLine } from "lucide-react";
 import { classes } from "../cls";
 import {
   FAMILY_EMAIL,
@@ -572,25 +573,77 @@ export function Book({ t }: { t: Strings }) {
   const focusNext = useRef<string | null>(null);
   const root = useRef<HTMLElement>(null);
 
-  // Pages open from the spine as they arrive: the left page swings in from the right edge, the
-  // right page from the left edge. Once, quickly; the words are never held back after that.
+  const track = useRef<HTMLOListElement>(null);
+  const [at, setAt] = useState({ index: 0, atStart: true, atEnd: true });
+
+  // The panel settles in once; the cards rise one after another as the row comes into view.
   useMotion(root, (mm, el) => {
     mm.add(MOVE, () => {
-      const pages = Array.from(el.querySelectorAll<HTMLElement>("[data-page]"));
-      openPages(pages);
+      const q = gsap.utils.selector(el);
+      gsap.from(q("[data-gb-head] > *"), {
+        opacity: 0,
+        y: 18,
+        duration: 0.9,
+        stagger: 0.08,
+        ease: EASE.enter,
+        scrollTrigger: { trigger: el, start: "top 75%", once: true },
+      });
+      gsap.from(q("[data-page]"), {
+        opacity: 0,
+        y: 28,
+        duration: 1,
+        stagger: 0.12,
+        ease: EASE.enter,
+        clearProps: "transform",
+        scrollTrigger: { trigger: track.current, start: "top 85%", once: true },
+      });
     });
   });
+
+  // Where the row is: which card is first in view, and whether it can move either way.
+  const measure = () => {
+    const el = track.current;
+    if (!el) return;
+    const card = el.querySelector<HTMLElement>("[data-page]");
+    const step = card ? card.offsetWidth : el.clientWidth;
+    const next = {
+      index: Math.round(el.scrollLeft / Math.max(step, 1)),
+      atStart: el.scrollLeft < 4,
+      atEnd: el.scrollLeft + el.clientWidth >= el.scrollWidth - 4,
+    };
+    setAt((prev) =>
+      prev.index === next.index && prev.atStart === next.atStart && prev.atEnd === next.atEnd ? prev : next,
+    );
+  };
+  const move = (dir: 1 | -1) => {
+    const el = track.current;
+    const card = el?.querySelector<HTMLElement>("[data-page]");
+    if (!el || !card) return;
+    const smooth = window.matchMedia(MOVE).matches ? "smooth" : "auto";
+    el.scrollBy({ left: dir * card.offsetWidth, behavior: smooth });
+  };
 
   const samples = showAll ? sampleEntries : sampleEntries.slice(0, FIRST_BATCH);
   const hiddenCount = sampleEntries.length - FIRST_BATCH;
   const entries = [tributeEntry, ...sent, ...samples];
+  const entryCount = entries.length;
+
+  useEffect(() => {
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+    // measure reads the row itself; it only needs re-running when the number of cards changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [entryCount]);
 
   useEffect(() => {
     const target = focusNext.current;
     focusNext.current = null;
     if (!target) return;
+    track.current?.scrollTo({ left: 0 });
     const heading = headings.current.get(target);
-    heading?.focus();
+    heading?.focus({ preventScroll: true });
+    heading?.closest("[data-page]")?.scrollIntoView({ block: "nearest", inline: "start" });
     // A new entry settles onto its page: the sand of the "Vừa gửi" light fades into the paper.
     const page = heading?.closest<HTMLElement>("[data-page]");
     if (page && window.matchMedia(MOVE).matches) {
@@ -608,30 +661,35 @@ export function Book({ t }: { t: Strings }) {
   }, [formOpen]);
 
   return (
-    <section ref={root} id="book" className={s.book} aria-labelledby="book-h">
-      <div className={s.bookBand}>
-        <div className={`${s.wrap} ${s.bookIntro}`}>
-          <h2 id="book-h" className={s.bookHead}>
+    <section ref={root} id="book" className={s.gb} aria-labelledby="book-h">
+      <div className={s.gbFrame}>
+        <div className={s.gbMist} aria-hidden />
+        <div className={s.gbHead} data-gb-head>
+          <p className={s.gbKicker}>{t.bookKicker}</p>
+          <span className={s.gbHair} aria-hidden />
+          <h2 id="book-h" className={s.gbTitle}>
             {t.bookHeading}
           </h2>
-          <div className={s.bookAsk}>
-            <p className={s.bookInvite}>{t.bookInvite}</p>
-            {!formOpen && (
-              <button
-                ref={openButton}
-                type="button"
-                className={`${s.primary} ${s.bookOpen}`}
-                onClick={() => setFormOpen(true)}
-              >
-                <PenLine aria-hidden size={22} strokeWidth={2} />
-                {t.bookOpen}
-              </button>
-            )}
+          <div className={s.gbOrnament} aria-hidden>
+            <span />
+            <BookOpen size={30} strokeWidth={1.5} />
+            <span />
           </div>
+          <p className={s.gbInvite}>{t.bookInvite}</p>
+          {!formOpen && (
+            <button
+              ref={openButton}
+              type="button"
+              className={`${s.primary} ${s.bookOpen}`}
+              onClick={() => setFormOpen(true)}
+            >
+              <PenLine aria-hidden size={22} strokeWidth={2} />
+              {t.bookOpen}
+            </button>
+          )}
         </div>
-      </div>
-      <div className={s.bookInner}>
-        <div className={s.bookMain}>
+
+        <div className={s.gbForm}>
           <MemoryForm
             t={t}
             open={formOpen}
@@ -654,9 +712,12 @@ export function Book({ t }: { t: Strings }) {
               </p>
             )}
           </div>
-          <ol className={s.entries}>
+        </div>
+
+        <div className={s.gbRow} role="region" aria-label={t.bookTrack}>
+          <ol ref={track} className={s.gbTrack} tabIndex={0} onScroll={measure} data-single={entries.length === 1 || undefined}>
             {entries.map((entry) => (
-              <li key={entry.id} data-page>
+              <li key={entry.id} className={s.gbCard} data-page>
                 <EntryItem
                   entry={entry}
                   t={t}
@@ -668,6 +729,19 @@ export function Book({ t }: { t: Strings }) {
               </li>
             ))}
           </ol>
+          {!(at.atStart && at.atEnd) && (
+            <div className={s.gbNav}>
+              <button type="button" className={s.gbArrow} onClick={() => move(-1)} disabled={at.atStart} aria-label={t.bookPrev}>
+                <ChevronLeft aria-hidden size={26} strokeWidth={1.75} />
+              </button>
+              <p className={s.gbCount} aria-live="polite">
+                {t.bookCount(Math.min(at.index + 1, entries.length), entries.length)}
+              </p>
+              <button type="button" className={s.gbArrow} onClick={() => move(1)} disabled={at.atEnd} aria-label={t.bookNext}>
+                <ChevronRight aria-hidden size={26} strokeWidth={1.75} />
+              </button>
+            </div>
+          )}
           {!showAll && hiddenCount > 0 && (
             <button
               type="button"
@@ -684,28 +758,4 @@ export function Book({ t }: { t: Strings }) {
       </div>
     </section>
   );
-}
-
-/** Each page arrives once, from its spine on wide screens and from below on phones. */
-function openPages(pages: HTMLElement[]) {
-  const half = (el: HTMLElement) => (el.parentElement?.clientWidth ?? 0) / 2;
-  const isLeft = (el: HTMLElement) => el.offsetLeft < half(el) - 8;
-  const isSpread = (el: HTMLElement) => el.offsetWidth > half(el) * 1.4;
-  pages.forEach((page) => {
-    gsap.fromTo(
-      page,
-      !isSpread(page) && window.matchMedia("(min-width: 900px)").matches
-        ? { opacity: 0, rotateY: isLeft(page) ? 16 : -16, transformOrigin: isLeft(page) ? "100% 50%" : "0% 50%" }
-        : { opacity: 0, y: 32 },
-      {
-        opacity: 1,
-        rotateY: 0,
-        y: 0,
-        duration: 1.1,
-        ease: EASE.enter,
-        clearProps: "transform",
-        scrollTrigger: { trigger: page, start: "top 92%", once: true },
-      },
-    );
-  });
 }
