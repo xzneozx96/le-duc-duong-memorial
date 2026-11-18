@@ -450,6 +450,7 @@ export function OptionA() {
           <div
             ref={panel}
             className={s.panel}
+            data-lenis-prevent
             role="dialog"
             aria-modal="true"
             aria-labelledby={entry ? "a-letter-h" : undefined}

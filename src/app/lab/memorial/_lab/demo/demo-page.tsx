@@ -17,6 +17,7 @@ import { demoFontVars } from "./fonts";
 import { OptionE2 as Hero } from "../hero/option-e2";
 import { Journey } from "./journey";
 import { useRefreshOnResize } from "./motion";
+import { SmoothScroll } from "./smooth-scroll";
 import { ViewerProvider } from "./viewer";
 import "./memorial.css";
 
@@ -32,6 +33,7 @@ export function DemoPage() {
   return (
     <div id="top" className={`${s.page} ${demoFontVars}`}>
       <ViewerProvider t={t.viewer}>
+        <SmoothScroll />
 
         {/* the approved hero: E2 (his portrait over the class photo in sepia mist) */}
         <Hero withNext={false} cueHref="#journey" />

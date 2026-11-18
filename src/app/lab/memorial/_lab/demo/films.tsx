@@ -73,6 +73,7 @@ function FilmDialog({ index, onClose }: { index: number | null; onClose: () => v
 
   return (
     <dialog
+      data-lenis-prevent
       ref={dialog}
       className={s.filmDialog}
       aria-label={film?.title}
