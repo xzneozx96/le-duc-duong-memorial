@@ -46,3 +46,8 @@ next-env.d.ts
 .factory/runtime/
 .factory/companion/
 .factory/brainstorm/*/briefs/
+
+# Source material (family documents, original photos and video) stays on the owner's machine.
+/documents/
+/images/
+/videos/
