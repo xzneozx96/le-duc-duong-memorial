@@ -101,7 +101,7 @@ function Clip({ clip, lang, t }: { clip: NonNullable<Station["clip"]>; lang: Lan
       </div>
       <figcaption className={s.caption}>
         {clip.caption[lang]}
-        <span className={s.credit}>{clip.credit[lang]}</span>
+        {clip.credit && <span className={s.credit}>{clip.credit[lang]}</span>}
       </figcaption>
     </figure>
   );

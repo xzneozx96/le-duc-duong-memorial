@@ -32,7 +32,7 @@ export type Station = {
   aside?: { photos: Photo[]; ratio: string; maxW: number; caption?: Two };
   /** one photo across the whole screen */
   lead?: { photo: Photo; wideRatio: string; widePos: string };
-  clip?: { poster: string; src: string; w: number; h: number; caption: Two; credit: Two };
+  clip?: { poster: string; src: string; w: number; h: number; caption: Two; credit?: Two };
   /** the last sentence of the story, set large as his own account */
   pull?: Two;
   /** the other photos: "pair" two to a row, "wall" at their own proportions */
@@ -329,7 +329,6 @@ export const stations: Station[] = [
         "Phim tư liệu về chuyến thăm CHDC Đức của Bác Hồ năm 1957. Thầy kể về lần gặp Bác khi Bác thăm trường ở Moritzburg.",
         "Archivfilm vom Besuch Hồ Chí Minhs in der DDR 1957. Er erzählte von der Begegnung bei dessen Besuch in Moritzburg.",
       ),
-      credit: { vi: "Phim: nguồn cần gia đình xác nhận", de: "Film: Quelle prüft die Familie" },
     },
     sheetKind: "pair",
     sheet: [
@@ -488,8 +487,74 @@ export const tributeEntry: Entry = {
 };
 
 // Sample visitor entries, newest first. Not real people; the lab bar says so.
-// Visitor entries appear only when someone writes one; the demo starts with the tribute alone.
-export const sampleEntries: Entry[] = [];
+// MOCK ENTRIES for previewing the Lưu bút layout only. They are invented, not real memories:
+// remove them (back to an empty array) before the site goes live.
+const ph = (name: string, w: number, h: number, pos?: string) => ({ src: `/demo/${name}.jpg`, w, h, pos });
+export const sampleEntries: Entry[] = [
+  {
+    id: "mock-1",
+    name: "Nguyễn Thị Thu Hà",
+    relation: "student",
+    cls: "Lớp D3",
+    year: "1978–1979",
+    date: "19.11.2026",
+    text:
+      "Kính gửi thầy,\n\nEm vào lớp tiếng Đức của thầy năm 1978, khi cả lớp chưa ai biết nói một câu cho tròn. Buổi đầu tiên thầy bước vào đúng giờ, không sớm một phút, không muộn một phút, đặt chiếc cặp lên bàn và nói bằng tiếng Đức. Cả lớp ngơ ngác, còn thầy thì cứ kiên nhẫn chỉ vào từng đồ vật trong phòng mà gọi tên.\n\nThầy nghiêm lắm. Ai làm bài thiếu, thầy không mắng, chỉ nhìn rồi bảo: «Ngày mai em đọc lại cho tôi nghe.» Vậy mà đứa nào cũng sợ hơn bị mắng. Nhờ những ngày ấy mà sang Đức em không bỡ ngỡ, nghe giảng được ngay từ học kỳ đầu.\n\nGần năm mươi năm rồi, em vẫn giữ quyển vở chép tay có những dòng thầy sửa bằng mực đỏ. Em xin thắp một nén nhang từ xa, cầu mong thầy yên nghỉ.",
+    photos: [ph("thanhxuan-2", 720, 535)],
+  },
+  {
+    id: "mock-2",
+    name: "Trần Quang Vinh",
+    relation: "student",
+    cls: "Lớp D7",
+    year: "1983–1984",
+    date: "19.11.2026",
+    text:
+      "Thưa thầy,\n\nChúng em là lứa sinh viên đi Đức cuối những năm tám mươi. Ký túc xá Thanh Xuân hồi ấy mất điện thường xuyên, tối nào cả phòng cũng ngồi quanh ngọn đèn dầu ôn từ vựng thầy giao. Có hôm thầy đi ngang, thấy chúng em đọc sai trọng âm, thầy dừng lại sửa từng chữ, rồi mới về.\n\nSau này gặp lại thầy ở Đức, thầy vẫn nhớ tên gần hết lớp, nhớ cả đứa hay ngủ gật ở bàn cuối. Thầy cười to, kể chuyện ngày xưa, kể chuyện những chuyến phiên dịch toát mồ hôi. Chúng em ngồi nghe mà như được trở lại lớp học năm nào.\n\nCảm ơn thầy vì đã mở cho chúng em cánh cửa sang một đất nước khác, một cuộc đời khác.",
+    photos: [ph("germany-1", 1280, 960), ph("germany-13", 1024, 768), ph("germany-7", 960, 720)],
+  },
+  {
+    id: "mock-3",
+    name: "Gabriele Hoffmann",
+    relation: "colleague",
+    cls: "Dolmetscherin",
+    year: "1990–2010",
+    date: "20.11.2026",
+    text:
+      "Lieber Herr Dương,\n\nwir haben uns Anfang der neunziger Jahre bei einer Übersetzung für eine vietnamesische Delegation kennengelernt. Ich war jung und unsicher, Sie waren ruhig, genau und immer pünktlich, auf die Minute. Wenn ich ein Wort nicht fand, haben Sie es mir leise zugeflüstert, ohne dass jemand es merkte.\n\nIn all den Jahren danach habe ich viel von Ihnen gelernt: wie man zwischen zwei Sprachen und zwei Ländern vermittelt, ohne eines davon zu verlieren. Ihr Lachen werde ich nicht vergessen.\n\nIn stiller Dankbarkeit, Ihre Gabriele",
+  },
+  {
+    id: "mock-4",
+    name: "Lê Minh Châu",
+    relation: "family",
+    date: "20.11.2026",
+    text:
+      "Ông ơi,\n\nCháu lớn lên ở Đức, tiếng Việt của cháu không giỏi bằng tiếng Đức, vậy mà ông chưa bao giờ trách. Mỗi lần cháu về thăm, ông lại kiên nhẫn dạy cháu đọc từng câu thơ, như ông đã dạy bao nhiêu thế hệ học trò đọc tiếng Đức.\n\nCháu nhớ những buổi chiều ông dắt chó đi dạo quanh khu phố, gặp ai cũng chào, ai cũng biết ông. Cháu nhớ ông kể chuyện chuyến tàu năm 1955, chuyện những người bạn nhỏ ở Moritzburg. Ngày ấy cháu nghe như nghe chuyện cổ tích.\n\nGiờ cháu mới hiểu, đó là cả một đời người. Cháu sẽ giữ những câu chuyện ấy, và kể lại cho các em cháu sau này.",
+    photos: [ph("germany-3", 768, 1024), ph("germany-6", 768, 1024)],
+  },
+  {
+    id: "mock-5",
+    name: "Phạm Đức Long",
+    relation: "colleague",
+    cls: "Khoa tiếng Đức",
+    year: "1975–1988",
+    date: "21.11.2026",
+    text:
+      "Anh Dương kính mến,\n\nNhững năm đầu ở Thanh Xuân, cả tổ chỉ hơn mười người, chưa ai được đào tạo sư phạm bài bản. Anh là người đi học thêm ở Leipzig về, mang theo bao nhiêu giáo trình, cách soạn bài, cách ra đề, rồi chia sẻ hết cho anh em.\n\nAnh nghiêm với sinh viên nhưng rất thương. Có những em không đạt, phải ở lại, anh là người buồn nhất. Có những buổi tối anh ngồi chấm bài đến khuya dưới ánh đèn dầu, sáng hôm sau vẫn có mặt ở lớp trước giờ.\n\nAnh đi rồi, nhưng những lứa học trò anh dạy vẫn còn đó, ở khắp Việt Nam và nước Đức. Đó là điều anh để lại lớn nhất.",
+    photos: [ph("thanhxuan-1", 1024, 768)],
+  },
+  {
+    id: "mock-6",
+    name: "Hoàng Thị Lan",
+    relation: "student",
+    cls: "Lớp D1",
+    year: "1986–1987",
+    date: "21.11.2026",
+    text:
+      "Thầy ơi,\n\nCon chỉ học thầy một năm, nhưng đó là năm con nhớ nhất thời sinh viên. Thầy dạy chúng con không chỉ tiếng Đức mà cả cách sống ở một đất nước xa lạ: đúng giờ, giữ lời, tự lo cho mình. Những điều tưởng nhỏ ấy theo con suốt những năm học ở Dresden.\n\nNăm 2019, cả lớp hẹn gặp lại thầy ở công viên Moritzburg. Thầy đến sớm nhất, đứng chờ dưới gốc cây, vẫn dáng thẳng và nụ cười hiền như ngày nào. Chúng con chụp chung một tấm ảnh, ai cũng tóc đã bạc.\n\nCon xin gửi lại tấm ảnh ấy ở đây, để thầy và chúng con còn mãi bên nhau.",
+    photos: [ph("germany-2", 960, 642), ph("germany-4", 960, 1280), ph("germany-12", 1024, 768), ph("germany-8", 768, 1024)],
+  },
+];
 
 /** Visitor entries shown before the "Xem thêm" button. The product shows 20; the demo has six. */
 export const FIRST_BATCH = 4;

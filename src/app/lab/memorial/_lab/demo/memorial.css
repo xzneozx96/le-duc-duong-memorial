@@ -2215,3 +2215,47 @@ html:has(.lm-page) {
   -webkit-mask-image: none;
   mask-image: none;
 }
+/* Cards in the row: no notebook page (no stretch, ruling, shadow), one even rhythm. */
+.lm-gbCard .lm-entry,
+.lm-gbTrack > li .lm-entry {
+  height: auto;
+  align-content: start;
+  line-height: 1.6;
+  border-radius: 0;
+  box-shadow: none;
+  background-color: transparent;
+}
+.lm-gbCard .lm-entry[data-new] {
+  background-color: #f5ece1;
+  padding: 18px 16px;
+  border-radius: 8px;
+}
+.lm-gbCard .lm-who,
+.lm-gbCard .lm-meta {
+  line-height: 1.35;
+}
+.lm-gbCard .lm-entryText {
+  line-height: 1.7;
+}
+.lm-gbCard .lm-entryPhotos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  width: 100%;
+  margin-top: 24px;
+}
+.lm-gbCard .lm-entryPhotos li {
+  width: auto;
+}
+.lm-gbCard .lm-entryPhotos li:only-child {
+  grid-column: 1 / -1;
+}
+.lm-gbCard .lm-entryPhotos img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  border-radius: 4px;
+}
+.lm-gbCard .lm-entryPhotos li:only-child img {
+  aspect-ratio: 3 / 2;
+}
