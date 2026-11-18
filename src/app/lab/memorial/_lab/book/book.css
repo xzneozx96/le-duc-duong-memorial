@@ -604,3 +604,37 @@ html:has(.lbk-page) {
     padding: 20px 32px 28px;
   }
 }
+
+/* a caption under each chosen photo */
+.lbk-thumb {
+  align-items: start;
+}
+.lbk-thumbBody {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+.lbk-captionLabel {
+  margin-top: 4px;
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 18px;
+  color: var(--forest);
+}
+.lbk-captionInput {
+  width: 100%;
+  min-height: 48px;
+}
+@media (max-width: 560px) {
+  .lbk-thumb {
+    grid-template-columns: 64px 1fr;
+  }
+  .lbk-thumb img {
+    width: 64px;
+    height: 64px;
+  }
+  .lbk-thumb > .lbk-textButton {
+    grid-column: 2;
+    justify-self: start;
+  }
+}

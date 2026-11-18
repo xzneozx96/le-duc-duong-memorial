@@ -15,7 +15,8 @@ const s = classes("lbk");
 const f = t.form;
 
 type Values = { name: string; relation: Relation | ""; cls: string; year: string; message: string };
-type Picked = { id: string; name: string; url: string; w?: number; h?: number };
+type Picked = { id: string; name: string; url: string; w?: number; h?: number; caption?: string };
+const CAPTION_MAX = 140;
 type Refused = { name: string; bytes: number; why: "type" | "size" };
 type Errors = Partial<Record<keyof Values, string>>;
 
@@ -173,7 +174,7 @@ export function MemoryForm({
       date: today(),
       text: values.message.trim().replace(/\n{3,}/g, "\n\n"),
       // the object URLs stay alive: the new entry shows them
-      photos: photos.map((p) => ({ src: p.url, w: p.w, h: p.h })),
+      photos: photos.map((p) => ({ src: p.url, w: p.w, h: p.h, caption: p.caption?.trim() || undefined })),
       justSent: true,
     });
     setValues(start);
@@ -333,7 +334,24 @@ export function MemoryForm({
             <li key={p.id} className={s.thumb}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={p.url} alt="" width={96} height={96} />
-              <span className={s.thumbName}>{p.name}</span>
+              <span className={s.thumbBody}>
+                <span className={s.thumbName}>{p.name}</span>
+                <label className={s.captionLabel} htmlFor={id(`cap-${p.id}`)}>
+                  Chú thích ảnh (nếu có)
+                </label>
+                <input
+                  id={id(`cap-${p.id}`)}
+                  className={`${s.input} ${s.captionInput}`}
+                  type="text"
+                  maxLength={CAPTION_MAX}
+                  placeholder="Ví dụ: Lớp D3 trước giờ học, năm 1978"
+                  value={p.caption ?? ""}
+                  onChange={(e) => {
+                    const caption = e.target.value;
+                    setPhotos((all) => all.map((x) => (x.id === p.id ? { ...x, caption } : x)));
+                  }}
+                />
+              </span>
               <button
                 type="button"
                 className={s.textButton}
