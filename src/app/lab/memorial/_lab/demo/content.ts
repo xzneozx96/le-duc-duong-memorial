@@ -20,7 +20,7 @@ export type Photo = {
 
 export type Station = {
   id: string;
-  /** which homeland the stop is in: the route map weaves between the two */
+  /** which country the station is in, shown as a small tag */
   land: "vn" | "de";
   years: string;
   vi: string;
@@ -30,7 +30,9 @@ export type Station = {
   aside?: { photos: Photo[]; ratio: string; maxW: number; caption?: Two };
   /** one photo across the whole screen */
   lead?: { photo: Photo; wideRatio: string; widePos: string };
-  clip?: { poster: string; src: string; w: number; h: number; caption: Two };
+  clip?: { poster: string; src: string; w: number; h: number; caption: Two; credit: Two };
+  /** the last sentence of the story, set large as his own account */
+  pull?: Two;
   /** the other photos: "pair" two to a row, "wall" at their own proportions */
   sheet: Photo[];
   sheetKind?: "pair" | "wall";
@@ -51,12 +53,31 @@ export const FAMILY_EMAIL = "giadinh@example.com";
 export const person = {
   name: "Lê Đức Dương",
   years: "1942–2026",
-  portrait: { src: "/demo/portrait.jpg", w: 1024, h: 1535 },
+  born: "01.05.1942",
+  died: "11.11.2026",
+  /** cut out of the studio portrait's solid backdrop, so he can stand in front of the page's own panel */
+  portrait: { src: "/demo/portrait-cutout.webp", w: 1024, h: 1535 },
 };
 
+// The posters are family photos of him speaking at reunions, not frames of the films; the note
+// under the films says so.
 export const films = [
-  { id: "K4gtri_cHB8", title: "Gespräch mit dem Deutschlehrer LÊ ĐỨC DƯƠNG", part: { vi: "Phần I", de: "Teil I" } },
-  { id: "otEfBuw2AoE", title: "Talk with the former “Moritzburger” Lê Đức Dương", part: { vi: "Phần II", de: "Teil II" } },
+  {
+    id: "K4gtri_cHB8",
+    title: "Gespräch mit dem Deutschlehrer LÊ ĐỨC DƯƠNG",
+    lang: "de",
+    date: "06.09.2020",
+    part: { vi: "Phần I", de: "Teil I" },
+    poster: { src: "/demo/germany-14.jpg", w: 754, h: 960, pos: "50% 40%" },
+  },
+  {
+    id: "otEfBuw2AoE",
+    title: "Talk with the former “Moritzburger” Lê Đức Dương",
+    lang: "en",
+    date: "13.09.2020",
+    part: { vi: "Phần II", de: "Teil II" },
+    poster: { src: "/demo/germany-9.jpg", w: 1200, h: 1600, pos: "50% 30%" },
+  },
 ] as const;
 
 const group = (n: number) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -66,6 +87,7 @@ export const ui = {
   vi: {
     labBar: "Bản thử: đoạn văn, chú thích và các lưu bút của khách là mẫu, gia đình chưa viết.",
     labHome: "Về trang lab",
+    portraitAlt: "Chân dung thầy Lê Đức Dương",
     title: "Một ánh Dương còn mãi",
     intro: "Đi tàu sang Đức năm 1955, dạy tiếng Đức ở Thanh Xuân 1970–1988.",
     jumpLabel: "Các phần của trang",
@@ -74,8 +96,10 @@ export const ui = {
     filmLine: "Trong podcast «Sống chung với Corona» của Trương Hồng Quang, thầy kể về cuộc đời mình.",
     filmPlay: "Xem phim",
     filmNote: "Phim mở từ YouTube khi bạn bấm xem.",
+    filmPhotos: "Ảnh trên hai phim: thầy nói chuyện trong các buổi gặp mặt học trò cũ (chú thích mẫu).",
     journeyHeading: "Hành trình của thầy",
     lands: { vn: "Việt Nam", de: "Đức" },
+    farewell: { died: "Thầy mất ngày 11.11.2026.", funeral: "Lễ tang ngày 27.11.2026." },
     morePhotos: (n: number) => `Xem thêm ${n} ảnh`,
     fewerPhotos: "Thu gọn ảnh",
     clipPlay: "Xem đoạn phim 58 giây",
@@ -149,6 +173,7 @@ export const ui = {
     labBar:
       "Entwurf: Absätze, Bildunterschriften und die Gästebucheinträge der Besucher sind Beispiele, die Familie hat sie noch nicht geschrieben.",
     labHome: "Zur Lab-Übersicht",
+    portraitAlt: "Porträt von Lê Đức Dương",
     title: "Ein Sonnenstrahl, der bleibt",
     intro: "1955 mit dem Zug in die DDR, 1970 bis 1988 Deutschlehrer in Hanoi.",
     jumpLabel: "Abschnitte der Seite",
@@ -157,8 +182,10 @@ export const ui = {
     filmLine: "Im Podcast «Sống chung với Corona» von Trương Hồng Quang erzählt er aus seinem Leben.",
     filmPlay: "Film ansehen",
     filmNote: "Der Film lädt erst von YouTube, wenn Sie ihn starten.",
+    filmPhotos: "Fotos auf den Filmen: Er spricht bei Treffen mit früheren Schülern (Beispieltext).",
     journeyHeading: "Sein Lebensweg",
     lands: { vn: "Vietnam", de: "Deutschland" },
+    farewell: { died: "Er ist am 11.11.2026 gestorben.", funeral: "Die Trauerfeier ist am 27.11.2026." },
     morePhotos: (n: number) => (n === 1 ? "1 weiteres Foto zeigen" : `${n} weitere Fotos zeigen`),
     fewerPhotos: "Weniger Fotos zeigen",
     clipPlay: "58-Sekunden-Film abspielen",
@@ -272,15 +299,17 @@ export const stations: Station[] = [
       wideRatio: "2 / 1",
       widePos: "50% 88%",
     },
+    // The clip with the repost's caption bar and like counter cropped away (public/demo).
     clip: {
-      poster: "/demo/gap-bac-ho-poster.jpg",
-      src: "/demo/gap-bac-ho.mp4",
-      w: 1000,
-      h: 1034,
+      poster: "/demo/gap-bac-ho-clean.jpg",
+      src: "/demo/gap-bac-ho-clean.mp4",
+      w: 464,
+      h: 294,
       caption: cap(
-        "Thầy kể về lần gặp Bác Hồ khi Bác thăm trường ở Moritzburg năm 1957.",
-        "Er erzählte von der Begegnung mit Hồ Chí Minh bei dessen Besuch in Moritzburg 1957.",
+        "Phim tư liệu về chuyến thăm CHDC Đức của Bác Hồ năm 1957. Thầy kể về lần gặp Bác khi Bác thăm trường ở Moritzburg.",
+        "Archivfilm vom Besuch Hồ Chí Minhs in der DDR 1957. Er erzählte von der Begegnung bei dessen Besuch in Moritzburg.",
       ),
+      credit: { vi: "Phim: nguồn cần gia đình xác nhận", de: "Film: Quelle prüft die Familie" },
     },
     sheetKind: "pair",
     sheet: [
@@ -349,8 +378,12 @@ export const stations: Station[] = [
     vi: "Thanh Xuân, Hà Nội",
     de: "Thanh Xuân, Hanoi",
     text: {
-      vi: "Thầy dạy tiếng Đức ở trường Đại học Ngoại ngữ và đi phiên dịch. Năm 1975–1976, thầy học thêm sư phạm tiếng Đức một năm ở Leipzig. Thầy kể gần như lớp sinh viên nào sang Đức thời ấy cũng qua lớp thầy.",
-      de: "Er unterrichtete Deutsch an der Fremdsprachenhochschule und dolmetschte. 1975–1976 studierte er ein Jahr Deutschdidaktik in Leipzig. Er erzählte, dass fast jeder Jahrgang, der damals in die DDR ging, bei ihm lernte.",
+      vi: "Thầy dạy tiếng Đức ở trường Đại học Ngoại ngữ và đi phiên dịch. Năm 1975–1976, thầy học thêm sư phạm tiếng Đức một năm ở Leipzig.",
+      de: "Er unterrichtete Deutsch an der Fremdsprachenhochschule und dolmetschte. 1975–1976 studierte er ein Jahr Deutschdidaktik in Leipzig.",
+    },
+    pull: {
+      vi: "Thầy kể gần như lớp sinh viên nào sang Đức thời ấy cũng qua lớp thầy.",
+      de: "Er erzählte, dass fast jeder Jahrgang, der damals in die DDR ging, bei ihm lernte.",
     },
     sheetKind: "pair",
     sheet: [
@@ -393,6 +426,16 @@ export const stations: Station[] = [
     ],
   },
 ];
+
+/** The timeline's last part: the family's photo of him walking away down a tree-lined street. */
+export const farewellPhoto: Photo = img(
+  "farewell-walk",
+  1200,
+  1600,
+  "Thầy những năm cuối ở Đức.",
+  "In seinen letzten Jahren in Deutschland.",
+  "50% 60%",
+);
 
 export type Relation = keyof (typeof ui)["vi"]["relation"];
 

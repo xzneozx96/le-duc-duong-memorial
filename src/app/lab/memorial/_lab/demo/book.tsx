@@ -3,6 +3,8 @@
 // The Lưu bút: invitation, the form behind "Viết lưu bút" (it opens in place), the tribute of
 // Cao Hữu Ngạn first, then visitor entries newest first. The form works in the browser only:
 // nothing is sent anywhere, and a new entry lives until the page reloads.
+// v4 look: an open notebook on the evening ground. Entries are ruled pages, two to a spread on
+// wide screens, and each spread opens from its spine as it arrives.
 import {
   useEffect,
   useId,
@@ -24,6 +26,7 @@ import {
   type Relation,
   type Strings,
 } from "./content";
+import { EASE, MOVE, gsap, useMotion } from "./motion";
 import { useViewer, type ViewerPhoto } from "./viewer";
 
 const s = classes("lm");
@@ -567,6 +570,16 @@ export function Book({ t }: { t: Strings }) {
   const openButton = useRef<HTMLButtonElement>(null);
   const headings = useRef(new Map<string, HTMLHeadingElement>());
   const focusNext = useRef<string | null>(null);
+  const root = useRef<HTMLElement>(null);
+
+  // Pages open from the spine as they arrive: the left page swings in from the right edge, the
+  // right page from the left edge. Once, quickly; the words are never held back after that.
+  useMotion(root, (mm, el) => {
+    mm.add(MOVE, () => {
+      const pages = Array.from(el.querySelectorAll<HTMLElement>("[data-page]"));
+      openPages(pages);
+    });
+  });
 
   const samples = showAll ? sampleEntries : sampleEntries.slice(0, FIRST_BATCH);
   const hiddenCount = sampleEntries.length - FIRST_BATCH;
@@ -575,7 +588,16 @@ export function Book({ t }: { t: Strings }) {
   useEffect(() => {
     const target = focusNext.current;
     focusNext.current = null;
-    if (target) headings.current.get(target)?.focus();
+    if (!target) return;
+    const heading = headings.current.get(target);
+    heading?.focus();
+    // A new entry settles onto its page: the sand of the "Vừa gửi" light fades into the paper.
+    const page = heading?.closest<HTMLElement>("[data-page]");
+    if (page && window.matchMedia(MOVE).matches) {
+      gsap.fromTo(page, { y: 28, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9, ease: EASE.enter, clearProps: "transform" });
+    } else if (page) {
+      gsap.set(page, { opacity: 1 });
+    }
   }, [sent, showAll]);
 
   useEffect(() => {
@@ -586,7 +608,7 @@ export function Book({ t }: { t: Strings }) {
   }, [formOpen]);
 
   return (
-    <section id="book" className={s.book} aria-labelledby="book-h">
+    <section ref={root} id="book" className={s.book} aria-labelledby="book-h">
       <div className={s.bookBand}>
         <div className={`${s.wrap} ${s.bookIntro}`}>
           <h2 id="book-h" className={s.bookHead}>
@@ -634,7 +656,7 @@ export function Book({ t }: { t: Strings }) {
           </div>
           <ol className={s.entries}>
             {entries.map((entry) => (
-              <li key={entry.id}>
+              <li key={entry.id} data-page>
                 <EntryItem
                   entry={entry}
                   t={t}
@@ -662,4 +684,28 @@ export function Book({ t }: { t: Strings }) {
       </div>
     </section>
   );
+}
+
+/** Each page arrives once, from its spine on wide screens and from below on phones. */
+function openPages(pages: HTMLElement[]) {
+  const half = (el: HTMLElement) => (el.parentElement?.clientWidth ?? 0) / 2;
+  const isLeft = (el: HTMLElement) => el.offsetLeft < half(el) - 8;
+  const isSpread = (el: HTMLElement) => el.offsetWidth > half(el) * 1.4;
+  pages.forEach((page) => {
+    gsap.fromTo(
+      page,
+      !isSpread(page) && window.matchMedia("(min-width: 900px)").matches
+        ? { opacity: 0, rotateY: isLeft(page) ? 16 : -16, transformOrigin: isLeft(page) ? "100% 50%" : "0% 50%" }
+        : { opacity: 0, y: 32 },
+      {
+        opacity: 1,
+        rotateY: 0,
+        y: 0,
+        duration: 1.1,
+        ease: EASE.enter,
+        clearProps: "transform",
+        scrollTrigger: { trigger: page, start: "top 92%", once: true },
+      },
+    );
+  });
 }

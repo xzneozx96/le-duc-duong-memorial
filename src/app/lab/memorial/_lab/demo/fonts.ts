@@ -1,10 +1,20 @@
-import { Be_Vietnam_Pro, Cormorant, Lora } from "next/font/google";
+import { Be_Vietnam_Pro, Source_Serif_4 } from "next/font/google";
 
-// Faces of the demo (v3, after the Farewell reference): Cormorant for display, Lora for reading,
-// Be Vietnam Pro for labels and controls in place of Jost, which has no Vietnamese letters.
-// Each file was checked with fontTools for every Vietnamese letter and ä ö ü Ä Ö Ü ß ẞ.
-export const cormorant = Cormorant({ variable: "--font-lm-display", subsets: ["latin", "latin-ext", "vietnamese"], weight: ["500", "600"], style: ["normal", "italic"], display: "swap" });
-export const lora = Lora({ variable: "--font-lm-body", subsets: ["latin", "latin-ext", "vietnamese"], weight: ["400", "500", "600"], style: ["normal", "italic"], display: "swap" });
-export const beVietnam = Be_Vietnam_Pro({ variable: "--font-lm-label", subsets: ["latin", "latin-ext", "vietnamese"], weight: ["500", "600", "700"], display: "swap" });
+// Faces of the demo (v4). Source Serif 4 is the owner's pick: one variable family with an
+// optical-size axis, so the name is set with the display cut and the story with the text cut.
+// Be Vietnam Pro, drawn for Vietnamese, carries the small labels and controls.
+// Both were checked with fontTools for every Vietnamese letter and ä ö ü Ä Ö Ü ß ẞ.
+export const sourceSerif = Source_Serif_4({
+  variable: "--font-lm-serif",
+  subsets: ["latin", "latin-ext", "vietnamese"],
+  axes: ["opsz"],
+  display: "swap",
+});
+export const beVietnam = Be_Vietnam_Pro({
+  variable: "--font-lm-sans",
+  subsets: ["latin", "latin-ext", "vietnamese"],
+  weight: ["500", "600"],
+  display: "swap",
+});
 
-export const demoFontVars = [cormorant, lora, beVietnam].map((f) => f.variable).join(" ");
+export const demoFontVars = [sourceSerif, beVietnam].map((f) => f.variable).join(" ");

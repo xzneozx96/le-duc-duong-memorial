@@ -3,8 +3,8 @@ import Link from "next/link";
 const routes = [
   {
     href: "/lab/memorial/demo",
-    title: "Demo · The whole page, third look (after the Farewell reference)",
-    note: "Every section of the one-page site in Vietnamese and German: Cormorant and Lora, warm off-whites and bronze. His portrait rises out of its studio backdrop; a bronze line with a small sun travels between Việt Nam and Germany as you read; the Lưu bút sits on a forest band with a working form (nothing is sent). New values, scoped to this route. Paragraphs, captions and visitor entries are samples. Replaces the night-train demo.",
+    title: "Demo · The whole page, fourth look: a book of his life",
+    note: "A title page (his portrait in front of a forest panel, his name either side of it, a GSAP entrance), the two films on one warm-dark band, his life as one vertical line that fills as you scroll with a marker that lights at each of the seven stations (sticky years that roll on from the last station, a country tag, photos that open as they arrive) that comes to rest under the family's photo of him walking away, with the date he died and the funeral date, and the Lưu bút as an open notebook of ruled pages on a forest band. Source Serif 4 and the Farewell palette on warm off-white grounds; reduced motion gets a still page. Paragraphs, captions and visitor entries are samples. Replaces the third look (git history).",
   },
   {
     href: "/lab/memorial/a",
