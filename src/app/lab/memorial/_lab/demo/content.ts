@@ -97,7 +97,7 @@ export const ui = {
     jump: { film: "Thước phim", journey: "Cuộc đời", book: "Lưu bút" },
     filmHeading: "Thước phim cuộc đời",
     filmLine: "Hai cuộc trò chuyện ghi lại năm 2020 trong podcast «Sống chung với Corona» của TS. Trương Hồng Quang, nơi thầy kể lại hành trình từ chuyến tàu năm 1955 đến những năm đứng lớp tiếng Đức.",
-    filmPlay: "Xem phim",
+    filmPlay: "Bấm để xem",
     filmNote: "Phim mở từ YouTube khi bạn bấm xem.",
     filmPhotos: "Ảnh trên hai phim: thầy nói chuyện trong các buổi gặp mặt học trò cũ (chú thích mẫu).",
     journeyHeading: "Một đời gieo chữ",

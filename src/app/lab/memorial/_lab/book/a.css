@@ -267,11 +267,6 @@
     translate 320ms var(--out),
     box-shadow 320ms var(--out);
 }
-.lba-envelope[data-tribute] {
-  /* a mourning letter: the dark edge of a Trauerbrief */
-  border-image: none;
-  border: 9px solid var(--dark);
-}
 .lba-envelope[aria-current] {
   translate: 0 -6px;
   background: #fff;
@@ -354,10 +349,6 @@
   color: var(--ink);
   font-size: 40px;
   font-style: italic;
-}
-.lba-envelope[data-tribute] .lba-stampInitial {
-  background: var(--forest);
-  color: var(--paper);
 }
 .lba-postmark {
   position: absolute;

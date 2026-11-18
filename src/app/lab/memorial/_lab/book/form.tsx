@@ -212,7 +212,6 @@ export function MemoryForm({
       <TextField
         id={id("cls")}
         label={f.cls}
-        hint={f.clsHint}
         data-field="cls"
         autoComplete="off"
         value={values.cls}
@@ -222,7 +221,6 @@ export function MemoryForm({
       <TextField
         id={id("year")}
         label={f.year}
-        hint={f.yearHint}
         data-field="year"
         autoComplete="off"
         value={values.year}
@@ -261,9 +259,6 @@ export function MemoryForm({
     <div className={s.field} key="photos">
       <p className={s.label} id={id("photos-label")}>
         {f.photos}
-      </p>
-      <p id={id("photos-hint")} className={s.hint}>
-        {f.photosHint}
       </p>
       <input
         ref={fileInput}
@@ -305,7 +300,6 @@ export function MemoryForm({
           <button
             type="button"
             className={s.photoAdd}
-            aria-describedby={id("photos-hint")}
             onClick={() => fileInput.current?.click()}
           >
             <ImagePlus aria-hidden size={34} strokeWidth={1.75} />
@@ -322,7 +316,6 @@ export function MemoryForm({
           </p>
         ))}
       </div>
-      {photos.length >= 6 && <p className={s.hint}>{f.manyPhotos(photos.length)}</p>}
     </div>
   );
 

@@ -417,7 +417,6 @@ export function OptionA() {
       <StatusLine posted={book.posted} className={s.status} />
 
       <div className={s.carousel} role="region" aria-roledescription="carousel" aria-label="Những lá thư gửi thầy">
-        <p className={s.trayCount}>{all.length} lá thư. Bấm vào một phong thư để đọc.</p>
         <ol ref={track} className={s.track} tabIndex={0} onScroll={measure} onKeyDown={onTrackKey}>
           {all.map((e, i) => (
             <Envelope key={e.id} entry={e} index={i} centred={i === centre} onOpen={(el) => openLetter(e.id, el)} />

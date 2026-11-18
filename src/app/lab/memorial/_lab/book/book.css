@@ -490,7 +490,8 @@ html:has(.lbk-page) {
   margin-top: 18px;
 }
 .lbk-send {
-  margin-top: 26px;
+  display: flex;
+  margin: 26px auto 0;
   width: 100%;
 }
 @media (min-width: 640px) {
@@ -781,4 +782,9 @@ html:has(.lbk-page) {
 .lbk-photoAdd:focus-visible {
   outline: 3px solid var(--forest);
   outline-offset: 3px;
+}
+
+/* inside another page (the demo): no full-screen height of its own */
+.lbk-page[data-embed] {
+  min-height: 0;
 }

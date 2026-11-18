@@ -57,6 +57,16 @@ export function LabShell({
   );
 }
 
+/** The approved Lưu bút placed inside another page (the demo): the book's fonts, colours and
+ *  photo viewer, without the lab bar or the design note. */
+export function BookEmbed({ children }: { children: ReactNode }) {
+  return (
+    <div className={`${s.page} ${bookFontVars}`} data-tone="paper" data-embed>
+      <ViewerProvider>{children}</ViewerProvider>
+    </div>
+  );
+}
+
 /** The book's state: the tribute, letters sent in this visit (newest first), the samples. */
 export function useBook() {
   const [sent, setSent] = useState<Entry[]>([]);
