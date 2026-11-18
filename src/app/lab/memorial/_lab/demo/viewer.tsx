@@ -169,7 +169,7 @@ export function ViewerProvider({
               />
             </div>
             <div className={s.viewerCaption} id={captionId}>
-              <p className={s.caption}>{photo.caption}</p>
+              {photo.caption && <p className={s.caption}>{photo.caption}</p>}
               {photo.credit && <p className={s.credit}>{photo.credit}</p>}
             </div>
             <button

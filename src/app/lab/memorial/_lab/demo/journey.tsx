@@ -39,7 +39,7 @@ function Frame({
       <button
         type="button"
         className={s.frameButton}
-        aria-label={photo.caption[lang]}
+        aria-label={photo.caption[lang] || (lang === "vi" ? "Mở ảnh" : "Foto öffnen")}
         onClick={() => openViewer(group, index)}
       >
         <span className={s.frameMask} data-mask>
@@ -55,7 +55,7 @@ function Frame({
           />
         </span>
       </button>
-      {showCaption && (
+      {showCaption && (photo.caption[lang] || photo.credit) && (
         <figcaption className={s.caption}>
           {photo.caption[lang]}
           {photo.credit && <span className={s.credit}>{photo.credit[lang]}</span>}

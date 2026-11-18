@@ -38,14 +38,14 @@ export type Station = {
   sheetKind?: "pair" | "wall";
 };
 
-const MARK: Two = { vi: " (chú thích mẫu)", de: " (Beispieltext)" };
-const cap = (vi: string, de: string): Two => ({ vi: vi + MARK.vi, de: de + MARK.de });
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const img = (name: string, w: number, h: number, vi: string, de: string, pos?: string): Photo => ({
   src: `/demo/${name}.jpg`,
   w,
   h,
   pos,
-  caption: cap(vi, de),
+  // Captions stay empty until the family writes them; the descriptive text is kept for reference only.
+  caption: { vi: "", de: "" },
 });
 
 export const FAMILY_EMAIL = "giadinh@example.com";
@@ -85,7 +85,7 @@ const size = (bytes: number) => (bytes / 1_000_000).toFixed(1).replace(".", ",")
 
 export const ui = {
   vi: {
-    labBar: "Bản thử: đoạn văn, chú thích và các lưu bút của khách là mẫu, gia đình chưa viết.",
+    labBar: "Bản thử: chú thích ảnh để trống, gia đình sẽ bổ sung.",
     labHome: "Về trang lab",
     portraitAlt: "Chân dung thầy Lê Đức Dương",
     title: "Một ánh Dương còn mãi",
@@ -96,7 +96,7 @@ export const ui = {
     filmLine: "Trong podcast «Sống chung với Corona» của Trương Hồng Quang, thầy kể về cuộc đời mình.",
     filmPlay: "Xem phim",
     filmNote: "Phim mở từ YouTube khi bạn bấm xem.",
-    filmPhotos: "Ảnh trên hai phim: thầy nói chuyện trong các buổi gặp mặt học trò cũ (chú thích mẫu).",
+    filmPhotos: "Ảnh trên hai phim: thầy nói chuyện trong các buổi gặp mặt học trò cũ.",
     journeyHeading: "Hành trình của thầy",
     lands: { vn: "Việt Nam", de: "Đức" },
     farewell: { died: "Thầy mất ngày 11.11.2026.", funeral: "Lễ tang ngày 27.11.2026." },
@@ -171,7 +171,7 @@ export const ui = {
   },
   de: {
     labBar:
-      "Entwurf: Absätze, Bildunterschriften und die Gästebucheinträge der Besucher sind Beispiele, die Familie hat sie noch nicht geschrieben.",
+      "Entwurf: Die Bildunterschriften sind noch leer, die Familie ergänzt sie.",
     labHome: "Zur Lab-Übersicht",
     portraitAlt: "Porträt von Lê Đức Dương",
     title: "Ein Sonnenstrahl, der bleibt",
@@ -182,7 +182,7 @@ export const ui = {
     filmLine: "Im Podcast «Sống chung với Corona» von Trương Hồng Quang erzählt er aus seinem Leben.",
     filmPlay: "Film ansehen",
     filmNote: "Der Film lädt erst von YouTube, wenn Sie ihn starten.",
-    filmPhotos: "Fotos auf den Filmen: Er spricht bei Treffen mit früheren Schülern (Beispieltext).",
+    filmPhotos: "Fotos auf den Filmen: Er spricht bei Treffen mit früheren Schülern.",
     journeyHeading: "Sein Lebensweg",
     lands: { vn: "Vietnam", de: "Deutschland" },
     farewell: { died: "Er ist am 11.11.2026 gestorben.", funeral: "Die Trauerfeier ist am 27.11.2026." },
@@ -305,10 +305,10 @@ export const stations: Station[] = [
       src: "/demo/gap-bac-ho-clean.mp4",
       w: 464,
       h: 294,
-      caption: cap(
-        "Phim tư liệu về chuyến thăm CHDC Đức của Bác Hồ năm 1957. Thầy kể về lần gặp Bác khi Bác thăm trường ở Moritzburg.",
-        "Archivfilm vom Besuch Hồ Chí Minhs in der DDR 1957. Er erzählte von der Begegnung bei dessen Besuch in Moritzburg.",
-      ),
+      caption: {
+        vi: "Phim tư liệu về chuyến thăm CHDC Đức của Bác Hồ năm 1957. Thầy kể về lần gặp Bác khi Bác thăm trường ở Moritzburg.",
+        de: "Archivfilm vom Besuch Hồ Chí Minhs in der DDR 1957. Er erzählte von der Begegnung bei dessen Besuch in Moritzburg.",
+      },
       credit: { vi: "Phim: nguồn cần gia đình xác nhận", de: "Film: Quelle prüft die Familie" },
     },
     sheetKind: "pair",
@@ -334,7 +334,6 @@ export const stations: Station[] = [
     aside: {
       ratio: "265 / 400",
       maxW: 265,
-      caption: cap("Hai tấm ảnh trong vườn, thời học nghề ở Radebeul.", "Zwei Aufnahmen im Garten aus der Lehrzeit in Radebeul."),
       photos: [
         img("radebeul-1", 265, 400, "Trong vườn, thời học nghề ở Radebeul.", "Im Garten, während der Lehrzeit in Radebeul."),
         img("radebeul-2", 265, 400, "Một lúc vui đùa trong vườn.", "Ein heiterer Augenblick im Garten."),
@@ -463,63 +462,8 @@ export const tributeEntry: Entry = {
 };
 
 // Sample visitor entries, newest first. Not real people; the lab bar says so.
-export const sampleEntries: Entry[] = [
-  {
-    id: "s1",
-    name: "Tôn Nữ Thị Ngọc Diễm Phượng",
-    relation: "student",
-    cls: "Lớp tiếng Đức chuyên tu khóa 1974, Đại học Ngoại ngữ",
-    year: "1974–1978",
-    date: "18.11.2026",
-    text: "Thưa thầy,\n\nem gửi lại mấy tấm ảnh chuyến đi Spreewald, hôm cả lớp ngồi thuyền với thầy. Thầy cười suốt buổi, còn chúng em thì tranh nhau kể chuyện lớp cũ.\n\nEm cảm ơn thầy vì những giờ tiếng Đức đầu tiên.",
-    photos: [
-      { src: "/demo/germany-2.jpg", w: 960, h: 642 },
-      { src: "/demo/germany-7.jpg", w: 960, h: 720, pos: "50% 60%" },
-      { src: "/demo/germany-16.jpg", w: 768, h: 1024, pos: "50% 90%" },
-    ],
-  },
-  {
-    id: "s2",
-    name: "Hans-Joachim Schäfer-Brückner",
-    relation: "colleague",
-    cls: "Deutschabteilung ĐHNN",
-    year: "1978–1984",
-    date: "18.11.2026",
-    // Worst-case fixture: markup must show exactly as typed, never rendered or escaped twice.
-    text: "Lieber Herr Dương,\n\nich habe selten jemanden erlebt, der so geduldig zuhören konnte. Wenn ein Student einen Satz zum dritten Mal falsch begann, haben Sie gelächelt und gesagt: „Noch einmal, in Ruhe.“\n\nBei unserem letzten Treffen in Moritzburg haben Sie von Ihren Hunden erzählt, und wir haben lange gelacht.\n\nDanke und auf Wiedersehen",
-  },
-  {
-    id: "s3",
-    name: "Nguyễn Thị Hồng Nhung",
-    relation: "student",
-    cls: "Lớp tiếng Đức khóa 1974–1976",
-    year: "1974–1976",
-    date: "17.11.2026",
-    text: "Thưa thầy,\n\nNăm 1974 em vào lớp tiếng Đức, chưa biết một chữ nào. Buổi đầu tiên thầy viết lên bảng câu “Guten Morgen” và bảo cả lớp đọc theo. Ai đọc sai thầy không trách, chỉ cười rồi đọc lại chậm hơn. Em vẫn giữ quyển vở năm ấy, trang nào cũng có chữ thầy sửa bằng mực đỏ.\n\nThầy dạy chúng em chia động từ, nhưng thầy cũng dạy chúng em đến lớp đúng giờ, viết cho ngay ngắn và hỏi lại khi chưa hiểu. Có hôm mất điện, cả lớp ngồi học bên cửa sổ, thầy kể chuyện những ngày thầy còn nhỏ ở Moritzburg, chuyện tuyết đầu mùa và những câu tiếng Đức đầu tiên thầy học được.\n\nSau này sang Đức học, em mới hiểu những giờ học ấy quý thế nào. Câu nào em nói đúng, em đều nhớ là học từ thầy.\n\nMấy năm trước gặp lại thầy trong buổi họp lớp, thầy vẫn nhớ tên từng đứa, vẫn hỏi “Na, wie geht’s?” như ngày xưa. Chúng em cứ nghĩ còn nhiều dịp gặp thầy nữa.\n\nEm kính chào thầy. Em cảm ơn thầy về tất cả.",
-  },
-  {
-    id: "s4",
-    name: "TRẦN VĂN ĐỨC",
-    relation: "student",
-    year: "khoảng 1980",
-    date: "17.11.2026",
-    text: "Kính tặng thầy,\n\nSân ga năm ấy còn sương,\nđoàn tàu chở những lên đường tuổi thơ.\nThầy đi, mang một giấc mơ,\nmang về tiếng Đức, từng giờ dạy em.",
-  },
-  {
-    id: "s5",
-    name: "Hà",
-    relation: "student",
-    date: "17.11.2026",
-    text: "Em nhớ thầy.",
-  },
-  {
-    id: "s6",
-    name: "Familie Krüger",
-    relation: "friend",
-    date: "16.11.2026",
-    text: "Wir denken an ihn und an sein Lachen.\nIn stiller Verbundenheit aus Dresden.",
-  },
-];
+// Visitor entries appear only when someone writes one; the demo starts with the tribute alone.
+export const sampleEntries: Entry[] = [];
 
 /** Visitor entries shown before the "Xem thêm" button. The product shows 20; the demo has six. */
 export const FIRST_BATCH = 4;
