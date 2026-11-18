@@ -73,7 +73,7 @@ function Clip({ clip, lang, t }: { clip: NonNullable<Station["clip"]>; lang: Lan
   }, [playing]);
   return (
     <figure className={s.clip} data-reveal>
-      <div className={s.clipFrame} style={{ aspectRatio: `${clip.w} / ${clip.h}` }}>
+      <div className={s.clipFrame} style={{ aspectRatio: `${clip.w} / ${clip.h}` }} data-clip-frame>
         {playing ? (
           <video
             ref={video}
@@ -378,23 +378,86 @@ export function Journey({ lang, t, films }: { lang: Lang; t: Strings; films?: Re
         });
       });
 
-      // The words and photographs of each station are simply there: the line, its markers and
-      // the rolling years carry the motion of this section. Only his farewell photograph,
-      // the last thing on the line, opens once, slowly, as the line reaches it.
-      const farewell = q(`.${s.farewellPhoto} [data-mask]`)[0];
-      if (farewell)
+      // Photographs: the mask opens once; the print drifts while it passes. The owner's chosen
+      // look (restored as it was). Cheaper without looking different: the clip is cleared once
+      // open, and a drifting print gets its own layer only while it is on screen, so the scrub
+      // moves a texture instead of repainting the photograph.
+      const layerWhileVisible = (img: HTMLElement) => (self: ScrollTrigger) => {
+        img.style.willChange = self.isActive ? "transform" : "";
+      };
+      q("[data-frame]").forEach((fig) => {
+        const mask = fig.querySelector<HTMLElement>("[data-mask]");
+        const img = fig.querySelector<HTMLElement>("[data-drift]");
+        if (!mask || !img) return;
+        const last = fig.classList.contains(s.farewellPhoto);
         gsap.fromTo(
-          farewell,
-          { opacity: 0, y: 28 },
+          mask,
+          { clipPath: last ? "inset(0% 0% 100% 0%)" : "inset(100% 0% 0% 0%)" },
           {
-            opacity: 1,
-            y: 0,
-            duration: 2.2,
-            ease: EASE.enter,
-            clearProps: "transform,opacity",
-            scrollTrigger: { trigger: farewell, start: "top 82%", once: true },
+            clipPath: "inset(0% 0% 0% 0%)",
+            duration: last ? 2.6 : 1.5,
+            ease: last ? "power2.inOut" : "expo.inOut",
+            clearProps: "clipPath",
+            scrollTrigger: { trigger: fig, start: last ? "top 80%" : "top 90%", once: true },
           },
         );
+        // Small originals are never enlarged, so they do not drift.
+        if (fig.closest(`.${s.aside}`)) return;
+        gsap.fromTo(
+          img,
+          { yPercent: -5, scale: 1.12 },
+          {
+            yPercent: 5,
+            scale: 1.12,
+            ease: "none",
+            scrollTrigger: { trigger: fig, start: "top bottom", end: "bottom top", scrub: true, onToggle: layerWhileVisible(img) },
+          },
+        );
+      });
+
+      // The Moritzburg clip opens like the photographs (once, from below).
+      q("[data-clip-frame]").forEach((frame) => {
+        gsap.fromTo(
+          frame,
+          { clipPath: "inset(100% 0% 0% 0%)" },
+          {
+            clipPath: "inset(0% 0% 0% 0%)",
+            duration: 1.5,
+            ease: "expo.inOut",
+            clearProps: "clipPath",
+            scrollTrigger: { trigger: frame, start: "top 90%", once: true },
+          },
+        );
+      });
+
+      // The film posters (now inside the 1988–2026 station): the frame opens from its centre
+      // once, and the poster drifts while it passes, as before.
+      q("[data-film-mask]").forEach((mask, i) => {
+        gsap.fromTo(
+          mask,
+          { clipPath: "inset(18% 12% 18% 12%)" },
+          {
+            clipPath: "inset(0% 0% 0% 0%)",
+            duration: 1.6,
+            delay: i * 0.12,
+            ease: EASE.enter,
+            clearProps: "clipPath",
+            scrollTrigger: { trigger: mask.parentElement, start: "top 88%", once: true },
+          },
+        );
+        const img = mask.querySelector<HTMLElement>("[data-film-img]");
+        if (img)
+          gsap.fromTo(
+            img,
+            { yPercent: -6, scale: 1.14 },
+            {
+              yPercent: 6,
+              scale: 1.14,
+              ease: "none",
+              scrollTrigger: { trigger: mask, start: "top bottom", end: "bottom top", scrub: true, onToggle: layerWhileVisible(img) },
+            },
+          );
+      });
 
       return () => {
         delete el.dataset.moving;

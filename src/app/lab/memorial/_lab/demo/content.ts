@@ -122,7 +122,7 @@ export const ui = {
     bookPrev: "Lưu bút trước",
     bookNext: "Lưu bút sau",
     bookCount: (i: number, n: number) => `${i} / ${n}`,
-    bookInvite: "Những lớp học ở Thanh Xuân, những lần gặp lại ở Đức: phần còn lại của câu chuyện nằm trong ký ức của học trò, đồng nghiệp và bạn bè. Xin gửi lại đôi dòng tưởng nhớ thầy, để giữ lại cho các thế hệ sau. Bạn không cần tài khoản.",
+    bookInvite: "Những lớp học ở Thanh Xuân, những lần gặp lại ở Đức: phần còn lại của câu chuyện nằm trong ký ức của học trò, đồng nghiệp và bạn bè. Xin gửi lại đôi dòng tưởng nhớ thầy, để giữ lại cho các thế hệ sau.",
     bookOpen: "Viết lưu bút",
     formClose: "Đóng biểu mẫu",
     formCloseNote: "(những gì bạn đã viết vẫn được giữ)",
@@ -232,7 +232,7 @@ export const ui = {
     bookNext: "Nächster Eintrag",
     bookCount: (i: number, n: number) => `${i} / ${n}`,
     bookInvite:
-      "Der Unterricht in Thanh Xuân, die Wiedersehen in Deutschland: Der Rest seiner Geschichte liegt in den Erinnerungen seiner Schüler, Kollegen und Freunde. Wer mit ihm gelernt, gearbeitet oder gelebt hat, kann sich hier eintragen. Ein Konto ist nicht nötig.",
+      "Der Unterricht in Thanh Xuân, die Wiedersehen in Deutschland: Der Rest seiner Geschichte liegt in den Erinnerungen seiner Schüler, Kollegen und Freunde. Wer mit ihm gelernt, gearbeitet oder gelebt hat, kann sich hier eintragen.",
     bookOpen: "Ins Gästebuch schreiben",
     formClose: "Formular schließen",
     formCloseNote: "(Ihr Text bleibt erhalten)",

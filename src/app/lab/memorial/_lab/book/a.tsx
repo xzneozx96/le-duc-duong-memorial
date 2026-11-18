@@ -200,12 +200,13 @@ export function OptionA() {
         const q = gsap.utils.selector(el);
         gsap.from(q("[data-envelope]"), {
           opacity: 0,
-          y: 20,
-          duration: 1,
+          y: 16,
+          duration: 0.7,
           stagger: 0.06,
           ease: EASE.enter,
           clearProps: "transform,opacity",
-          scrollTrigger: { trigger: track.current, start: "top 85%", once: true },
+          // as soon as the row enters the screen: with Lenis' glide a later start reads as a delay
+          scrollTrigger: { trigger: track.current, start: "top bottom", once: true },
         });
       });
     },
