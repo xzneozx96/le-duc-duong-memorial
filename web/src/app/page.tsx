@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { DemoPage } from "./lab/memorial/_lab/demo/demo-page";
+import { MemorialPage } from "@/components/memorial/memorial-page";
 
-// The approved memorial page (owner, 18.11.2026) is the site's home. It still lives in the lab
-// folder while the backend is wired in; it moves to its own product folder after that.
+// The approved memorial page (owner, 18.11.2026) is the site's home. Its code lives in
+// src/components/memorial/.
 export const metadata: Metadata = {
   title: "Nhà giáo Lê Đức Dương (01.05.1942 – 11.11.2026)",
   description:
@@ -10,5 +10,5 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
-  return <DemoPage />;
+  return <MemorialPage />;
 }
