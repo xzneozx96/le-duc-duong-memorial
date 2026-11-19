@@ -63,7 +63,7 @@ export function createS3PhotoStore(config: S3Config): PhotoStore {
 
 let shared: PhotoStore | undefined;
 
-/** The app's store, configured from the S3_* environment on first use. */
+/** The app's store, configured on first use from Neon's standard env names (AWS_*) plus S3_BUCKET. */
 export function getPhotoStore(): PhotoStore {
   if (!shared) {
     const need = (name: string) => {
@@ -72,12 +72,13 @@ export function getPhotoStore(): PhotoStore {
       return v;
     };
     shared = createS3PhotoStore({
-      endpoint: need("S3_ENDPOINT"),
-      region: process.env.S3_REGION || "us-east-1",
+      endpoint: need("AWS_ENDPOINT_URL_S3"),
+      region: process.env.AWS_REGION || "us-east-1",
       bucket: need("S3_BUCKET"),
-      accessKey: need("S3_ACCESS_KEY"),
-      secretKey: need("S3_SECRET_KEY"),
-      forcePathStyle: process.env.S3_FORCE_PATH_STYLE !== "false",
+      accessKey: need("AWS_ACCESS_KEY_ID"),
+      secretKey: need("AWS_SECRET_ACCESS_KEY"),
+      // Neon Object Storage only speaks path-style.
+      forcePathStyle: true,
     });
   }
   return shared;

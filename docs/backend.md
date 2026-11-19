@@ -99,8 +99,8 @@ Not in this batch unless the owner says so. The `hidden` column is there from th
 
 ## Config (env)
 
-`DATABASE_URL`, `S3_ENDPOINT`, `S3_REGION`, `S3_BUCKET`, `S3_ACCESS_KEY`, `S3_SECRET_KEY`,
-`S3_FORCE_PATH_STYLE=true`, later `ADMIN_PASSWORD`. A `.env.example` lists them; real values never
+`DATABASE_URL`, `DATABASE_URL_UNPOOLED` (migrations), `AWS_ENDPOINT_URL_S3`, `AWS_REGION`,
+`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `S3_BUCKET` (Neon Postgres and Object Storage), later `ADMIN_PASSWORD`. A `.env.example` lists them; real values never
 go in git.
 
 ## Tests

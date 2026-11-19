@@ -4,7 +4,8 @@ import { drizzle } from "drizzle-orm/postgres-js";
 import { migrate } from "drizzle-orm/postgres-js/migrator";
 import postgres from "postgres";
 
-const url = process.env.DATABASE_URL;
+// Migrations use the direct (unpooled) Neon URL when there is one.
+const url = process.env.DATABASE_URL_UNPOOLED ?? process.env.DATABASE_URL;
 if (!url) {
   console.error("[start] DATABASE_URL is not set; refusing to start.");
   process.exit(1);

@@ -14,12 +14,11 @@ beforeAll(async () => {
   const s3 = await openTestS3();
   Object.assign(process.env, {
     DATABASE_URL: TEST_DATABASE_URL,
-    S3_ENDPOINT: s3.endpoint,
-    S3_REGION: s3.region,
+    AWS_ENDPOINT_URL_S3: s3.endpoint,
+    AWS_REGION: s3.region,
     S3_BUCKET: s3.bucket,
-    S3_ACCESS_KEY: s3.accessKey,
-    S3_SECRET_KEY: s3.secretKey,
-    S3_FORCE_PATH_STYLE: "true",
+    AWS_ACCESS_KEY_ID: s3.accessKey,
+    AWS_SECRET_ACCESS_KEY: s3.secretKey,
   });
   db = await openTestDb();
   await resetTables(db);
