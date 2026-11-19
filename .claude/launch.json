@@ -4,7 +4,7 @@
     {
       "name": "memorial-dev",
       "runtimeExecutable": "pnpm",
-      "runtimeArgs": ["dev", "--port", "3100"],
+      "runtimeArgs": ["--dir", "web", "dev", "--port", "3100"],
       "port": 3100
     }
   ]

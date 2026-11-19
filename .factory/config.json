@@ -18,7 +18,7 @@
     "retro": null,                      // none found
     "ux_docs": null,                    // none found; visual direction lives in .factory/brainstorm/2026-11-18-father-memorial-website/intent.md
     "design_md": "DESIGN.md",           // from the ux lens, 2026-11-18 (drafted in the item design folder, moved at the gate)
-    "lab_routes": ["src/app/lab/**", "src/components/lab/**"], // Next.js app scaffolded 2026-11-18; lab pages hidden in production
+    "lab_routes": ["web/src/app/lab/**", "web/src/components/lab/**"], // Next.js app scaffolded 2026-11-18; lab pages hidden in production
     "holdout": "~/.factory-holdout/{repo}"
   },
 
@@ -40,27 +40,27 @@
 
   "roles": {
     "implementer":       { "model": "sonnet", "effort": "medium", "tier": "execute" },
-    "researcher":        { "model": "sonnet", "effort": "low",    "tier": "execute" },
+    "researcher":        { "model": "sonnet", "effort": "medium", "tier": "execute" },
     "qa":                { "model": "sonnet", "effort": "medium", "tier": "execute" },
-    "mockup-maker":      { "model": "sonnet", "effort": "medium", "tier": "execute" },
-    "architect":         { "model": "opus",   "effort": "high",   "tier": "judge" },
-    "data-designer":     { "model": "opus",   "effort": "high",   "tier": "judge" },
+    "mockup-maker":      { "model": "opus",   "effort": "medium", "tier": "judge" },
+    "architect":         { "model": "opus",   "effort": "medium", "tier": "judge" },
+    "data-designer":     { "model": "opus",   "effort": "medium", "tier": "judge" },
     "api-designer":      { "model": "opus",   "effort": "medium", "tier": "judge" },
-    "ai-designer":       { "model": "opus",   "effort": "high",   "tier": "judge" },
+    "ai-designer":       { "model": "opus",   "effort": "medium", "tier": "judge" },
     "ux-designer":       { "model": "opus",   "effort": "medium", "tier": "judge" },
     "spec-reviewer":     { "model": "opus",   "effort": "medium", "tier": "judge" },
     "code-reviewer":     { "model": "opus",   "effort": "medium", "tier": "judge" },
-    "security-reviewer": { "model": "opus",   "effort": "high",   "tier": "judge" },
-    "data-reviewer":     { "model": "opus",   "effort": "high",   "tier": "judge" },
+    "security-reviewer": { "model": "opus",   "effort": "medium", "tier": "judge" },
+    "data-reviewer":     { "model": "opus",   "effort": "medium", "tier": "judge" },
     "design-reviewer":   { "model": "opus",   "effort": "medium", "tier": "judge" },
     "cold-reader":       { "model": "opus",   "effort": "medium", "tier": "judge" }
   },
-  "risk_raise": 1,
+  "risk_raise": 0,
 
   "runtime": "auto",                   // from `sf orca status`: no Orca, so auto runs plain
-  "build": { "parallel": "off", "setup": "pnpm install" },
+  "build": { "parallel": "off", "setup": "pnpm --dir web install" },
   // From package.json scripts (Next.js 16 scaffold, 2026-11-18). No CI yet, so source is the scripts.
-  "verify": { "commands": { "typecheck": "pnpm typecheck", "lint": "pnpm lint", "build": { "cmd": "pnpm build", "when": "verify" } }, "source": "package.json" },
+  "verify": { "commands": { "typecheck": "pnpm --dir web typecheck", "lint": "pnpm --dir web lint", "build": { "cmd": "pnpm --dir web build", "when": "verify" } }, "source": "web/package.json" },
 
   "qa": {
     "mode": "manual",

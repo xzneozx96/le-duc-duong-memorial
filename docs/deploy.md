@@ -1,16 +1,17 @@
 # Deploying the memorial site
 
-One small Linux server, Docker, and a domain name. `docker-compose.yml` runs the site (`app`) and
+One small Linux server, Docker, and a domain name. `web/docker-compose.yml` runs the site (`app`) and
 Caddy for HTTPS. The database and the photos live on Neon (Postgres and Object Storage), so the
 server keeps no data except the HTTPS certificates.
 
 ## First time
 
 1. Install Docker Engine and the Compose plugin: https://docs.docker.com/engine/install/
-2. Copy this repository to the server (git clone or rsync). You do not need the `documents/`,
-   `images/` or `videos/` folders there.
+2. Copy this repository to the server (git clone or rsync). The site is the `web/` folder; you do
+   not need `materials/` there. Every command below runs in `web/`.
 3. Create the settings file and fill in every `CHANGE_ME`:
    ```
+   cd web
    cp .env.example .env
    nano .env
    ```
@@ -55,7 +56,7 @@ small disk does not protect against a lost disk.
 ## Updating
 
 ```
-cd the-repo-folder
+cd the-repo-folder/web
 git pull                       # or copy the new files over
 docker compose up -d --build
 docker image prune -f          # frees disk from old builds

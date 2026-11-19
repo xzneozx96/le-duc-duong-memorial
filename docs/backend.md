@@ -6,6 +6,8 @@ note stands in for the plan.
 
 ## Stack
 
+The app lives in `web/`; every path and command in this file is relative to `web/`.
+
 - Next.js 16 route handlers (not Server Actions: they cap the body at about 1 MB).
 - Postgres 17 with Drizzle ORM (`drizzle-orm`, `postgres` driver, `drizzle-kit` migrations in
   `drizzle/`).

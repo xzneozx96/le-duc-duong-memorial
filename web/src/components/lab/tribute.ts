@@ -1,4 +1,4 @@
-// The tribute of Cao Hữu Ngạn, copied exactly as written from documents/Tri ân.docx (typos kept).
+// The tribute of Cao Hữu Ngạn, copied exactly as written from materials/documents/Tri ân.docx (typos kept).
 export const tribute: string[] = [
   "TRI ÂN VÀ THƯƠNG TIẾC ANH LÊ ĐỨC DƯƠNG",
   "Nhắc đến những ngày đầu gắn bó với nghề dạy tiếng Đức, tôi luôn nhớ đến anh Lê Đức Dương, nguyên Trưởng Tổ Bộ môn Tiếng Đức – Trường Đại học Ngoại ngữ Hà Nôi, một trong những người đã đặt nền móng cho sự hình thành và phát triển của Bộ môn Tiếng Đức từ năm 1967 và Khoa tiếng Đức, Trường Đại học Hà Nội hôm nay.",
