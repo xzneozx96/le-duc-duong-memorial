@@ -6,8 +6,8 @@
 // mourning envelope. The envelopes sit in one centred carousel, one at a time, with previous and
 // next buttons. Opening a letter, or writing one, raises a full-screen sheet from the bottom
 // (the way a phone opens a sheet): Escape, the "Đóng" button and the phone's Back button close
-// it, and focus returns to the envelope. On sending, the written sheet folds in three and the
-// new envelope takes its place in the carousel with its postmark.
+// it, and focus returns to the envelope. On sending, the written sheet fades away and the new
+// envelope takes its place in the carousel with its postmark.
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
 import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight, Images, PenLine, X } from "lucide-react";
 import { classes } from "../cls";
@@ -363,15 +363,11 @@ export function OptionA() {
     });
   }
 
-  // The send moment: the written sheet folds in three and slips away.
+  // The send moment: the written sheet fades away, calmly, without changing shape.
   const fold = async () => {
     const el = formWrap.current;
     if (!el || !moving()) return;
-    await gsap
-      .timeline()
-      .to(el, { scaleY: 0.34, transformOrigin: "50% 0%", duration: 0.55, ease: "power2.inOut" })
-      .to(el, { scale: 0.3, y: 60, opacity: 0, duration: 0.6, ease: "power2.in" })
-      .then(() => undefined);
+    await gsap.to(el, { opacity: 0, y: 12, duration: 0.5, ease: "power1.inOut" }).then(() => undefined);
   };
 
   const onPosted = (e: Entry) => {

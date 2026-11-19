@@ -7,7 +7,7 @@
 // Two shapes: "fields" (the demo's order) and "letter" (the message first under a printed
 // salutation, then who wrote it, as one writes a letter). Options dress it through `className`.
 import { useEffect, useId, useRef, useState, type FormEvent, type ReactNode } from "react";
-import { CircleAlert, ImagePlus, X } from "lucide-react";
+import { CircleAlert, ImagePlus, LoaderCircle, X } from "lucide-react";
 import { classes } from "../cls";
 import { LIMITS, RELATIONS, t, type Entry, type Relation } from "./data";
 import { GUESTBOOK_DEMO, formatDate, postEntry, uploadPhoto } from "./api";
@@ -424,7 +424,13 @@ export function MemoryForm({
           </p>
         )}
       </div>
-      <button type="submit" className={`${s.primary} ${s.send}`} aria-disabled={sending !== null || undefined}>
+      <button
+        type="submit"
+        className={`${s.primary} ${s.send}`}
+        aria-disabled={sending !== null || undefined}
+        aria-busy={sending !== null || undefined}
+      >
+        {sending && <LoaderCircle aria-hidden className={s.spinner} size={22} strokeWidth={2.25} />}
         {sending ? (sending.n > 0 ? f.sendingPhoto(sending.i, sending.n) : f.sending) : f.send}
       </button>
     </form>

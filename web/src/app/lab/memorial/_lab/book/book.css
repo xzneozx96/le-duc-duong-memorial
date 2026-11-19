@@ -494,6 +494,20 @@ html:has(.lbk-page) {
   margin: 26px auto 0;
   width: 100%;
 }
+/* While sending: a turning ring before "Đang gửi…" (slower when the reader asks for less motion). */
+.lbk-spinner {
+  animation: lbk-spin 1.6s linear infinite;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .lbk-spinner {
+    animation-duration: 0.9s;
+  }
+}
+@keyframes lbk-spin {
+  to {
+    rotate: 360deg;
+  }
+}
 @media (min-width: 640px) {
   .lbk-fieldPair {
     grid-template-columns: 1fr 1fr;
