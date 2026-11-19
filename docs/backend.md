@@ -62,6 +62,11 @@ marks counts the way a person reads it.
    - stores both copies in MinIO, inserts a staged `photos` row, returns
      `{ id, width, height }`.
    The form shows "Đang gửi ảnh i/n" per photo.
+   Browser side (`guestbook/shrink.ts`): the form accepts photos up to 25 MB, then shrinks each one
+   just before its upload (long side 2400 px, JPEG q0.88, lower if still over 4 MB; GIFs and small
+   JPEG/PNG/WebP are sent as they are). That keeps the request under Vercel's 4.5 MB body limit.
+   HEIC is accepted only where the browser can decode it (Safari) and is sent as JPEG. If shrinking
+   fails, the original is sent and the server's 5 MB limit applies.
 2. `POST /api/entries` (JSON): `{ name, relation, cls?, year?, message, photos: [{ id, caption? }] }`.
    One transaction: insert the entry, attach the staged photos in the given order with their
    captions. Unknown or already-attached photo ids → 400, nothing written. Field errors → 422 with

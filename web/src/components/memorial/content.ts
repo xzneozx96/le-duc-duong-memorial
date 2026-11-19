@@ -162,9 +162,9 @@ export const ui = {
         `${field} dài ${group(count)} ký tự, tối đa ${group(limit)}. Xin bạn bớt ${group(count - limit)} ký tự.`,
       counter: (count: number, limit: number) => `${group(count)}/${group(limit)} ký tự`,
       notPhoto: (file: string) =>
-        `“${file}” không phải ảnh nên chưa được thêm. Chỉ nhận ảnh JPG, PNG, WebP hoặc GIF, mỗi ảnh tối đa 5 MB.`,
+        `“${file}” không phải ảnh nên chưa được thêm. Chỉ nhận ảnh JPG, PNG, WebP hoặc GIF, mỗi ảnh tối đa 25 MB.`,
       tooBig: (file: string, bytes: number) =>
-        `“${file}” nặng ${size(bytes)} MB, quá mức 5 MB nên chưa được thêm. Các ảnh khác vẫn giữ nguyên. Cách làm nhỏ ảnh: bạn gửi ảnh qua Zalo hoặc WhatsApp cho chính mình rồi lưu bản nhận được, bản này thường nhỏ hơn 5 MB.`,
+        `“${file}” nặng ${size(bytes)} MB, quá mức 25 MB nên chưa được thêm. Các ảnh khác vẫn giữ nguyên. Cách làm nhỏ ảnh: bạn gửi ảnh qua Zalo hoặc WhatsApp cho chính mình rồi lưu bản nhận được, bản này thường nhẹ hơn nhiều.`,
       // sending to the real backend (the Lưu bút wiring)
       notSent: "Chưa gửi được lưu bút. Những gì bạn đã viết và đã chọn vẫn còn nguyên, xin bạn bấm Gửi lại sau ít phút.",
       photosExpired: "Chưa gửi được lưu bút vì các ảnh đã tải lên không còn được giữ. Những gì bạn đã viết vẫn còn nguyên, xin bạn bấm Gửi lại, các ảnh sẽ được gửi lại.",
@@ -172,7 +172,7 @@ export const ui = {
         why === "heic"
           ? `Chưa gửi lưu bút. Ảnh dạng HEIC chưa được hỗ trợ, xin chọn ảnh JPEG thay cho “${file}”. Những gì bạn đã viết vẫn còn nguyên.`
           : why === "tooBig"
-            ? `Chưa gửi lưu bút. “${file}” nặng quá 5 MB, xin bạn bỏ ảnh này hoặc chọn ảnh nhỏ hơn. Những gì bạn đã viết vẫn còn nguyên.`
+            ? `Chưa gửi lưu bút. “${file}” quá lớn để gửi, xin bạn bỏ ảnh này hoặc chọn ảnh nhỏ hơn. Những gì bạn đã viết vẫn còn nguyên.`
             : `Chưa gửi lưu bút. “${file}” không phải ảnh, xin bạn bỏ ảnh này. Những gì bạn đã viết vẫn còn nguyên.`,
       storageFull: "Chưa gửi được ảnh vì nơi lưu ảnh của trang đang đầy. Gia đình đã được báo. Bạn vẫn có thể gửi lưu bút không kèm ảnh: xin bỏ các ảnh rồi bấm Gửi lại. Lời bạn đã viết vẫn còn nguyên.",
       tooLongToSend: "Chưa gửi được vì lưu bút quá dài để gửi. Xin bạn rút ngắn bớt rồi bấm Gửi lại. Những gì bạn đã viết vẫn còn nguyên.",
@@ -272,9 +272,9 @@ export const ui = {
         `${field} hat ${group(count)} Zeichen, erlaubt sind ${group(limit)}. Bitte kürzen Sie um ${group(count - limit)} Zeichen.`,
       counter: (count: number, limit: number) => `${group(count)}/${group(limit)} Zeichen`,
       notPhoto: (file: string) =>
-        `„${file}“ ist kein Foto und wurde nicht hinzugefügt. Nur Fotos (JPG, PNG, WebP, GIF), höchstens 5 MB pro Foto.`,
+        `„${file}“ ist kein Foto und wurde nicht hinzugefügt. Nur Fotos (JPG, PNG, WebP, GIF), höchstens 25 MB pro Foto.`,
       tooBig: (file: string, bytes: number) =>
-        `„${file}“ ist ${size(bytes)} MB groß, erlaubt sind 5 MB. Es wurde nicht hinzugefügt, die anderen Fotos bleiben. So wird es kleiner: Schicken Sie es sich selbst per WhatsApp und speichern Sie die empfangene Kopie, sie ist meist kleiner als 5 MB.`,
+        `„${file}“ ist ${size(bytes)} MB groß, erlaubt sind 25 MB. Es wurde nicht hinzugefügt, die anderen Fotos bleiben. So wird es kleiner: Schicken Sie es sich selbst per WhatsApp und speichern Sie die empfangene Kopie, sie ist meist deutlich kleiner.`,
       // sending to the real backend (the Lưu bút wiring)
       notSent: "Noch nicht eingetragen. Alles, was Sie geschrieben und ausgewählt haben, bleibt erhalten. Bitte versuchen Sie es in ein paar Minuten noch einmal.",
       photosExpired: "Noch nicht eingetragen, weil die hochgeladenen Fotos nicht mehr vorgehalten werden. Ihr Text bleibt erhalten. Bitte senden Sie noch einmal, die Fotos werden erneut gesendet.",
@@ -282,7 +282,7 @@ export const ui = {
         why === "heic"
           ? `Noch nicht eingetragen. Fotos im HEIC-Format werden nicht unterstützt, bitte wählen Sie statt „${file}“ ein JPEG. Ihr Text bleibt erhalten.`
           : why === "tooBig"
-            ? `Noch nicht eingetragen. „${file}“ ist größer als 5 MB, bitte entfernen Sie das Foto oder wählen Sie ein kleineres. Ihr Text bleibt erhalten.`
+            ? `Noch nicht eingetragen. „${file}“ ist zu groß zum Senden, bitte entfernen Sie das Foto oder wählen Sie ein kleineres. Ihr Text bleibt erhalten.`
             : `Noch nicht eingetragen. „${file}“ ist kein Foto, bitte entfernen Sie es. Ihr Text bleibt erhalten.`,
       storageFull: "Die Fotos konnten nicht gesendet werden, weil der Fotospeicher der Seite gerade voll ist. Die Familie ist informiert. Sie können den Eintrag auch ohne Fotos senden: Entfernen Sie die Fotos und senden Sie noch einmal. Ihr Text bleibt erhalten.",
       tooLongToSend: "Noch nicht eingetragen, der Eintrag ist zu lang zum Senden. Bitte kürzen Sie ihn und senden Sie noch einmal. Ihr Text bleibt erhalten.",
@@ -613,4 +613,4 @@ export const sampleEntries: Entry[] = [
 /** Visitor entries shown before the "Xem thêm" button. The product shows 20; the sample set has six. */
 export const FIRST_BATCH = 4;
 
-export const LIMITS = { name: 100, cls: 50, year: 50, message: 5000, counterFrom: 4500, photoBytes: 5_000_000 } as const;
+export const LIMITS = { name: 100, cls: 50, year: 50, message: 5000, counterFrom: 4500, pickBytes: 25_000_000 } as const;

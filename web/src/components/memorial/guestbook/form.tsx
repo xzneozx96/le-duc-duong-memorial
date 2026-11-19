@@ -1,7 +1,8 @@
 "use client";
 
 // The Lưu bút form: labels and hints, no maxlength, worded field messages, photo checks (type,
-// 5 MB), the real send (photos one at a time, then the letter: see send.ts), and a form that stays
+// 25 MB, HEIC only if the browser can read it), photos shrunk in the browser before they are sent
+// (see shrink.ts), the real send (photos one at a time, then the letter: see send.ts), and a form that stays
 // mounted while closed, so closing it keeps what was typed. A failed send keeps everything.
 // Two shapes: "fields" (the usual order) and "letter" (the message first under a printed
 // salutation, then who wrote it, as one writes a letter). The caller dresses it through `className`.
@@ -12,6 +13,7 @@ import { LIMITS, RELATIONS, t, type Entry, type Relation } from "./data";
 import { GUESTBOOK_DEMO, formatDate, postEntry, uploadPhoto } from "./api";
 import { SelectField, TextArea, TextField } from "./fields";
 import { failureMessage, isHeic, sendLetter } from "./send";
+import { shrinkPhoto } from "./shrink";
 
 const s = classes("lbk");
 const f = t.form;
@@ -131,15 +133,34 @@ export function MemoryForm({
     clearServer(key);
   };
 
-  function pick(files: FileList | null) {
-    if (!files) return;
+  /** HEIC is accepted only when this browser can read it (Safari can); shrinkPhoto then turns it into a JPEG. */
+  async function canRead(file: File) {
+    try {
+      (await createImageBitmap(file)).close();
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  async function pick(list: FileList | null) {
+    if (!list) return;
+    const files = Array.from(list);
+    if (fileInput.current) fileInput.current.value = "";
+    const verdicts = await Promise.all(
+      files.map(async (file): Promise<Refused["why"] | null> => {
+        const isPhoto = file.type.startsWith("image/") || /\.(heic|heif)$/i.test(file.name);
+        if (!isPhoto) return "type";
+        if (file.size > LIMITS.pickBytes) return "size";
+        if (isHeic(file) && !(await canRead(file))) return "heic";
+        return null;
+      }),
+    );
     const good: Picked[] = [];
     const bad: Refused[] = [];
-    for (const file of Array.from(files)) {
-      const isPhoto = file.type.startsWith("image/") || /\.(heic|heif)$/i.test(file.name);
-      if (isHeic(file)) bad.push({ name: file.name, bytes: file.size, why: "heic" });
-      else if (!isPhoto) bad.push({ name: file.name, bytes: file.size, why: "type" });
-      else if (file.size > LIMITS.photoBytes) bad.push({ name: file.name, bytes: file.size, why: "size" });
+    files.forEach((file, i) => {
+      const why = verdicts[i];
+      if (why) bad.push({ name: file.name, bytes: file.size, why });
       else
         good.push({
           id: `${file.name}-${file.size}-${file.lastModified}-${good.length}-${crypto.randomUUID()}`,
@@ -147,7 +168,7 @@ export function MemoryForm({
           name: file.name,
           url: URL.createObjectURL(file),
         });
-    }
+    });
     setPhotos((p) => [...p, ...good]);
     setRefused(bad);
     setAdded(good.length);
@@ -157,7 +178,6 @@ export function MemoryForm({
         setPhotos((p) => p.map((x) => (x.id === g.id ? { ...x, w: probe.naturalWidth, h: probe.naturalHeight } : x)));
       probe.src = g.url;
     }
-    if (fileInput.current) fileInput.current.value = "";
   }
 
   async function submit(e: FormEvent) {
@@ -207,7 +227,7 @@ export function MemoryForm({
       uploaded: uploaded.current,
       requestId: (requestId.current ??= crypto.randomUUID()),
       onProgress: (i, n) => setSending({ i, n }),
-      api: { uploadPhoto: (file) => uploadPhoto(file), postEntry: (input) => postEntry(input) },
+      api: { uploadPhoto: async (file) => uploadPhoto(await shrinkPhoto(file)), postEntry: (input) => postEntry(input) },
     });
     if (!result.ok) {
       setSending(null);
@@ -330,7 +350,7 @@ export function MemoryForm({
         multiple
         tabIndex={-1}
         aria-labelledby={id("photos-label")}
-        onChange={(e) => pick(e.target.files)}
+        onChange={(e) => void pick(e.target.files)}
       />
       <ul className={s.photoGrid}>
         {photos.map((p, i) => (
